@@ -1,0 +1,18 @@
+{
+  "development": {
+      "host":"localhost",
+      "database":"team4",
+      "username":"",
+      "password":"",
+      "dialect":"mysql"
+  },
+  "productioin": {
+      "development": {
+          "host":"",
+          "database":"",
+          "username":"",
+          "passwoed":"",
+          "dialect":"mysql"
+      }
+  }
+}
