@@ -15,14 +15,12 @@ db.Sequelize = Sequelize;
 
 
 
-db.user = require("./user")(sequelize, Sequelize);
-db.board = require("./board")(sequelize, Sequelize);
-db.study = require("./study")(sequelize, Sequelize);
-db.usedgoods = require("./usedgoods")(sequelize, Sequelize);
-db.chattingroom = require("./chattingroom")(sequelize, Sequelize);
-db.chatmessage = require("./chatmessage")(sequelize, Sequelize);
-
-
+db.User = require("./user")(sequelize, Sequelize);
+db.Board = require("./board")(sequelize, Sequelize);
+db.Study = require("./study")(sequelize, Sequelize);
+db.Usedgoods = require("./usedgoods")(sequelize, Sequelize);
+db.Chattingroom = require("./chattingroom")(sequelize, Sequelize);
+db.Chatmessage = require("./chatmessage")(sequelize, Sequelize);
 
 
 module.exports = db;
