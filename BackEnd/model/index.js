@@ -18,7 +18,9 @@ db.Sequelize = Sequelize;
 db.user = require("./user")(sequelize, Sequelize);
 db.board = require("./board")(sequelize, Sequelize);
 db.study = require("./study")(sequelize, Sequelize);
-db.usedproduct = require("./ususedproduct")(sequelize, Sequelize);
+db.usedgoods = require("./usedgoods")(sequelize, Sequelize);
+db.chattingroom = require("./chattingroom")(sequelize, Sequelize);
+db.chatmessage = require("./chatmessage")(sequelize, Sequelize);
 
 
 
