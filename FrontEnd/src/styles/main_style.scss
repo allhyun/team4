@@ -1,0 +1,42 @@
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
+.maincenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.layout {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr; // 가로줄
+  grid-template-rows: 4rem 4rem auto; // 세로줄
+  grid-template-areas: 'Header' 'Sidebar' 'MainContainer';
+}
+
+.header {
+  grid-area: Header;
+  background-color: red;
+}
+
+.sidebar {
+  grid-area: Sidebar;
+  background-color: blue;
+}
+
+.main.container {
+  grid-area: MainContainer;
+  background-color: green;
+}
+
+@media only screen and (min-width: 768px) {
+  .layout {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 4rem auto;
+    grid-template-rows: 4rem auto;
+    grid-template-areas: 'Header Header Header' 'Sidebar MainContainer MainContainer';
+  }
+}
