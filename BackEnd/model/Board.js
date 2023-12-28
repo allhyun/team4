@@ -2,40 +2,40 @@ function Board(Sequelize, DataTypes) {
   return Sequelize.define(
     'Board',
     {
-      B_IDX: {
+      b_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      U_IDX: {
+      u_idx: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      TITLE: {
+      title: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      CATEGORY: {
+      category: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      CONTENT: {
+      content: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      VIEWCOUNT: {
+      viewcount: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      BREGDATE: {
+      bregdate: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
       },
     },
     {
-      tableName: 'BOARD',
+      tableName: 'board',
       freezeTableName: true,
       timestamps: false,
     }

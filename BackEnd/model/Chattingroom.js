@@ -1,25 +1,29 @@
 function ChattingRoom(Sequelize, DataTypes) {
   return Sequelize.define(
-    'ChattingRoom',
+    'chattingRoom',
     {
-      R_IDX: {
+      r_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      R_NAME: {
+      u_idx: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      r_name: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      R_CREATE: {
+      r_create: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
       },
     },
     {
-      tableName: 'CHATTINGROOM',
+      tableName: 'chattingroom',
       freezeTableName: true,
       timestamps: false,
     }
