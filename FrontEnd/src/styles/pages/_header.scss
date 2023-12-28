@@ -1,0 +1,30 @@
+#header {
+  @include flex-center; // flex-center 믹스인을 사용하여 중앙 정렬
+  flex-direction: column; // 요소들을 세로로 정렬
+  width: 100%; // 전체 높이를 채우도록 설정
+}
+
+.header_menu {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.header_menu .menu {
+  display: flex;
+  list-style: none;
+
+  li {
+    a {
+      display: block;
+      color: white;
+      transition: all 0.3s;
+      margin-right: 50px;
+      text-decoration: none;
+
+      &:hover {
+        color: black;
+      }
+    }
+  }
+}

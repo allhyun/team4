@@ -1,0 +1,65 @@
+html {
+  width: 100vw;
+  height: 100vh;
+  background-color: #9e8585;
+}
+
+#header {
+  @include flex-center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 5rem;
+  overflow-y: auto;
+  z-index: 10000;
+  background-color: transparent;
+}
+
+#sidebar {
+  @include flex-center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 5rem;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 10000;
+  background-color: transparent;
+}
+
+#main {
+  max-width: 2000px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-left: 260px;
+  background-color: #bbf7a4;
+}
+
+.layout {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr; // 가로줄
+  grid-template-rows: 4rem 4rem auto; // 세로줄
+  grid-template-areas: 'header' 'sidebar' 'main';
+}
+
+.header {
+  grid-area: header;
+  background-color: red;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: blue;
+}
+
+@media only screen and (min-width: 768px) {
+  .layout {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 4rem auto;
+    grid-template-rows: 4rem auto;
+    grid-template-areas: 'header header' 'sidebar main';
+  }
+}
