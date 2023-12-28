@@ -15,7 +15,6 @@ function Volunteer(Sequelize, DataTypes) {
       st_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false,
       },
       v_role: {
