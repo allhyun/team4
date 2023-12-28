@@ -1,36 +1,34 @@
-function ChatMessage(Sequelize, DataTypes) {
+function Volunteer(Sequelize, DataTypes) {
   return Sequelize.define(
-    'chatmessage',
+    'volunteer',
     {
-      ms_idx: {
+      v_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
       u_idx: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
-      r_idx: {
+      st_idx: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
-      c_content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      c_date: {
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW,
+      v_role: {
+        type: DataTypes.STRING(20),
         allowNull: false,
       },
     },
     {
-      tableName: 'chatmessage',
+      tableName: 'volunteer',
       freezeTableName: true,
       timestamps: false,
     }
   );
 }
 
-module.exports = ChatMessage;
+module.exports = Volunteer;

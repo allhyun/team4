@@ -1,40 +1,40 @@
 function User(Sequelize, DataTypes) {
   return Sequelize.define(
-    'User',
+    'user',
     {
-      U_IDX: {
+      u_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      USERID: {
+      userid: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      EMAIL: {
+      email: {
         type: DataTypes.STRING(30),
         allowNull: false,
       },
-      PASSWORD: {
+      password: {
         type: DataTypes.STRING(500),
         allowNull: false,
       },
-      SALT: {
+      salt: {
         type: DataTypes.STRING(500),
         allowNull: false,
       },
-      NICKNAME: {
+      nickname: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      IMAGE: {
+      image: {
         type: DataTypes.STRING(500),
         defaultValue: null,
       },
     },
     {
-      tableName: 'USER',
+      tableName: 'user',
       freezeTableName: true,
       timestamps: false,
     }

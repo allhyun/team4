@@ -1,41 +1,41 @@
 function UsedGoods(Sequelize, DataTypes) {
   return Sequelize.define(
-    'UsedGoods',
+    'usedgoods',
     {
-      UD_IDX: {
+      ud_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      U_IDX: {
+      u_idx: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      UD_PRICE: {
+      ud_price: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      UD_TITLE: {
+      ud_title: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      UD_CONTENT: {
+      ud_content: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      VIEWCOUNT: {
+      viewcount: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      UD_DATE: {
+      ud_date: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false,
       },
     },
     {
-      tableName: 'USEDGOODS',
+      tableName: 'usedgoods',
       freezeTableName: true,
       timestamps: false,
     }
