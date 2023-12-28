@@ -1,11 +1,14 @@
+
 const Sequelize = require('sequelize');
 // const config = require("../config/config.json")["development"];
+
 
 const db = {};
 const sequelize = new Sequelize(
   config.database, // db이름
   config.username, // 유저
-  config.password // pw
+  config.password, // pw,
+  config
 );
 
 db.sequelize = sequelize;
@@ -18,7 +21,7 @@ db.Usedgoods = require('./Usedgoods')(sequelize, Sequelize);
 db.Chattingroom = require('./Chattingroom')(sequelize, Sequelize);
 db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 
-// User가 Board랑 조인
+// // User가 Board랑 조인
 // db.User.hasMany(db.Board, {
 //   foreignKey: "U_IDX",
 // });
@@ -26,6 +29,7 @@ db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 //   onDelete: "cascade",
 //   foreignKey: "U_IDX",
 // });
+
 
 // User : Usedgoods
 db.User.hasMany(db.Usedgoods, {
@@ -88,5 +92,6 @@ db.Chatmessage.belongsTo(db.Chattingroom, {
   onDelete: 'cascade',
   foreignKey: 'r_idx',
 });
+
 
 module.exports = db;
