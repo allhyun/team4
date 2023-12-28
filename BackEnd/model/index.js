@@ -87,4 +87,5 @@ db.Chatmessage = require("./Chatmessage")(sequelize, Sequelize);
 
 // Chattingroom : ChatMessage 일단 chatting들 보류!!
 
+
 module.exports = db;
