@@ -25,11 +25,14 @@ router.post('/study/regist', studyController.createStudy);
 // 스터디 상세 조회
 router.get('/study/detail/:st_idx', studyController.detailStudy);
 // 주소 수정해야함
-router.put('/study/:id', studyController.modifyStudy);
+router.put('/study/detail/:st_idx', studyController.modifyStudy);
 // 스터디 삭제
-// 주소 수정해야함
-router.delete('/study/:id', studyController.deleteStudy);
+router.delete('/study/:st_idx', studyController.deleteStudy);
 // 스터디 참여(?)
+router.post('/study/join/:st_idx', studyController.joinStudy);
+
+
+
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
