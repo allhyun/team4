@@ -18,8 +18,8 @@ function Study(Sequelize, DataTypes) {
       st_limit: DataTypes.INTEGER,
       st_date: {
         type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW,
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       st_fe: DataTypes.INTEGER,
       st_be: DataTypes.INTEGER,
