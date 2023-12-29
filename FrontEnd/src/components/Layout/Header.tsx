@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../styles/style.scss';
 
 export default function Header() {
@@ -11,7 +10,7 @@ export default function Header() {
               <a href="/">로고이미지</a>
             </li>
             <li>
-              <a href="/study">로그인</a>
+              <a href="/loginpage">로그인</a>
             </li>
           </ul>
         </nav>

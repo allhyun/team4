@@ -2,10 +2,12 @@
 
 // setting
 @import 'setting/mixin';
-@import 'setting/layout';
+
+// layout
+@import 'layout/layout';
+@import 'layout/header';
+@import 'layout/sidebar';
 
 // pages
-@import 'pages/header';
-@import 'pages/sidebar';
 @import 'pages/main';
 @import 'pages/market_main';
