@@ -29,7 +29,8 @@ function Study(Sequelize, DataTypes) {
     {
       tableName: 'study',
       freezeTableName: true,
-      timestamps: false,
+      timestamps: { createdAt: true, updatedAt: false },
+      createdAt: 'st_date',
     }
   );
 }

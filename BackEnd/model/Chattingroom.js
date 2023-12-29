@@ -25,7 +25,8 @@ function ChattingRoom(Sequelize, DataTypes) {
     {
       tableName: 'chattingroom',
       freezeTableName: true,
-      timestamps: false,
+      timestamps: { createdAt: true, updatedAt: false },
+      createdAt: 'r_create',
     }
   );
 }

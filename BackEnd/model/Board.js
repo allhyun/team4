@@ -37,7 +37,8 @@ function Board(Sequelize, DataTypes) {
     {
       tableName: 'board',
       freezeTableName: true,
-      timestamps: false,
+      timestamps: { createdAt: true, updatedAt: false },
+      createdAt: 'bregdate',
     }
   );
 }
