@@ -2,8 +2,8 @@
   "development": {
     "host": "localhost",
     "database": "team4",
-    "username": "byeong",
-    "password": "woo1234",
+    "username": "jongbin",
+    "password": "tank1253!",
     "dialect": "mysql"
   },
   "productioin": {

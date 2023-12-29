@@ -1,4 +1,5 @@
 const express = require('express');
+const userController = require('../controller/Cuser');
 const router = express.Router();
 const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
@@ -32,7 +33,7 @@ router.delete('/study/:id', studyController.deleteStudy);
 // 스터디 참여(?)
 
 // 로그인 페이지
-// router.get('/signin', controller.signin);
+router.get('/signin', userController.signin);
 
 // 회원가입 페이지
 router.get('/signup', user.signup);
