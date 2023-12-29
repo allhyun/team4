@@ -12,7 +12,6 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-<
           {/* 메인페이지 */}
           <Route path="/" element={<MainPage />}></Route>
           {/* 스터디게시판 */}
@@ -22,7 +21,6 @@ function App() {
 
           {/* 유저관련 페이지 */}
           <Route path="/" element={<LoginPage />}></Route>
-
         </Routes>
       </BrowserRouter>
     </div>
