@@ -5,6 +5,8 @@
 
 //여기서 데이터를 받아온다음에 mab사용해서 정보 표시
 
+//Bord테이블 Study로 바꿔달라고 요청하기!!
+
 const StudyThumbnailBox = () => {
   return (
     <>
