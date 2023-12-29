@@ -82,6 +82,11 @@ exports.postSignin = async (req, res) => {
     .toString('base64');
 
   if (user.password === hashedPassword) {
+    // req.session이 정의되지 않았다면 초기화
+    if (!req.session) {
+      req.session = {};
+    }
+
     req.session.user = user; // 세션에 사용자 정보 저장
     req.session.isAuthenticated = true; // 로그인 상태를 true로 설정
     console.log('세션 생성:', req.session); // 세션 상태 출력
