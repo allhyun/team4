@@ -63,15 +63,32 @@ app.use(async (req, res, next) => {
 
 // 소켓 연결시
 io.on('connection', (socket) => {
-  console.log('Client connected');
+  console.log('Socket connected:', socket.id);
 
-  // 클라이언트에게 메시지 전송
-  socket.emit('message', 'Hello from server');
+  // 클라이언트가 소켓 룸 생성 요청
+  socket.on('createRoom', (data) => {
+    const { roomName } = data;
 
-  // 클라이언트로부터 메시지 수신
-  socket.on('clientMessage', (data) => {
-    console.log(`Received message from client: ${data}`);
+    // 소켓 룸 생성
+    socket.join(roomName);
+    console.log(`Socket ${socket.id} joined room: ${roomName}`);
+
+    // 클라이언트에게 알림
+    io.to(roomName).emit(
+      'roomCreate',
+      `Socket ${socket.id} created room: ${roomName}`
+    );
+
+    // ================== 클라이언트에게 메시지 전송
+    // socket.emit('message', 'Hello from server');
+
+    // // 클라이언트로부터 메시지 수신
+    // socket.on('clientMessage', (data) => {
+    //   console.log(`Received message from client: ${data}`);
+    // }); // ===============================
   });
+
+  // 다른 소켓 이벤트 핸들러 등록!!!
 });
 
 app.listen(PORT, function () {
