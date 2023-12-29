@@ -1,7 +1,9 @@
 html {
   width: 100vw;
   height: 100vh;
-  background-color: #9e8585;
+  background: linear-gradient(217deg, #6b2d9f, rgba(255, 0, 0, 0)),
+    linear-gradient(127deg, #29347d, rgba(255, 0, 0, 0)),
+    linear-gradient(336deg, #ecc152, rgba(0, 0, 255, 0));
 }
 
 #header {
