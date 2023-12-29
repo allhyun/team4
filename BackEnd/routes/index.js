@@ -74,4 +74,8 @@ router.get('/logout', (req, res) => {
   });
 });
 
+const chatRoom = require('../controller/Cchattingroom');
+// 소켓룸 생성
+router.post('/chatcre', chatRoom.createChatRoom);
+
 module.exports = router;
