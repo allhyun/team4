@@ -40,7 +40,8 @@ exports.createStudy = async (req, res) => {
 
 // 스터디 상세 조회
 exports.detailStudy = async (req, res) => {
-  const studyId = req.params.id;
+  const studyId = req.params.st_idx;
+  console.log(studyId); // 이 부분 추가
   try {
     const board = await db.Study.findByPk(studyId);
     if (!board) {
@@ -56,7 +57,8 @@ exports.detailStudy = async (req, res) => {
 
 // 스터디 수정
 exports.modifyStudy = async (req, res) => {
-  const studyId = req.params.id;
+  const studyId = req.params.st_idx;
+  console.log(studyId);
   try {
     const { st_title, st_intro, st_now_mem, st_limit, st_fe, st_be, st_pub, st_full } = req.body;
     const updatedStudy = await db.Study.update(
@@ -72,7 +74,7 @@ exports.modifyStudy = async (req, res) => {
 
 // 스터디 삭제
 exports.deleteStudy = async (req, res) => {
-  const studyId = req.params.id;
+  const studyId = req.params.st_idx;
   try {
     await db.Study.destroy({ where: { st_idx: studyId } });
     res.render({ message: '스터디모집이 성공적으로 삭제되었습니다.' });
@@ -85,7 +87,7 @@ exports.deleteStudy = async (req, res) => {
 // 스터디 참여하자
 
 exports.joinStudy = async (req,res) => {
-  const studyId = req.params.id;
+  const studyId = req.params.st_idx;
   const userId = req.user.id;
 
 
