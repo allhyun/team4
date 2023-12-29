@@ -1,0 +1,32 @@
+#sidebar {
+  @include flex-center; // flex-center 믹스인을 사용하여 중앙 정렬
+  flex-direction: column; // 요소들을 세로로 정렬
+  height: 100%; // 전체 높이를 채우도록 설정
+}
+
+.sidebar_menu {
+  width: auto; // 너비를 자동으로 설정
+  height: auto; // 높이를 자동으로 설정
+}
+
+.sidebar_menu .menu {
+  transform: rotate(-90deg);
+  transform-origin: center;
+  display: flex;
+  list-style: none;
+
+  li {
+    a {
+      display: block;
+      color: white;
+      transition: all 0.3s;
+      white-space: nowrap;
+      margin-right: 50px;
+      text-decoration: none;
+
+      &:hover {
+        color: black;
+      }
+    }
+  }
+}
