@@ -1,7 +1,7 @@
 const { Chattingroom, User } = require('../model');
-const io = require('socket.io')(server, {});
+// const io = require('socket.io')(server, {});
 
-exports.createChatRoom = (req, res, next) => {
+exports.createChatRoom = async (req, res, next) => {
   try {
     const { u_idx, r_name } = req.body; // 요청으로부터 사용자 ID와 방 이름 추출??굳이?
 
