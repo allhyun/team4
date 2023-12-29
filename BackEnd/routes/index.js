@@ -23,7 +23,7 @@ router.get('/study', studyController.getStudies);
 // 스터디 등록
 router.post('/study/regist', studyController.createStudy);
 // 스터디 상세 조회
-router.get('/study/:id', studyController.detailStudy);
+router.get('/study/detail/:id', studyController.detailStudy);
 // 스터디 수정
 // 주소 수정해야함
 router.put('/study/:id', studyController.modifyStudy);
