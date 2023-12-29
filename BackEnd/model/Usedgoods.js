@@ -37,7 +37,8 @@ function UsedGoods(Sequelize, DataTypes) {
     {
       tableName: 'usedgoods',
       freezeTableName: true,
-      timestamps: false,
+      timestamps: { createdAt: true, updatedAt: false },
+      createdAt: 'ud_date',
     }
   );
 }
