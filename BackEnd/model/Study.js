@@ -16,10 +16,10 @@ function Study(Sequelize, DataTypes) {
       st_intro: DataTypes.STRING(100),
       st_now_mem: DataTypes.INTEGER,
       st_limit: DataTypes.INTEGER,
-      st_date: {
+      st_date: {    
         type: DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       st_fe: DataTypes.INTEGER,
       st_be: DataTypes.INTEGER,
@@ -29,7 +29,9 @@ function Study(Sequelize, DataTypes) {
     {
       tableName: 'study',
       freezeTableName: true,
-      timestamps: { createdAt: true, updatedAt: false },
+      timestamps: true,
+      // 해당코드 작동안됨..!없어도되는듯!
+      // { createdAt: true, updatedAt: false },
       createdAt: 'st_date',
     }
   );
