@@ -1,7 +1,9 @@
-@import '../Constants.scss';
+@import '../style.scss';
+
 * {
   box-sizing: border-box;
 }
+
 .form-wrap {
   display: flex;
   justify-content: center;
@@ -12,10 +14,11 @@
     h1 {
       font-size: 2em;
       margin: 0;
+      margin-bottom: 1em;
     }
     display: flex;
     flex-direction: column;
-    gap: 2em;
+    // gap: 1em;
     color: $main-white;
     background-color: $main-color;
     width: 500px;
@@ -51,12 +54,12 @@
       }
 
       .alert {
-        font-size: 15px;
-        position: absolute;
+        display: block;
+        height: 1.5em;
+        font-size: 14px;
         color: $main-black;
         text-align: center;
         margin: 0;
-        bottom: -1.5em;
       }
 
       button {
@@ -67,9 +70,11 @@
         font-size: 1.2em;
         cursor: pointer;
         background-color: $main-color;
+        color: $main-black;
         border: 1px solid $main-white;
         &:hover {
           background-color: $main-white;
+          color: #000;
         }
       }
     }

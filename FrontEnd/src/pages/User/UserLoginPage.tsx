@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-// import styles from '../../styles/pages/Login.module.scss';
 import '../../styles/pages/_user_login.scss';
 
 interface LoginForm {
@@ -11,7 +10,7 @@ interface LoginForm {
   userPw: string;
 }
 
-const LoginPage = () => {
+const UserMainPage = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
@@ -41,13 +40,13 @@ const LoginPage = () => {
     try {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
-      const response = await axios.post('http://localhost:8000/signin', user);
+      const response = await axios.post('http://localhost:8000/user/signin', user);
       if (response.data.result === true) navigate('/');
+      console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);
     }
   };
-
   const onInvalid = (err: any) => {
     console.log('실패', err);
   };
@@ -79,6 +78,7 @@ const LoginPage = () => {
               type="password"
               placeholder="password"
               value={userPw}
+              autoComplete="off"
               {...register('userPw', {
                 required: 'password를 입력해주세요.',
                 // pattern: {
@@ -95,9 +95,11 @@ const LoginPage = () => {
             <button type="submit">로그인</button>
           </div>
           <div className="user-wrap">
-            <p>아이디 찾기</p>
-            <p>비밀번호 찾기</p>
-            <p>회원가입</p>
+            <div>아이디 찾기</div>
+            <div>비밀번호 찾기</div>
+            <Link to={'/signup'}>
+              <div>회원가입</div>
+            </Link>
           </div>
         </form>
       </div>
@@ -105,4 +107,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default UserMainPage;
