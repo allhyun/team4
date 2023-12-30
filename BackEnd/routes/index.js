@@ -33,9 +33,7 @@ router.delete('/study/delete/:st_idx', studyController.deleteStudy);
 router.post('/study/join/:st_idx', studyController.joinStudy);
 
 // 스터디 검색
-router.get('/study/search',studyController.searchStudy)
-
-
+router.get('/study/search', studyController.searchStudy);
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
@@ -83,10 +81,10 @@ router.get('/user/logout', (req, res) => {
 router.get('/user/mypage', user.mypage);
 
 // 마이페이지 닉네임수정
-router.post('/user/updateMypageNickname', user.updateMypageNickname);
+router.patch('/user/updateMypageNickname', user.updateMypageNickname);
 
 // 마이페이지 비밀번호 수정
-router.post('/user/updateMypagePassword', user.updateMypagePassword);
+router.patch('/user/updateMypagePassword', user.updateMypagePassword);
 
 // 마이페이지 회원 탈퇴
 router.delete('/user/deleteAccount', userController.deleteAccount);

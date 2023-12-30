@@ -82,11 +82,6 @@ exports.postSignin = async (req, res) => {
     .toString('base64');
 
   if (user.password === hashedPassword) {
-    // req.session이 정의되지 않았다면 초기화
-    if (!req.session) {
-      req.session = {};
-    }
-
     req.session.user = user; // 세션에 사용자 정보 저장
     req.session.isAuthenticated = true; // 로그인 상태를 true로 설정
     console.log('세션 생성:', req.session); // 세션 상태 출력
@@ -176,7 +171,10 @@ exports.mypage = (req, res) => {
 
 // 닉네임 변경 컨트롤러
 exports.updateMypageNickname = async (req, res) => {
-  const { u_idx, nickname } = req.body;
+  const u_idx = req.session.user.u_idx;
+  // console.log(req.session);
+  // const u_idx = 8;
+  const { nickname } = req.body;
 
   const user = await User.findOne({ where: { u_idx: u_idx } });
 
@@ -185,7 +183,7 @@ exports.updateMypageNickname = async (req, res) => {
     await user.save();
 
     // 세션에 있는 사용자 정보도 업데이트
-    req.session.user = user.dataValues;
+    req.session.user = user;
     req.session.save((err) => {
       if (err) {
         // 에러 처리
