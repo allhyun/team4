@@ -1,5 +1,11 @@
-import React from 'react';
+import '../../styles/style.scss';
 
 export default function MarketMain() {
-  return <></>;
+  return (
+    <>
+      <div></div>
+      <div></div>
+      <div></div>
+    </>
+  );
 }

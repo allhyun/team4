@@ -1,3 +1,5 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import '../../styles/style.scss';
 
 export default function Header() {
@@ -7,10 +9,14 @@ export default function Header() {
         <nav className="header_menu">
           <ul className="menu">
             <li>
-              <a href="/">로고이미지</a>
+              <Link to="/">
+                <a>로고이미지</a>
+              </Link>
             </li>
             <li>
-              <a href="/loginpage">로그인</a>
+              <Link to="/loginpage">
+                <a>로그인</a>
+              </Link>
             </li>
           </ul>
         </nav>

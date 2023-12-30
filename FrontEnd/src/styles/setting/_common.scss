@@ -1,0 +1,13 @@
+// 페이지 전체 공통적용할 스타일 넣는 부분
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(217deg, #6b2d9f, rgba(255, 0, 0, 0)),
+    linear-gradient(127deg, #29347d, rgba(255, 0, 0, 0)),
+    linear-gradient(336deg, #ecc152, rgba(0, 0, 255, 0));
+  overflow: hidden;
+  color: var(--white-font);
+  font-family: var(--mainfont-SUIT);
+  margin: 0;
+}
