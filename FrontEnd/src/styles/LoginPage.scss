@@ -1,0 +1,14 @@
+.form-wrap {
+  background-color: royalblue;
+  display: flex;
+  justify-content: center;
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    background-color: crimson;
+    width: 500px;
+  }
+  .login-form label {
+    margin-top: 0.5em;
+  }
+}
