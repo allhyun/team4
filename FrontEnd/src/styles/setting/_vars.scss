@@ -1,0 +1,16 @@
+// 메인 폰트, 컬러
+$main-white: #eee;
+$main-color: rgba(255, 255, 255, 0.3);
+$main-black: #333;
+
+:root {
+  --mainfont-SUIT: 'SUIT-Regular';
+  --white-box: rgba(255, 255, 255, 0.3);
+  --white-font: rgba(255, 255, 255, 0.85);
+
+  //폰트 셋팅
+  font-family: var(--mainfont-SUI);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}

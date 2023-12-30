@@ -1,6 +1,9 @@
 @charset "UTF-8";
 
 // setting
+@import 'setting/common'; // 공통 적용 스타일
+@import 'setting/vars';
+@import 'setting/font';
 @import 'setting/mixin';
 
 // layout
