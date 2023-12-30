@@ -13,6 +13,7 @@ CREATE TABLE user (
 	image	varchar(500)
 );
 
+
 CREATE TABLE board (
 	b_idx	int	NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	u_idx	int	NOT NULL,
@@ -24,13 +25,14 @@ CREATE TABLE board (
     FOREIGN KEY (u_idx) REFERENCES user(u_idx) on DELETE cascade
 );
 
+
 CREATE TABLE study (
 	st_idx	int	NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	u_idx	int	NOT NULL,
-	st_title	varchar(20)	NULL,
-	st_intro	varchar(100)	NULL,
-	st_now_mem	int	NULL,
-	st_limit	int	NULL,
+	st_title	varchar(20)	,
+	st_intro	varchar(100) ,
+	st_now_mem	int	,
+	st_limit	int	,
 	st_date	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	st_fe	INT	,
 	st_be	INT,
@@ -38,6 +40,8 @@ CREATE TABLE study (
 	st_full	INT,
     FOREIGN KEY(u_idx) REFERENCES user(u_idx) on DELETE cascade
 );
+
+
 
 CREATE TABLE  usedgoods  (
 	ud_idx	int	NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -50,16 +54,17 @@ CREATE TABLE  usedgoods  (
     FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE
 );
 
+
 CREATE TABLE chattingroom (
 	r_idx	int	NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	r_name	varchar(20)	NOT NULL,
-	r_create	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-	u_idx int NOT NULL
+	r_create	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	u_idx int NOT NULL,
 	FOREIGN KEY (u_idx) REFERENCES user(u_idx) on DELETE cascade
 );
 
 CREATE TABLE chatmessage (
-	ms_idx	int	NOT NULL PRIMARY KEY,
+	ms_idx	int	NOT NULL PRIMARY KEY auto_increment,
 	u_idx	int,
 	r_idx	int	NOT NULL,
 	c_content	text NOT NULL,
@@ -68,18 +73,23 @@ CREATE TABLE chatmessage (
     FOREIGN KEY(r_idx) REFERENCES chattingroom(r_idx) on DELETE cascade
 );
 
+
 CREATE TABLE volunteer (
-	v_idx int NOT NULL PRIMARY KEY,
+	v_idx int NOT NULL PRIMARY KEY auto_increment,
 	u_idx int NOT NULL,
 	st_idx int NOT NULL,
 	v_role VARCHAR(20),
 	FOREIGN KEY(u_idx) REFERENCES user(u_idx) on DELETE cascade,
-	FOREIGN KEY(st_idx) REFERENCES study(st_idx) on DELETE cascade,
-)
+	FOREIGN KEY(st_idx) REFERENCES study(st_idx) on DELETE cascade
+);
+
+
+
+
 CREATE TABLE heart (
 	h_idx INT NOT NULL PRIMARY KEY,
 	u_idx INT NOT NULL,
 	ud_idx INT NOT NULL,
 	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
-	FOREIGN KEY(ud_idx) REFERENCES usedgoods(ud_idx) ON DELETE CASCADE,
-)
+	FOREIGN KEY(ud_idx) REFERENCES usedgoods(ud_idx) ON DELETE CASCADE
+);

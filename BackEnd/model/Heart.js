@@ -12,14 +12,9 @@ function Heart(Sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      st_idx: {
+      ud_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      v_role: {
-        type: DataTypes.STRING(20),
         allowNull: false,
       },
     },

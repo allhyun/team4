@@ -1,6 +1,6 @@
-function ChattingRoom(Sequelize, DataTypes) {
+function Chattingroom(Sequelize, DataTypes) {
   return Sequelize.define(
-    'chattingRoom',
+    'chattingroom',
     {
       r_idx: {
         type: DataTypes.INTEGER,
@@ -25,9 +25,11 @@ function ChattingRoom(Sequelize, DataTypes) {
     {
       tableName: 'chattingroom',
       freezeTableName: true,
-      timestamps: false,
+      timestamps: { createdAt: true, updatedAt: false },
+      createdAt: 'r_create',
+      updatedAt: false,
     }
   );
 }
 
-module.exports = ChattingRoom;
+module.exports = Chattingroom;

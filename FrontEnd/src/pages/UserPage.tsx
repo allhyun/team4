@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent } from 'react';
+import React, { ChangeEvent, SyntheticEvent, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -55,6 +55,7 @@ const LoginPage = () => {
   return (
     <section>
       <div>UserPage</div>
+
       {needLogin && true}
       <div className="form-wrap">
         <form className="login-form" onSubmit={handleSubmit(onSubmit, onInvalid)}>
@@ -78,7 +79,6 @@ const LoginPage = () => {
             onChange={onUserPwHandler}
           />
           {errors.userPw?.message}
-
           <button type="submit">로그인</button>
         </form>
       </div>

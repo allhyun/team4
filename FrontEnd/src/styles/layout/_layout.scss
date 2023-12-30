@@ -1,0 +1,48 @@
+html {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(217deg, #6b2d9f, rgba(255, 0, 0, 0)),
+    linear-gradient(127deg, #29347d, rgba(255, 0, 0, 0)),
+    linear-gradient(336deg, #ecc152, rgba(0, 0, 255, 0));
+  overflow: hidden;
+}
+
+// 레이아웃이라 건들면 다 어글러집니다!
+#header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 75px;
+  overflow-y: auto;
+  z-index: 10000;
+}
+
+// 레이아웃이라 건들면 다 어글러집니다!
+#main {
+  max-width: 2000px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 75px 0 0 75px;
+}
+
+// 레이아웃이라 건들면 다 어글러집니다!
+#sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 75px;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 10000;
+}
+
+@media only screen and (min-width: 768px) {
+  .layout {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 4rem auto;
+    grid-template-rows: 4rem auto;
+    grid-template-areas: 'header header' 'sidebar main';
+  }
+}
