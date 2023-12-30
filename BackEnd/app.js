@@ -6,8 +6,8 @@ const server = http.createServer(app);
 const PORT = 8000;
 const router = require('./routes');
 const session = require('express-session');
-
 const cors = require('cors');
+const Chattingroom = require('./model/Chattingroom');
 app.use(cors());
 
 const io = require('socket.io')(server, {
@@ -60,37 +60,37 @@ app.use(async (req, res, next) => {
 
   next();
 });
-
 // 소켓 연결시
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
   // 클라이언트가 소켓 룸 생성 요청
-  socket.on('createRoom', (data) => {
-    const { roomName } = data;
+  socket.on('newRoom', async (room) => {
+    const newRoom = await Chattingroom.create(room);
+    console.log(`room created: ${newRoom}`);
+  });
 
-    // 소켓 룸 생성
-    socket.join(roomName);
-    console.log(`Socket ${socket.id} joined room: ${roomName}`);
-
-    // 클라이언트에게 알림
-    io.to(roomName).emit(
-      'roomCreate',
-      `Socket ${socket.id} created room: ${roomName}`
-    );
-
-    // ================== 클라이언트에게 메시지 전송
-    // socket.emit('message', 'Hello from server');
-
-    // // 클라이언트로부터 메시지 수신
-    // socket.on('clientMessage', (data) => {
-    //   console.log(`Received message from client: ${data}`);
-    // }); // ===============================
+  // 사용자 방에 입장시 join
+  socket.on('joinroom', async (r_idx) => {
+    const room = await Chattingroom.findAll({
+      where: {
+        r_idx: r_idx,
+        // r_name: r_name,
+      },
+    }).then((result) => {
+      if (room) {
+        // 방이 있을 시에만 join
+        socket.join(r_idx);
+        console.log(`user joinedRoom: ${r_idx}, ${r_name}`);
+      } else {
+        console.log('없는 방인디????');
+      }
+    });
   });
 
   // 다른 소켓 이벤트 핸들러 등록!!!
 });
 
-app.listen(PORT, function () {
+server.listen(PORT, function () {
   console.log(`Sever Open: ${PORT}`);
 });

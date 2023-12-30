@@ -31,9 +31,6 @@ router.delete('/study/:st_idx', studyController.deleteStudy);
 // 스터디 참여(?)
 router.post('/study/join/:st_idx', studyController.joinStudy);
 
-
-
-
 // 로그인 페이지
 router.get('/signin', userController.signin);
 
@@ -80,4 +77,6 @@ const chatRoom = require('../controller/Cchattingroom');
 // 소켓룸 생성
 router.post('/chatcre', chatRoom.createChatRoom);
 
+// 방에 입장하기
+// router.post('/joinroom', chatRoom.enterChatRoom);
 module.exports = router;
