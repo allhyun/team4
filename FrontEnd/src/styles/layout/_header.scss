@@ -6,25 +6,31 @@
 
 .header_menu {
   width: 100%;
-  display: flex;
-  justify-content: space-around;
 }
 
-.header_menu .menu {
-  display: flex;
-  list-style: none;
+.header_menu {
+  .menu {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    padding: 0 40px 0 40px;
 
-  li {
-    a {
-      color: var(--white-font);
-      display: block;
-      transition: all 0.3s;
-      margin-right: 50px;
-      text-decoration: none;
+    li {
+      a {
+        color: var(--white-font);
+        display: block;
+        transition: all 0.3s;
+        text-decoration: none;
 
-      &:hover {
-        color: black;
+        &:hover {
+          color: black;
+        }
       }
     }
   }
+}
+
+// 메뉴 클릭시 메뉴 글자 스타일
+.header_menu .menu li.active a {
+  color: black;
 }

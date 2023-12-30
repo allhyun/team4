@@ -15,14 +15,10 @@ export default function Sidebar() {
         <nav className="sidebar_menu">
           <ul className="menu">
             <li className={getActiveClass('/study')}>
-              <Link to="/study">
-                <a>스터디모집</a>
-              </Link>
+              <Link to="/study">스터디모집</Link>
             </li>
             <li className={getActiveClass('/market')}>
-              <Link to="/market">
-                <a>중고마켓</a>
-              </Link>
+              <Link to="/market">중고마켓</Link>
             </li>
           </ul>
         </nav>
