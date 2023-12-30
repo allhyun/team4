@@ -29,10 +29,12 @@ function Study(Sequelize, DataTypes) {
     {
       tableName: 'study',
       freezeTableName: true,
-      timestamps: true,
+      timestamps: 
+      // true,
       // 해당코드 작동안됨..!없어도되는듯!
-      // { createdAt: true, updatedAt: false },
+      { createdAt: true, updatedAt: false },
       createdAt: 'st_date',
+      updatedAt: false,
     }
   );
 }
