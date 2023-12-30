@@ -44,18 +44,27 @@ app.use((req, res, next) => {
 
 app.use(async (req, res, next) => {
   if (req.session.isAuthenticated) {
-    // const commentCount = await Comment.count({
-    //   where: { id: req.session.user.id },
-    // });
-    // const Map_DatabaseCount = await Map_Database.count({
-    //   where: { id: req.session.user.id },
-    // });
-    // const boardCount = await Board.count({
-    //   where: { id: req.session.user.id },
-    // });
-    // res.locals.commentCount = commentCount;
-    // res.locals.Map_DatabaseCount = Map_DatabaseCount;
-    // res.locals.boardCount = boardCount;
+    const boardCount = await board.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const chatmessageCount = await chatmessage.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const chattingroomCount = await chattingroom.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const usedgoodsCount = await usedgoods.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const studyCount = await study.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+
+    res.locals.boardCount = boardCount;
+    res.locals.chatmessageCount = chatmessageCount;
+    res.locals.chattingroomCount = chattingroomCount;
+    res.locals.usedgoodsCount = usedgoodsCount;
+    res.locals.studyCount = studyCount;
   }
 
   next();
