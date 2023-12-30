@@ -21,8 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.use('/', router);
-
 app.use(
   session({
     secret: 'secret key', // 비밀키를 설정합니다.
@@ -34,6 +32,8 @@ app.use(
   })
 );
 
+app.use('/', router);
+
 // 미들웨어를 사용하여 모든 뷰에 로그인 상태(세션)를 전달
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isAuthenticated;
@@ -44,6 +44,10 @@ app.use((req, res, next) => {
 
 app.use(async (req, res, next) => {
   if (req.session.isAuthenticated) {
+    sa;
+    const userCount = await user.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
     const boardCount = await board.count({
       where: { u_idx: req.session.user.u_idx },
     });
@@ -60,6 +64,7 @@ app.use(async (req, res, next) => {
       where: { u_idx: req.session.user.u_idx },
     });
 
+    res.locals.userCount = userCount;
     res.locals.boardCount = boardCount;
     res.locals.chatmessageCount = chatmessageCount;
     res.locals.chattingroomCount = chattingroomCount;
