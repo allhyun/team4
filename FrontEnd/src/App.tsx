@@ -4,7 +4,7 @@ import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Main from './pages/Main/Main';
 import StudyMainPage from './pages/Study/StudyMainPage';
-import LoginPage from './pages/UserPage';
+import UserPage from './pages/User/UserPage';
 import StudyDetailPage from './pages/Study/StudyDetailPage';
 import StudyEditPage from './pages/Study/StudyEditPage';
 import MarketMain from './pages/Market/MarketMain';
@@ -20,7 +20,7 @@ function App() {
       <Main>
         <Routes>
           {/* 유저관련 페이지 */}
-          <Route path="/loginpage" element={<LoginPage />}></Route>
+          <Route path="/loginpage" element={<UserPage />}></Route>
 
           {/* 중고마켓 */}
           <Route path="/market" element={<MarketMain />}></Route>
