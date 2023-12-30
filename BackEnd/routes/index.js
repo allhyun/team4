@@ -4,6 +4,7 @@ const router = express.Router();
 const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const user = require('../controller/Cuser');
+const { upload } = require('../multer/multerConfig');
 
 // 게시판 목록 조회
 router.get('/board/list', boardController.board);
@@ -31,40 +32,37 @@ router.delete('/study/:st_idx', studyController.deleteStudy);
 // 스터디 참여(?)
 router.post('/study/join/:st_idx', studyController.joinStudy);
 
-
-
-
 // 로그인 페이지
 router.get('/signin', userController.signin);
 
 // 회원가입 페이지
-router.get('/signup', user.signup);
-router.post('/signup', user.postSignup);
+router.get('/user/signup', user.signup);
+router.post('/user/signup', user.postSignup);
 
 // 아이디 중복확인
-router.post('/checkid', user.checkId);
+router.post('/user/checkid', user.checkId);
 
 // 닉네임 중복확인
-router.post('/checknickname', user.checkNickname);
+router.post('/user/checknickname', user.checkNickname);
 
 // 로그인 페이지
-router.get('/signin', user.signin);
-router.post('/signin', user.postSignin);
+router.get('/user/signin', user.signin);
+router.post('/user/signin', user.postSignin);
 
 // 아이디 찾기
-router.get('/findId', user.findId);
-router.post('/findId', user.postFindId);
+router.get('/user/findId', user.findId);
+router.post('/user/findId', user.postFindId);
 
 // 비밀번호 찾기
-router.get('/findPassword', user.findPassword);
-router.post('/findPassword', user.postFindPassword);
+router.get('/user/findPassword', user.findPassword);
+router.post('/user/findPassword', user.postFindPassword);
 
 // 비밀번호 변경페이지
-router.get('/changePassword', user.changePassword);
-router.post('/changePassword', user.updatePassword);
+router.get('/user/changePassword', user.changePassword);
+router.post('/user/changePassword', user.updatePassword);
 
 // 로그아웃
-router.get('/logout', (req, res) => {
+router.get('/user/logout', (req, res) => {
   req.session.destroy((err) => {
     // 세션 삭제
     if (err) {
@@ -75,6 +73,32 @@ router.get('/logout', (req, res) => {
     }
   });
 });
+
+// 마이페이지
+router.get('/user/mypage', user.mypage);
+
+// 마이페이지 닉네임수정
+router.post('/user/updateMypageNickname', user.updateMypageNickname);
+
+// 마이페이지 비밀번호 수정
+router.post('/user/updateMypagePassword', user.updateMypagePassword);
+
+// 마이페이지 회원 탈퇴
+router.delete('/user/deleteAccount', userController.deleteAccount);
+
+router.post(
+  '/user/upload',
+  upload.single('image'),
+  user.uploadImage,
+  (error, req, res, next) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: error.message });
+    } else {
+      next();
+    }
+  }
+);
 
 const chatRoom = require('../controller/Cchattingroom');
 // 소켓룸 생성
