@@ -1,9 +1,9 @@
 {
   "development": {
     "host": "localhost",
-    "database": "team4p",
-    "username": "root",
-    "password": "sesac1234!",
+    "database": "team4",
+    "username": "jongbin",
+    "password": "tank1253!",
     "dialect": "mysql"
   },
   "productioin": {
