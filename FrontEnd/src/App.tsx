@@ -4,12 +4,14 @@ import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Main from './pages/Main/Main';
 import StudyMainPage from './pages/Study/StudyMainPage';
-import UserPage from './pages/User/UserPage';
 import StudyDetailPage from './pages/Study/StudyDetailPage';
 import StudyEditPage from './pages/Study/StudyEditPage';
 import MarketMain from './pages/Market/MarketMain';
 import MarketEdit from './pages/Market/MarketEdit';
 import MarketDetail from './pages/Market/MarketDetail';
+import UserLoginPage from './pages/User/UserLoginPage';
+import UserSignupPage from './pages/User/UserSignupPage';
+import UserInfoPage from './pages/User/UserInfoPage';
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
       <Main>
         <Routes>
           {/* 유저관련 페이지 */}
-          <Route path="/loginpage" element={<UserPage />}></Route>
+          <Route path="/loginpage" element={<UserLoginPage />}></Route>
+          <Route path="/signup" element={<UserSignupPage />}></Route>
+          <Route path="/user" element={<UserInfoPage />}></Route>
 
           {/* 중고마켓 */}
           <Route path="/market" element={<MarketMain />}></Route>
