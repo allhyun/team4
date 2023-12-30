@@ -27,10 +27,11 @@ router.get('/study/detail/:st_idx', studyController.detailStudy);
 // 주소 수정해야함
 router.put('/study/detail/:st_idx', studyController.modifyStudy);
 // 스터디 삭제
-router.delete('/study/:st_idx', studyController.deleteStudy);
+router.delete('/study/delete/:st_idx', studyController.deleteStudy);
 // 스터디 참여(?)
 router.post('/study/join/:st_idx', studyController.joinStudy);
-
+// 스터디 검색
+router.get('/study/search',studyController.searchStudy)
 
 
 
