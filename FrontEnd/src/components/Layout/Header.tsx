@@ -10,7 +10,7 @@ export default function Header() {
           <ul className="menu">
             <li>
               <Link to="/">
-                <a>로고이미지</a>
+                <a>dev.join()</a>
               </Link>
             </li>
             <li>
