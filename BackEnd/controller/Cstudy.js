@@ -1,6 +1,9 @@
 const db = require("../model");
+const { Op } = require('sequelize');
 
-
+// sequelize ORM...
+// 
+// const { or, and, like } = db.Op;
 
 // 스터디 리스트
 exports.getStudies = async (req, res) => {
@@ -75,9 +78,10 @@ exports.modifyStudy = async (req, res) => {
 // 스터디 삭제
 exports.deleteStudy = async (req, res) => {
   const studyId = req.params.st_idx;
+  console.log(studyId)
   try {
     await db.Study.destroy({ where: { st_idx: studyId } });
-    res.render({ message: '스터디모집이 성공적으로 삭제되었습니다.' });
+    res.send({ message: '스터디모집이 성공적으로 삭제되었습니다.' });
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
@@ -98,9 +102,9 @@ exports.joinStudy = async (req,res) => {
     });
 
     // Study 모델에서 현재 참가 인원 업데이트
-    await Study.increment('ST_NOW_MEM', {
+    await db.Study.increment('ST_NOW_MEM', {
       by: 1,
-      where: { ST_IDX: studyId },
+      where: { st_idx: studyId },
     });
 
     res.json(participant); // 클라이언트에게 성공적인 응답 전송
@@ -110,4 +114,20 @@ exports.joinStudy = async (req,res) => {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
   }
+}
+
+// 스터디 검색
+exports.searchStudy = async(req,res) => {
+  const keyword = req.query.value //검색어
+  console.log('received keyword:',keyword) 
+
+  try{let result = await db.Study.findAll({
+    where: { [Op.or] : [{st_title:{[Op.like]:`%${keyword}%`}}, { st_intro: { [Op.like]: `%${keyword}%` } }] }
+  });
+  res.send(result);
+  }catch (error) {
+    console.error(error);
+    res.status(500).send('메인화면 에러 발생');
+  }
+  
 }
