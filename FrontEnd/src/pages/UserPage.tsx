@@ -6,12 +6,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import '../styles/LoginPage.scss';
 
 interface LoginForm {
-  userId: string;
+  userEmail: string;
   userPw: string;
 }
 
 const LoginPage = () => {
-  const [userId, setUserId] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
@@ -20,16 +20,16 @@ const LoginPage = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<LoginForm>();
-  // {
-  // mode: 'onSubmit',
-  // defaultValues: {
-  //   userId: '',
-  //   userPw: '',
-  // },}
+  } = useForm<LoginForm>({
+    mode: 'onBlur',
+    defaultValues: {
+      userEmail: '',
+      userPw: '',
+    },
+  });
 
-  const onUserIdHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setUserId(event.currentTarget.value);
+  const onUserEmailHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(event.currentTarget.value);
   };
   const onUserPwHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setUserPw(event.currentTarget.value);
@@ -38,8 +38,9 @@ const LoginPage = () => {
   //   event.preventDefault();
   // };
 
-  const onValid: SubmitHandler<{ userId: string; userPw: string }> = (data) => {
+  const onSubmit: SubmitHandler<LoginForm> = (data: LoginForm) => {
     console.log('성공', data);
+    // axios.get();
     // 여기에서 필요한 로직을 수행하십시오.
   };
 
@@ -47,34 +48,37 @@ const LoginPage = () => {
     console.log('실패', err);
   };
 
-  console.log(watch('userId'));
-
   // 로그인 여부 테스트
-  let isLogin: boolean = false;
+  let isLogin: boolean = true;
+  let needLogin: boolean = true;
 
   return (
     <section>
       <div>UserPage</div>
-      {isLogin && true}
+
+      {needLogin && true}
       <div className="form-wrap">
-        <form className="login-form" onSubmit={handleSubmit(onValid, onInvalid)}>
-          <label htmlFor="">ID</label>
+        <form className="login-form" onSubmit={handleSubmit(onSubmit, onInvalid)}>
+          <label htmlFor="">E-mail</label>
           <input
             type="text"
-            placeholder="ID를 입력해주세요."
-            value={userId}
-            {...register('userId', { required: 'ID를 입력하지 않았습니다.' })}
-            onChange={onUserIdHandler}
+            placeholder="e-mail"
+            value={userEmail}
+            {...register('userEmail', { required: 'e-mail을 입력해주세요.' })}
+            name="userEmail"
+            onChange={onUserEmailHandler}
           />
-          {errors.userId?.message}
+          {errors.userEmail?.message}
           <label htmlFor="">PW</label>
           <input
             type="password"
-            placeholder="Password를 입력해주세요."
+            placeholder="password"
             value={userPw}
-            {...register('userPw', { required: 'Password를 입력해주세요.' })}
+            {...register('userPw', { required: 'password를 입력해주세요.' })}
+            name="userPw"
             onChange={onUserPwHandler}
           />
+          {errors.userPw?.message}
           <button type="submit">로그인</button>
         </form>
       </div>
