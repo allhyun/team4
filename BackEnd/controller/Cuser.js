@@ -27,11 +27,15 @@ exports.postSignup = async (req, res) => {
     nickname: req.body.nickname,
   };
   const createUser = await User.create(data);
-  res.send(createUser);
+  // result 결과 필요해서 추가했습니
+  // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
+  res.send({ createUser, result: true });
 };
 // 아이디 중복확인
 exports.checkId = (req, res) => {
-  User.findAll({
+  // user에 안 담으면 콘솔에 Executing(dafault)가 뜹니다
+  // 큰 문제는 아니지만 공부할 여지가 있어 보입니다
+  const user = User.findAll({
     where: {
       userid: req.body.userid,
     },
