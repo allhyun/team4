@@ -23,9 +23,10 @@
 
     li {
       a {
+        transition: all 0.3s;
         color: var(--white-font);
         display: block;
-        transition: all 0.3s;
+
         white-space: nowrap;
         margin-right: 50px;
         text-decoration: none;

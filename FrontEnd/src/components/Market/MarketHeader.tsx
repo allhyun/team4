@@ -1,4 +1,5 @@
-import Search from '../../components/Market/MarketHeader';
+import React from 'react';
+import Search from '../../components/Layout/Search';
 import '../../styles/style.scss';
 
 export default function MarketMain() {
@@ -9,7 +10,9 @@ export default function MarketMain() {
 
   return (
     <>
-      <MarketHeader />
+      <div className="market_header">
+        <Search placeholder="어떤 상품을 찾으시나요?" onSearch={onSearch} />
+      </div>
     </>
   );
 }

@@ -1,4 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import '../../styles/style.scss';
+import { ImSearch } from 'react-icons/im'; //돋보기 아이콘
+import { TiDelete } from 'react-icons/ti'; // X자 버튼 아이콘
 
 // 각 페이지에 들어갈 내용이 다르면 prop으로 전달.
 interface SearchProps {
@@ -6,20 +9,37 @@ interface SearchProps {
   onSearch: (searchTerm: string) => void; // 검색 로직 처리
 }
 
-export default function Search() {
+const Search: React.FC<SearchProps> = ({ placeholder, onSearch }) => {
+  const [seacrhword, setSeacrhWord] = useState<string>('');
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSeacrhWord(e.target.value);
+  };
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // 검색 로직 수행
+    console.log('검색어:', seacrhword);
+  };
   return (
     <div id="search">
-      <div className="search_inner">
+      <form className="search_inner">
         <label htmlFor="searchInput">
-          <span className="ir">검색</span>
+          <ImSearch />
         </label>
+
         <input
           type="search"
           id="searchInput"
+          placeholder={placeholder}
           autoComplete="off"
           className="search_input"
+          value={seacrhword}
+          onChange={handleInputChange}
         />
-      </div>
+      </form>
     </div>
   );
-}
+};
+
+export default Search;
