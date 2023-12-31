@@ -16,14 +16,15 @@ const Search: React.FC<SearchProps> = ({ placeholder, onSearch }) => {
     setSeacrhWord(e.target.value);
   };
 
-  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // 검색 로직 수행
-    console.log('검색어:', seacrhword);
+    console.log('search 컴포넌트 검색어:', seacrhword);
+    onSearch(seacrhword);
   };
   return (
     <div id="search">
-      <form className="search_inner">
+      <form className="search_inner" onSubmit={handleSearch}>
         <label htmlFor="searchInput">
           <ImSearch />
         </label>

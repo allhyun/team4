@@ -1,4 +1,4 @@
-import Search from '../../components/Market/MarketHeader';
+import MarketHeader from '../../components/Market/MarketHeader';
 import '../../styles/style.scss';
 
 export default function MarketMain() {
