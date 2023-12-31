@@ -29,3 +29,19 @@
   top: 0;
   width: 100%;
 }
+
+// 박스 디자인
+@mixin container {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.85);
+  radius: 16px;
+  top: 0.5px solid $main-white;
+  left: 0.5px solid $main-white;
+}
+
+@mixin s-box {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid $main-white;
+  border-radius: 5px;
+}
