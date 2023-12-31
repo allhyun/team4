@@ -22,7 +22,7 @@ function App() {
       <Main>
         <Routes>
           {/* 유저관련 페이지 */}
-          <Route path="/loginpage" element={<UserLoginPage />}></Route>
+          <Route path="/login" element={<UserLoginPage />}></Route>
           <Route path="/signup" element={<UserSignupPage />}></Route>
           <Route path="/user" element={<UserInfoPage />}></Route>
 

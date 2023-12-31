@@ -59,10 +59,10 @@ const UserMainPage = () => {
           <div className="input-wrap">
             <input
               type="text"
-              placeholder="ID"
+              placeholder="id"
               value={userId}
               {...register('userId', {
-                required: 'ID를 입력해주세요.',
+                required: 'id를 입력해주세요.',
                 pattern: {
                   value: /^[a-zA-Z0-9-]+$/i,
                   message: '잘못된 형식입니다.',

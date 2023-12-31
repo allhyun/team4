@@ -14,7 +14,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/loginpage">
+              <Link to="/login">
                 <a>로그인</a>
               </Link>
             </li>
