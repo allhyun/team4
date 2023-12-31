@@ -4,9 +4,10 @@
   form.search_inner {
     @include s-box;
     @include flex-center;
-    width: 45%;
+    width: 90%;
     height: 2.2rem;
 
+    // 돋보기 아이콘 스타일
     label {
       margin-left: 10px;
       @include flex-center;
@@ -32,9 +33,10 @@
       text-align: left;
     }
 
-    // 검색창 x버튼 스타일
+    // x 아이콘 스타일
     input.search_input::-webkit-search-cancel-button {
       -webkit-appearance: none;
+      margin-right: 8px;
       width: 1rem;
       height: 1rem;
       color: var(--white-font);

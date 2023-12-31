@@ -18,7 +18,7 @@ export default function Sidebar() {
               <Link to="/study">스터디모집</Link>
             </li>
             <li className={getActiveClass('/market')}>
-              <Link to="/market">중고마켓</Link>
+              <Link to="/market">중고거래</Link>
             </li>
           </ul>
         </nav>

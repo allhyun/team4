@@ -1,4 +1,5 @@
 import MarketHeader from '../../components/Market/MarketHeader';
+import MarketThumbnailPost from '../../components/Market/MarketThumbnailPost';
 import '../../styles/style.scss';
 
 export default function MarketMain() {
@@ -10,6 +11,7 @@ export default function MarketMain() {
   return (
     <>
       <MarketHeader />
+      <MarketThumbnailPost />
     </>
   );
 }

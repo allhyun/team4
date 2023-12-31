@@ -45,3 +45,9 @@
   border: 1px solid $main-white;
   border-radius: 5px;
 }
+
+// 메뉴 호버(임시 - 추후에 배경 최종으로 입혀지면 어울리는걸로 변경될 예정)
+@mixin hover {
+  transition: all 0.3s;
+  color: black;
+}
