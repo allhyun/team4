@@ -5,7 +5,10 @@ body {
   background: linear-gradient(217deg, #6b2d9f, rgba(255, 0, 0, 0)),
     linear-gradient(127deg, #29347d, rgba(255, 0, 0, 0)),
     linear-gradient(336deg, #ecc152, rgba(0, 0, 255, 0));
+  margin: 0;
   color: var(--white-font);
   font-family: var(--mainfont-SUIT);
-  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
 }

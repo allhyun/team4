@@ -65,9 +65,6 @@ export default function MarketHeader() {
           </ul>
         </nav>
       </div>
-      <div id="marketcontainer" className="market_header">
-        <div>box</div>
-      </div>
     </>
   );
 }
