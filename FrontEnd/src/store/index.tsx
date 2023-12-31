@@ -1,13 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-
+import { configureStore } from "@reduxjs/toolkit";
+import studySlice from "./modifyReducer";
 
 const store = configureStore({
-    reducer: {
-       // nickname: 리듀서이름(추가할때 경로 적어야함)
-       
-      },
+  reducer: {
+    study: studySlice,
+  },
 });
-
-
 
 export default store;
