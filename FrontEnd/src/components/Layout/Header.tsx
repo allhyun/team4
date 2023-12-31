@@ -15,8 +15,8 @@ export default function Header() {
             <li className={getActiveClass('/')}>
               <Link to="/">dev.join()</Link>
             </li>
-            <li className={getActiveClass('/login')}>
-              <Link to="/loginpage">로그인</Link>
+            <li className={getActiveClass('/loginpage')}>
+              <Link to="/login">로그인</Link>
             </li>
           </ul>
         </nav>
