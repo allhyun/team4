@@ -1,17 +1,17 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-import Header from './components/Layout/Header';
-import Sidebar from './components/Layout/Sidebar';
-import Main from './pages/Main/Main';
-import StudyMainPage from './pages/Study/StudyMainPage';
-import StudyDetailPage from './pages/Study/StudyDetailPage';
-import StudyEditPage from './pages/Study/StudyEditPage';
-import MarketMain from './pages/Market/MarketMain';
-import MarketEdit from './pages/Market/MarketEdit';
-import MarketDetail from './pages/Market/MarketDetail';
-import UserLoginPage from './pages/User/UserLoginPage';
-import UserSignupPage from './pages/User/UserSignupPage';
-import UserInfoPage from './pages/User/UserInfoPage';
+import Header from "./components/Layout/Header";
+import Sidebar from "./components/Layout/Sidebar";
+import Main from "./pages/Main/Main";
+import StudyMainPage from "./pages/Study/StudyMainPage";
+import StudyDetailPage from "./pages/Study/StudyDetailPage";
+import StudyEditPage from "./pages/Study/StudyEditPage";
+import MarketMain from "./pages/Market/MarketMain";
+import MarketEdit from "./pages/Market/MarketEdit";
+import MarketDetail from "./pages/Market/MarketDetail";
+import UserLoginPage from "./pages/User/UserLoginPage";
+import UserSignupPage from "./pages/User/UserSignupPage";
+import UserInfoPage from "./pages/User/UserInfoPage";
 
 function App() {
   return (
@@ -34,7 +34,10 @@ function App() {
           {/* 스터디게시판 */}
           <Route path="/study" element={<StudyMainPage />}></Route>
           <Route path="/study/edit" element={<StudyEditPage />}></Route>
-          <Route path="/study/detail" element={<StudyDetailPage />}></Route>
+          <Route
+            path="/study/detail/:st_idx"
+            element={<StudyDetailPage />}
+          ></Route>
         </Routes>
       </Main>
     </BrowserRouter>

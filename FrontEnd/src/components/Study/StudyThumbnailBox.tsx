@@ -6,6 +6,7 @@
 import axios from "axios";
 import { type } from "os";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //서버에서 넘어오는 데이터 타입
 interface StudyTable {
@@ -21,8 +22,9 @@ interface StudyTable {
   st_title: string;
   u_idx: number;
 }
-type dataType = StudyTable[];
+
 const StudyThumbnailBox = () => {
+  const navigate = useNavigate();
   const [studyList, setStudyList] = useState<StudyTable[]>([]);
   useEffect(() => {
     async function fetchData() {
@@ -36,10 +38,18 @@ const StudyThumbnailBox = () => {
 
     fetchData();
   }, []); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
+
+  function goDetailPage(index: string): void {
+    navigate(`/study/detail/${index}`);
+  }
   return (
     <>
       {studyList.reverse().map((study) => (
-        <div key={study.st_idx} className="thum">
+        <div
+          key={study.st_idx}
+          className="thum"
+          onClick={() => goDetailPage(`${study.st_idx}`)}
+        >
           <h3>{study.st_title}</h3>
           <p>{study.st_limit}개월</p>
           <p>{study.st_intro}</p>
