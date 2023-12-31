@@ -13,8 +13,8 @@
 #main {
   max-width: 2000px;
   min-height: 100vh;
-  margin: 0 75px 0 0;
-  padding: 75px 0 0 75px;
+  margin: 0;
+  padding: 75px 75px 0 75px;
 }
 
 // 레이아웃이라 건들면 다 어글러집니다!
@@ -37,6 +37,9 @@
     width: 100%; // 전체 너비를 채우도록 설정
     z-index: 10000; // 사이드바 위에 위치하도록 z-index 조정
     white-space: nowrap;
+    .header_menu .menu {
+      justify-content: space-around;
+    }
   }
 
   #sidebar {
@@ -47,12 +50,13 @@
     height: 4rem; // 새 높이 설정
     z-index: 10000;
     .sidebar_menu .menu {
+      display: flex;
       transform: none;
+      justify-content: space-around;
+      padding: 0 40px 0 40px;
       li {
         a {
-          &:hover {
-            color: black;
-          }
+          margin-right: 0;
         }
       }
     }
