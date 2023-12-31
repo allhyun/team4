@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import StudyDeleteModify from "../../components/Study/StudyDeleteModify";
+import { setStudyDetail } from "../../store/modifyReducer";
+import { useDispatch } from "react-redux";
 
 const StudyDetailPage = () => {
   const { st_idx } = useParams();
@@ -11,7 +13,7 @@ const StudyDetailPage = () => {
     st_intro: string;
     // ... 다른 속성들도 쓸때 추가
   }
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchStudyDetail = async () => {
       try {
@@ -19,6 +21,8 @@ const StudyDetailPage = () => {
           `http://localhost:8000/study/detail/${st_idx}`
         );
         setStudy(res.data);
+        dispatch(setStudyDetail(res.data));
+        //리덕스에 상세페이지 api를 실행했을때 가져온 정보 저장
       } catch (error) {
         console.error(error);
       }
@@ -26,7 +30,7 @@ const StudyDetailPage = () => {
 
     // useEffect 내에서만 요청
     fetchStudyDetail();
-  }, [st_idx]); // st_idx가 변경될 때마다 useEffect 재실행
+  }, [dispatch, st_idx]); // st_idx가 변경될 때마다 useEffect 재실행
 
   return (
     <>

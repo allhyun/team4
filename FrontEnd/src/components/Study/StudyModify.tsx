@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -7,6 +7,9 @@ import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+//프롭스로 받은 값을 가져와서 표시
 
 interface DataType {
   u_idx: number;
@@ -19,20 +22,23 @@ interface DataType {
   st_pub: number;
 }
 
-const StudyToastEditor = () => {
+const StudyModify = () => {
+  const imData = useSelector((state: any) => state.study.studyDetail); //여유되면 타입 고치기
+  //imData.st_title같은 형식으로 사용
+  console.log(imData);
   const navigate = useNavigate();
   const editorRef = useRef<any>();
+
   const [data, setData] = useState<DataType>({
     u_idx: 1,
-    st_title: "",
-    st_intro: "",
-    st_now_mem: 0,
-    st_limit: 0,
-    st_fe: 0,
-    st_be: 0,
-    st_pub: 0,
+    st_title: `${imData.st_title}`,
+    st_intro: `${imData.st_intro}`,
+    st_now_mem: imData.st_now_mem,
+    st_limit: imData.st_limit,
+    st_fe: imData.st_fe,
+    st_be: imData.st_be,
+    st_pub: imData.st_pub,
   });
-
   const [inputErrorMessage, setInputErrorMessage] = useState<string>("");
 
   const handleEditorChange = () => {
@@ -41,7 +47,6 @@ const StudyToastEditor = () => {
       st_intro: editorRef.current.getInstance().getHTML(),
     }));
   };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -61,7 +66,6 @@ const StudyToastEditor = () => {
       }));
     }
   };
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setData((prevData) => ({
@@ -69,7 +73,6 @@ const StudyToastEditor = () => {
       [name]: parseInt(value, 10),
     }));
   };
-
   const handleSubmit = async () => {
     if (!data.st_title || !data.st_limit) {
       // 필수 입력 필드가 비어있다면 포커스
@@ -88,8 +91,8 @@ const StudyToastEditor = () => {
     setInputErrorMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/study/regist",
+      const response = await axios.put(
+        `http://localhost:8000/study/detail/${imData.st_idx}`,
         data
       );
       console.log("Server response:", response.data);
@@ -99,10 +102,15 @@ const StudyToastEditor = () => {
       console.error("Error submitting data:", error);
     }
   };
-
   const options: number[] = Array.from({ length: 11 }, (_, index) => index);
+  useEffect(() => {
+    const htmlString = imData.st_intro;
 
-  return (
+    // 2. Editor DOM 내용에 HTML 주입
+    editorRef.current?.getInstance().setHTML(htmlString);
+  }, []);
+
+  출처: https: return (
     <>
       <p>프로젝트 이름</p>
       <input
@@ -154,9 +162,9 @@ const StudyToastEditor = () => {
         ref={editorRef}
         onChange={handleEditorChange}
       />
-      <button onClick={handleSubmit}>제출</button>
+      <button onClick={handleSubmit}>수정</button>
     </>
   );
 };
 
-export default StudyToastEditor;
+export default StudyModify;

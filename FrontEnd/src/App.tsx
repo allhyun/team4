@@ -12,6 +12,7 @@ import MarketDetail from "./pages/Market/MarketDetail";
 import UserLoginPage from "./pages/User/UserLoginPage";
 import UserSignupPage from "./pages/User/UserSignupPage";
 import UserInfoPage from "./pages/User/UserInfoPage";
+import StudyModify from "./components/Study/StudyModify";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             path="/study/detail/:st_idx"
             element={<StudyDetailPage />}
           ></Route>
+          <Route path="/study/modify" element={<StudyModify />}></Route>
         </Routes>
       </Main>
     </BrowserRouter>
