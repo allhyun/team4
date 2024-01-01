@@ -1,5 +1,6 @@
 .market_menu {
   width: 100%;
+  position: fixed;
 }
 
 .market_menu {
@@ -66,9 +67,14 @@
   }
 }
 @media only screen and (max-width: 768px) {
+  #main {
+    margin-top: 120px;
+  }
   .market_menu .menu {
     flex-wrap: wrap;
     justify-content: center;
+    position: fixed;
+    top: 80px;
 
     li.category {
       display: flex;

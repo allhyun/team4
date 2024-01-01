@@ -28,7 +28,8 @@
   z-index: 10000;
 }
 
-// 반응형
+// 반응형 -> 240101 메모: 크기 작아지면 헤더에
+// 로고-스터디모집-중고거래-로그인 4개 메뉴로 구성되게 추후 수정
 @media only screen and (max-width: 768px) {
   #header {
     position: fixed;

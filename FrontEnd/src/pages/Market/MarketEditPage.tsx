@@ -2,7 +2,7 @@ import MarketEditor from '../../components/Market/MarketEditor';
 import MarketHeader from '../../components/Market/MarketHeader';
 import '../../styles/style.scss';
 
-export default function MarketEdit() {
+export default function MarketEditPage() {
   return (
     <>
       <MarketHeader />

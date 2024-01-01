@@ -1,5 +1,120 @@
-.category_list {
-  li {
-    list-style-type: none;
+// 입력창들간 간격조절
+section.market-img,
+section.market-title,
+section.market-category,
+section.market-region,
+section.market-textarea {
+  margin-bottom: 20px;
+  cursor: default;
+
+  // 입력창 디자인
+  input,
+  textarea {
+    margin-top: 10px;
+    @include market-s-box;
+    height: 2.5rem;
+    padding: 10px;
+    &:focus {
+      outline: none;
+    }
   }
+
+  // 설명창 디자인
+  textarea#market-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 20px;
+    overflow: hidden;
+    resize: none;
+  }
+
+  // 상품명창 너비
+  input#market-title {
+    width: 40%;
+  }
+
+  // 상품명창 0/40 간격
+  span {
+    &.title-length {
+      margin-left: 10px;
+    }
+  }
+  div {
+    &.textarea-length {
+      text-align: right;
+      padding-right: 3px;
+    }
+  }
+}
+
+// 이미지 삽입버튼 디자인
+div.img_container {
+  input[type='file'] {
+    display: none;
+  }
+  div.market-img {
+    cursor: pointer;
+    margin-top: 10px;
+    @include market-s-box;
+    @include flex-center;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+    color: var(--main-color);
+
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+    div {
+      margin-top: 10px;
+    }
+  }
+}
+
+.textarea_container {
+  margin: 0;
+}
+
+// 가격창 디자인
+section.market-price {
+  margin-bottom: 20px;
+  cursor: default;
+  label {
+    display: inline-flex;
+    margin-top: 10px;
+    @include market-s-box;
+    height: 2.5rem;
+    padding: 10px;
+    align-items: center;
+    width: 10rem;
+
+    input {
+      padding-left: 10px;
+      background-color: transparent;
+      border: 0;
+      color: var(--main-color);
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  span {
+    &.title-length {
+      margin-left: 10px;
+    }
+  }
+}
+
+section.market-textarea {
+  margin-bottom: 0 !important;
+}
+
+button.marketeditor-regi {
+  height: 2.5rem;
+  width: 12rem;
+  @include main-button;
+  margin-right: 20px;
+  cursor: pointer;
 }
