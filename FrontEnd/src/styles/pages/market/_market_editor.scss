@@ -1,5 +1,66 @@
-.category_list {
-  li {
-    list-style-type: none;
+section.market-img,
+section.market-title,
+section.market-category,
+section.market-region,
+section.market-price,
+section.market-textarea {
+  margin-bottom: 20px;
+  cursor: default;
+
+  input,
+  textarea {
+    margin-top: 10px;
+    @include market-s-box;
+    height: 2.5rem;
+    padding: 10px;
+
+    &:focus {
+      outline: none;
+    }
   }
+
+  textarea#market-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 20px;
+    overflow: hidden;
+    resize: none;
+  }
+
+  input#market-title {
+    width: 80%;
+  }
+
+  span.length {
+    margin-left: 10px;
+  }
+}
+
+// 이미지 삽입버튼 디자인
+div.img_container {
+  input[type='file'] {
+    display: none;
+  }
+  div.market-img {
+    cursor: pointer;
+    margin-top: 10px;
+    @include market-s-box;
+    @include flex-center;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+    color: var(--main-color);
+
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+    div {
+      margin-top: 10px;
+    }
+  }
+}
+
+.textarea_container {
+  margin: 0;
 }

@@ -6,6 +6,8 @@ import React, {
   FormEvent,
 } from 'react';
 import '../../styles/style.scss';
+import { BsImage } from 'react-icons/bs'; // 이미지 아이콘
+import MarketCategory from './MarketCategory';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { SassColor } from 'sass';
@@ -53,92 +55,63 @@ const MarketEditor: React.FC = () => {
 
   return (
     <div id="marketeditor" className="market_editor">
-      <form>
-        <div>
-          <label htmlFor="market-img">
-            상품이미지<span style={{ color: '#fcbaba' }}>＊</span>
+      <form onSubmit={handleSubmit}>
+        <section className="market-img">
+          상품이미지
+          <span style={{ color: '#fcbaba' }}>＊</span>
+          <div className="img_container">
             <input type="file" id="market-img" name="market-img" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="market-category">
+            <label htmlFor="market-img">
+              <div className="market-img">
+                <BsImage />
+                <div>이미지등록</div>
+              </div>
+            </label>
+          </div>
+        </section>
+        <section className="market-title">
+          상품명<span style={{ color: '#fcbaba' }}>＊</span>
+          <div className="text_container">
+            <input
+              type="text"
+              id="market-title"
+              name="market-title"
+              maxLength={40}
+            />
+            <span className="length">0/40</span>
+          </div>
+        </section>
+        <section className="market-category">
+          <div className="market-category">
             카테고리<span style={{ color: '#fcbaba' }}>＊</span>
-            <div>
-              <ul className="category_list">
-                <li>도서/음반/문구</li>
-                <li>모바일/태블릿</li>
-                <li>카메라/캠코더</li>
-                <li>노트북/PC</li>
-                <li>게임</li>
-                <li>티켓/쿠폰</li>
-                <li>가전제품</li>
-                <li>스포츠</li>
-                <li>레저/여행</li>
-                <li>패션의류</li>
-                <li>패션잡화</li>
-                <li>뷰티</li>
-                <li>가구/인테리어</li>
-                <li>리빙/생활</li>
-                <li>출산/유아동</li>
-                <li>반려동물/취미</li>
-                <li>무료나눔</li>
-              </ul>
-            </div>
-            <div>
-              <ul className="category_list">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-              </ul>
-            </div>
-            <div>
-              <ul className="category_list">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-              </ul>
-            </div>
-            <input type="text" id="market-category" name="market-category" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="market-region">
-            거래지역<span style={{ color: '#fcbaba' }}>＊</span>
+            <MarketCategory />
+          </div>
+        </section>
+        <section className="market-region">
+          거래지역<span style={{ color: '#fcbaba' }}>＊</span>
+          <div className="region_container">
             <input type="text" id="market-region" name="market-region" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="market-title">
-            상품명<span style={{ color: '#fcbaba' }}>＊</span>
-            <input type="text" id="market-title" name="market-title" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="market-price">
-            가격<span style={{ color: '#fcbaba' }}>＊</span>
-            <input type="text" id="market-price" name="market-price" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="market-textarea">
-            설명<span style={{ color: '#fcbaba' }}>＊</span>
-            <textarea id="market-textarea" name="market-textarea" />
-          </label>
-        </div>
+          </div>
+        </section>
+        <section className="market-price">
+          가격<span style={{ color: '#fcbaba' }}>＊</span>
+          <div className="price_container">
+            <label htmlFor="market-price">
+              <span>₩</span>
+              <input type="text" id="market-price" name="market-price" />
+            </label>
+          </div>
+        </section>
+        <section className="market-textarea">
+          설명<span style={{ color: '#fcbaba' }}>＊</span>
+          <div className="textarea_container">
+            <textarea
+              id="market-textarea"
+              name="market-textarea"
+              maxLength={1000}
+            />
+          </div>
+        </section>
         <button>취소</button>
         <button>등록</button>
       </form>

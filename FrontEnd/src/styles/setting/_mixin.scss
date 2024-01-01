@@ -34,13 +34,20 @@
 @mixin container {
   background-color: var(--main-bgcolor);
   color: var(--main-color);
-  radius: 16px;
-  top: 0.5px solid var(--main-white);
-  left: 0.5px solid var(--main-white);
+  border: 1px solid var(--main-white);
+  border-radius: 10px;
 }
 
 @mixin s-box {
   background-color: var(--main-bgcolor);
+  color: var(--main-color);
+  border: 1px solid var(--main-white);
+  border-radius: 5px;
+}
+
+// market editor용
+@mixin market-s-box {
+  background-color: transparent;
   color: var(--main-color);
   border: 1px solid var(--main-white);
   border-radius: 5px;
