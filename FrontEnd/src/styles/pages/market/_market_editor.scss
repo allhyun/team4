@@ -1,24 +1,25 @@
+// 입력창들간 간격조절
 section.market-img,
 section.market-title,
 section.market-category,
 section.market-region,
-section.market-price,
 section.market-textarea {
   margin-bottom: 20px;
   cursor: default;
 
+  // 입력창 디자인
   input,
   textarea {
     margin-top: 10px;
     @include market-s-box;
     height: 2.5rem;
     padding: 10px;
-
     &:focus {
       outline: none;
     }
   }
 
+  // 설명창 디자인
   textarea#market-textarea {
     width: 100%;
     height: 200px;
@@ -27,12 +28,22 @@ section.market-textarea {
     resize: none;
   }
 
+  // 상품명창 너비
   input#market-title {
-    width: 80%;
+    width: 40%;
   }
 
-  span.length {
-    margin-left: 10px;
+  // 상품명창 0/40 간격
+  span {
+    &.title-length {
+      margin-left: 10px;
+    }
+  }
+  div {
+    &.textarea-length {
+      text-align: right;
+      padding-right: 3px;
+    }
   }
 }
 
@@ -63,4 +74,35 @@ div.img_container {
 
 .textarea_container {
   margin: 0;
+}
+
+// 가격창 디자인
+section.market-price {
+  margin-bottom: 20px;
+  cursor: default;
+  label {
+    display: inline-flex;
+    margin-top: 10px;
+    @include market-s-box;
+    height: 2.5rem;
+    padding: 10px;
+    align-items: center;
+    width: 10rem;
+
+    input {
+      padding-left: 10px;
+      background-color: transparent;
+      border: 0;
+      color: var(--main-color);
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  span {
+    &.title-length {
+      margin-left: 10px;
+    }
+  }
 }

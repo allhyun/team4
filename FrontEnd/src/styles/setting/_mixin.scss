@@ -1,4 +1,42 @@
-// 믹스인 모음
+// 박스 디자인(공통 디자인) -------------------------------------
+
+@mixin container {
+  background-color: var(--main-bgcolor);
+  color: var(--main-color);
+  border: 1px solid var(--main-white);
+  border-radius: 10px;
+  backdrop-filter: blur(30px);
+}
+
+@mixin s-box {
+  background-color: var(--main-bgcolor);
+  color: var(--main-color);
+  border: 1px solid var(--main-white);
+  border-radius: 5px;
+}
+
+@mixin main-button {
+  background-color: var(--main-button);
+  color: var(--main-color);
+  border: 0;
+  border-radius: 5px;
+}
+
+// market editor용
+@mixin market-s-box {
+  background-color: transparent;
+  color: var(--main-color);
+  border: 1px solid var(--main-white);
+  border-radius: 5px;
+}
+
+// 메뉴 호버(임시 - 추후에 배경 최종으로 입혀지면 어울리는걸로 변경될 예정)
+@mixin hover {
+  transition: all 0.3s;
+  color: black;
+}
+
+// 정렬 관련 -------------------------------------
 
 // 가운데 정렬
 @mixin flex-center {
@@ -28,33 +66,4 @@
   left: 0;
   top: 0;
   width: 100%;
-}
-
-// 박스 디자인
-@mixin container {
-  background-color: var(--main-bgcolor);
-  color: var(--main-color);
-  border: 1px solid var(--main-white);
-  border-radius: 10px;
-}
-
-@mixin s-box {
-  background-color: var(--main-bgcolor);
-  color: var(--main-color);
-  border: 1px solid var(--main-white);
-  border-radius: 5px;
-}
-
-// market editor용
-@mixin market-s-box {
-  background-color: transparent;
-  color: var(--main-color);
-  border: 1px solid var(--main-white);
-  border-radius: 5px;
-}
-
-// 메뉴 호버(임시 - 추후에 배경 최종으로 입혀지면 어울리는걸로 변경될 예정)
-@mixin hover {
-  transition: all 0.3s;
-  color: black;
 }
