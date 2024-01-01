@@ -22,6 +22,7 @@ interface DataType {
 }
 
 const MarketEditor: React.FC = () => {
+  const navigate = useNavigate();
   const [DataType, setDataType] = useState<DataType>({
     category: '',
     location: '',
@@ -51,6 +52,10 @@ const MarketEditor: React.FC = () => {
     e.preventDefault();
     console.log(DataType);
     // 여기에 게시글 제출 로직 추가
+  };
+
+  const handleCancel = () => {
+    navigate('/market');
   };
 
   return (
@@ -112,8 +117,10 @@ const MarketEditor: React.FC = () => {
             />
           </div>
         </section>
-        <button>취소</button>
-        <button>등록</button>
+        <button type="button" onClick={handleCancel}>
+          취소
+        </button>
+        <button type="submit">등록</button>
       </form>
     </div>
   );
