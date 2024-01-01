@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import '../../styles/style.scss';
 import { ImSearch } from 'react-icons/im'; //돋보기 아이콘
-import { TiDelete } from 'react-icons/ti'; // X자 버튼 아이콘
 
 // 각 페이지에 들어갈 내용이 다르면 prop으로 전달.
 interface SearchProps {
