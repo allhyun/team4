@@ -9,7 +9,7 @@
     padding: 0 40px 0 40px;
     li.category {
       flex-grow: 0.7;
-      color: var(--white-font);
+      color: var(--main-color);
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -32,7 +32,7 @@
         align-items: center;
         width: auto;
         height: auto;
-        color: var(--white-font);
+        color: var(--main-color);
         margin-right: 10px;
         svg {
           margin-right: 5px;
@@ -51,7 +51,7 @@
         align-items: center;
         width: auto;
         height: auto;
-        color: var(--white-font);
+        color: var(--main-color);
         svg {
           margin-right: 5px;
           width: 22px;

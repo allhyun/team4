@@ -63,6 +63,55 @@ const MarketEditor: React.FC = () => {
         <div>
           <label htmlFor="market-category">
             카테고리<span style={{ color: '#fcbaba' }}>＊</span>
+            <div>
+              <ul className="category_list">
+                <li>도서/음반/문구</li>
+                <li>모바일/태블릿</li>
+                <li>카메라/캠코더</li>
+                <li>노트북/PC</li>
+                <li>게임</li>
+                <li>티켓/쿠폰</li>
+                <li>가전제품</li>
+                <li>스포츠</li>
+                <li>레저/여행</li>
+                <li>패션의류</li>
+                <li>패션잡화</li>
+                <li>뷰티</li>
+                <li>가구/인테리어</li>
+                <li>리빙/생활</li>
+                <li>출산/유아동</li>
+                <li>반려동물/취미</li>
+                <li>무료나눔</li>
+              </ul>
+            </div>
+            <div>
+              <ul className="category_list">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
+            <div>
+              <ul className="category_list">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
             <input type="text" id="market-category" name="market-category" />
           </label>
         </div>
