@@ -1,9 +1,8 @@
 const db = require("../model");
 const { Op } = require('sequelize');
 
-// sequelize ORM...
-// 
-// const { or, and, like } = db.Op;
+// const passport = require('passport');
+
 
 // 스터디 리스트
 exports.getStudies = async (req, res) => {
@@ -91,11 +90,15 @@ exports.deleteStudy = async (req, res) => {
 // 스터디 참여하자
 
 exports.joinStudy = async (req,res) => {
-  const studyId = req.params.st_idx;
-  const userId = req.user.id;
-
-
   try {
+    // 로그인 여부 확인
+    if (!req.session || !req.session.user) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
+    const studyId = req.params.st_idx;
+    const userId = req.session.user.id;
+
     const participant = await db.Study.create({
       st_idx: studyId,
       u_idx: userId,
@@ -108,11 +111,9 @@ exports.joinStudy = async (req,res) => {
     });
 
     res.json(participant); // 클라이언트에게 성공적인 응답 전송
-
-
   } catch (error) {
     console.error(error);
-    res.status(500).send('메인화면 에러 발생');
+    res.status(500).send('에러 발생');
   }
 }
 
