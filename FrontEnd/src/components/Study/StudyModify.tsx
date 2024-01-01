@@ -163,6 +163,13 @@ const StudyModify = () => {
         onChange={handleEditorChange}
       />
       <button onClick={handleSubmit}>수정</button>
+      <button
+        onClick={() => {
+          navigate("/study");
+        }}
+      >
+        취소
+      </button>
     </>
   );
 };

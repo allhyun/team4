@@ -22,11 +22,18 @@ const StudyDeleteModify = (props: PropsType) => {
     }
   };
 
+  const joinStudy = async () => {
+    navigate("/study/join");
+  };
+
   return (
     <>
-      <button onClick={modifyStudy}>수정</button>
+      {/* 로그인 되어있고 작성자와 키값이 같을경우 */}
       {/* 작성자와 로그인 한 유저 비교하는 기능 추가해야함 */}
+      <button onClick={modifyStudy}>수정</button>
       <button onClick={deleteStudy}>삭제</button>
+      {/* 로그인되어있지만 다를경우 */}
+      <button onClick={joinStudy}>참여(문의)</button>
     </>
   );
 };
