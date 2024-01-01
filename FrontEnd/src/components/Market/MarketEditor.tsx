@@ -65,11 +65,6 @@ const MarketEditor: React.FC = () => {
     // 여기에 게시글 제출 로직 추가
   };
 
-  // /market으로 리다이렉트
-  const handleCancel = () => {
-    navigate('/market');
-  };
-
   // 제목창 이벤트핸들러
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
@@ -175,13 +170,6 @@ const MarketEditor: React.FC = () => {
             <div className="textarea-length">{textareaLength}/1000</div>
           </div>
         </section>
-        <button
-          className="marketeditor-cancle"
-          type="button"
-          onClick={handleCancel}
-        >
-          취소
-        </button>
         <button className="marketeditor-regi" type="submit">
           등록
         </button>

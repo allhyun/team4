@@ -106,3 +106,15 @@ section.market-price {
     }
   }
 }
+
+section.market-textarea {
+  margin-bottom: 0 !important;
+}
+
+button.marketeditor-regi {
+  height: 2.5rem;
+  width: 12rem;
+  @include main-button;
+  margin-right: 20px;
+  cursor: pointer;
+}
