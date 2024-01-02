@@ -30,12 +30,7 @@ app.use(
   })
 );
 
-const corsOptions = {
-  origin: true,
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(cors({ origin: true, credentials: true }));
 
 const io = require('socket.io')(server, {
   cors: {

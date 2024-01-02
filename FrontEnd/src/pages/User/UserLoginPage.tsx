@@ -41,10 +41,10 @@ const UserMainPage = () => {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
       const response = await axios.post('http://localhost:8000/user/signin', user, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true',
-        },
+        // headers: {
+        //   // 'Access-Control-Allow-Origin': '*',
+        //   // 'Access-Control-Allow-Credentials': 'true',
+        // },
         withCredentials: true,
       });
       // if (response.data.result === true) navigate('/');
