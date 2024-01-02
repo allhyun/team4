@@ -95,6 +95,22 @@ exports.postSignin = async (req, res) => {
   }
 };
 
+// 로그아웃
+exports.logout = (req, res) => {
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: '세션 파기 중 오류 발생' });
+      } else {
+        res.status(200).json({ message: '로그아웃 성공' });
+      }
+    });
+  } else {
+    res.status(400).json({ message: '로그인 상태가 아닙니다.' });
+  }
+};
+
 // 아이디 찾기 페이지 랜더링
 exports.findId = (req, res) => {
   res.render('./user/findId');
