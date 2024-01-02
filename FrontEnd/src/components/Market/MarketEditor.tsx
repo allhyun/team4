@@ -67,7 +67,7 @@ const MarketEditor: React.FC = () => {
     formData.append('category', DataType.category);
     formData.append('location', DataType.location);
     formData.append('title', DataType.title);
-    formData.append('price', DataType.price.toString());
+    formData.append('price', DataType.price?.toString() ?? '');
     formData.append('description', DataType.textarea);
 
     try {
@@ -79,7 +79,7 @@ const MarketEditor: React.FC = () => {
         }
       );
       console.log(response.data);
-      navigate('/marketmain'); // 또는 성공 시 다른 경로로 리다이렉트
+      navigate('/market'); // 또는 성공 시 다른 경로로 리다이렉트
     } catch (error) {
       console.error('게시글 등록 에러:', error);
     }
