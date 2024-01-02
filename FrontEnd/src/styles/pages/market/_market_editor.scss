@@ -121,3 +121,12 @@ button.marketeditor-regi {
   margin-right: 20px;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+  #main {
+    width: 95%;
+    .market_container {
+      width: 100%;
+    }
+  }
+}
