@@ -40,8 +40,14 @@ const UserMainPage = () => {
     try {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
-      const response = await axios.post('http://localhost:8000/user/signin', user);
-      if (response.data.result === true) navigate('/');
+      const response = await axios.post('http://localhost:8000/user/signin', user, {
+        // headers: {
+        //   // 'Access-Control-Allow-Origin': '*',
+        //   // 'Access-Control-Allow-Credentials': 'true',
+        // },
+        withCredentials: true,
+      });
+      // if (response.data.result === true) navigate('/');
       console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);
@@ -95,8 +101,9 @@ const UserMainPage = () => {
             <button type="submit">로그인</button>
           </div>
           <div className="user-wrap">
-            <div>아이디 찾기</div>
-            <div>비밀번호 찾기</div>
+            {/* <Link to={'/find'}> */}
+            <div>아이디, 비밀번호 찾기</div>
+            {/* </Link> */}
             <Link to={'/signup'}>
               <div>회원가입</div>
             </Link>

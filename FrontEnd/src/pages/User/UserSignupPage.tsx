@@ -173,7 +173,7 @@ const UserSignupPage = () => {
               placeholder="e-mail"
               value={userEmail}
               {...register('userEmail', {
-                required: '닉네임을 입력해주세요.',
+                required: '이메일을 입력해주세요.',
                 // pattern: {
                 //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
                 //   message: '잘못된 형식입니다.',

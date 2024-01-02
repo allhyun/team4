@@ -35,10 +35,7 @@ function App() {
           {/* 스터디게시판 */}
           <Route path="/study" element={<StudyMainPage />}></Route>
           <Route path="/study/edit" element={<StudyEditPage />}></Route>
-          <Route
-            path="/study/detail/:st_idx"
-            element={<StudyDetailPage />}
-          ></Route>
+          <Route path="/study/detail/:st_idx" element={<StudyDetailPage />}></Route>
           <Route path="/study/modify" element={<StudyModify />}></Route>
         </Routes>
       </Main>
