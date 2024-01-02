@@ -20,7 +20,7 @@ const UserMainPage = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginForm>({
     mode: 'onBlur',
     defaultValues: {
@@ -98,12 +98,14 @@ const UserMainPage = () => {
             <p className="alert">{errors.userPw?.message}</p>
           </div>
           <div className="input-wrap">
-            <button type="submit">로그인</button>
+            <button type="submit" disabled={isSubmitting}>
+              로그인
+            </button>
           </div>
           <div className="user-wrap">
-            {/* <Link to={'/find'}> */}
-            <div>아이디, 비밀번호 찾기</div>
-            {/* </Link> */}
+            <Link to={'/find'}>
+              <div>아이디, 비밀번호 찾기</div>
+            </Link>
             <Link to={'/signup'}>
               <div>회원가입</div>
             </Link>

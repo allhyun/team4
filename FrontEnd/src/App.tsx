@@ -12,6 +12,7 @@ import MarketDetailPage from './pages/Market/MarketDetailPage';
 import UserLoginPage from './pages/User/UserLoginPage';
 import UserSignupPage from './pages/User/UserSignupPage';
 import UserInfoPage from './pages/User/UserInfoPage';
+import UserFindPage from './pages/User/UserFindPage';
 import StudyModify from './components/Study/StudyModify';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<UserLoginPage />}></Route>
           <Route path="/signup" element={<UserSignupPage />}></Route>
           <Route path="/user" element={<UserInfoPage />}></Route>
+          <Route path="/find" element={<UserFindPage />}></Route>
 
           {/* 중고마켓 */}
           <Route path="/market" element={<MarketMainPage />}></Route>
