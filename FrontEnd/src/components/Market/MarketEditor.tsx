@@ -24,9 +24,15 @@ interface DataType {
 }
 
 const MarketEditor: React.FC = () => {
+  // 이미지
+  const [images, setImages] = useState<File[]>([]);
+  // 이미지 미리보기
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   // 글자수
   const [titleLength, setTitleLength] = useState(0);
   const [textareaLength, setTextareaLength] = useState(0);
+  // 이미지수
+  const [imageLength, setImageLength] = useState(0);
   // 리다이렉트용
   const navigate = useNavigate();
   // 가격 형식
@@ -49,12 +55,6 @@ const MarketEditor: React.FC = () => {
     setDataType({ ...DataType, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setDataType({ ...DataType, image: e.target.files[0] });
-    }
-  };
-
   const handleCategoryChange = (category: string) => {
     setDataType({ ...DataType, category });
   };
@@ -65,7 +65,43 @@ const MarketEditor: React.FC = () => {
     // 여기에 게시글 제출 로직 추가
   };
 
-  // 제목창 이벤트핸들러
+  // 이미지창 관련 ---------------------------------------------------------------
+
+  // 이미지 등록 이벤트핸들러
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedImages = Array.from(e.target.files).slice(0, 5); // 갯수제한 5개
+      setImages(selectedImages);
+
+      const newPreviewUrls = selectedImages.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviewUrls(newPreviewUrls);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+    setPreviewUrls(previewUrls.filter((_, i) => i !== index));
+  };
+
+  // 이미지 미리보기 및 삭제 버튼
+  const renderImagePreviews = () => (
+    <div>
+      {previewUrls.map((url, index) => (
+        <div key={url}>
+          <img src={url} alt={`preview-${index}`} />
+          <button type="button" onClick={() => removeImage(index)}>
+            X
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+
+  // 상품명창 관련 ---------------------------------------------------------------
+
+  // 상품명창 이벤트핸들러
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setTitleLength(newTitle.length); // 타이틀 길이 업데이트
@@ -113,7 +149,8 @@ const MarketEditor: React.FC = () => {
             <label htmlFor="market-img">
               <div className="market-img">
                 <BsImage />
-                <div>이미지등록</div>
+                <div>이미지등록 </div>
+                <div className="img-length">{imageLength}/5</div>
               </div>
             </label>
           </div>
