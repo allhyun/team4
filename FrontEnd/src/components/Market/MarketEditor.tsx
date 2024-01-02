@@ -59,13 +59,33 @@ const MarketEditor: React.FC = () => {
     setDataType({ ...DataType, category });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  // 데이터 서버에 전송
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(DataType);
-    // 여기에 게시글 제출 로직 추가
+    const formData = new FormData();
+    images.forEach((image) => formData.append('images', image));
+    formData.append('category', DataType.category);
+    formData.append('location', DataType.location);
+    formData.append('title', DataType.title);
+    formData.append('price', DataType.price?.toString() ?? '');
+    formData.append('description', DataType.textarea);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/product/regist',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+      console.log(response.data);
+      navigate('/market'); // 또는 성공 시 다른 경로로 리다이렉트
+    } catch (error) {
+      console.error('게시글 등록 에러:', error);
+    }
   };
 
-  // 이미지창 관련 ---------------------------------------------------------------
+  // 이미지창 관련 ------------------------------------------------------------------------------------------
 
   // 이미지 등록 이벤트핸들러
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,12 +97,17 @@ const MarketEditor: React.FC = () => {
         URL.createObjectURL(file)
       );
       setPreviewUrls(newPreviewUrls);
+      setImageLength(selectedImages.length); // 이미지 갯수 업데이트
     }
   };
 
   const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-    setPreviewUrls(previewUrls.filter((_, i) => i !== index));
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
+
+    const newPreviewUrls = previewUrls.filter((_, i) => i !== index);
+    setPreviewUrls(newPreviewUrls);
+    setImageLength(newImages.length); // 삭제된 이미지 갯수 반영
   };
 
   // 이미지 미리보기 및 삭제 버튼
@@ -99,7 +124,7 @@ const MarketEditor: React.FC = () => {
     </div>
   );
 
-  // 상품명창 관련 ---------------------------------------------------------------
+  // 상품명창 관련 ------------------------------------------------------------------------------------------
 
   // 상품명창 이벤트핸들러
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +133,7 @@ const MarketEditor: React.FC = () => {
     setDataType({ ...DataType, title: newTitle });
   };
 
-  // 설명창 관련 ---------------------------------------------------------------
+  // 설명창 관련 ------------------------------------------------------------------------------------------
 
   // 설명창 이벤트핸들러
   const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -117,7 +142,7 @@ const MarketEditor: React.FC = () => {
     setDataType({ ...DataType, textarea: newDescription });
   };
 
-  // 가격창 관련 ---------------------------------------------------------------
+  // 가격창 관련 ------------------------------------------------------------------------------------------
 
   const onlyNumber = (value: string) => {
     // 숫자만 허용
@@ -171,7 +196,7 @@ const MarketEditor: React.FC = () => {
         <section className="market-category">
           <div className="market-category">
             카테고리<span style={{ color: '#fcbaba' }}>＊</span>
-            <MarketCategory />
+            <MarketCategory onSelectCategory={handleCategoryChange} />
           </div>
         </section>
         <section className="market-region">
