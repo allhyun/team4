@@ -3,6 +3,7 @@ const userController = require('../controller/Cuser');
 const router = express.Router();
 const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
+const usedgoodsController = require('../controller/Cusedgoods');
 const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
@@ -34,6 +35,10 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 
 // 스터디 검색
 router.get('/study/search', studyController.searchStudy);
+
+
+// 중고물품 리스트
+router.get('/usedgoods', usedgoodsController.getUsedgoods);
 
 
 // 로그인 페이지
