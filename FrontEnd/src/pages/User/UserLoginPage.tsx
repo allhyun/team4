@@ -47,7 +47,7 @@ const UserMainPage = () => {
         // },
         withCredentials: true,
       });
-      // if (response.data.result === true) navigate('/');
+      if (response.data.result === true) navigate('/');
       console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);

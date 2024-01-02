@@ -9,19 +9,11 @@ const session = require('express-session');
 const cors = require('cors');
 const axios = require('axios');
 
-const io = require('socket.io')(server, {
-  path: '/socket.io',
-  cors: {
-    origin: 'http://localhost:3000',
-  },
-});
-
-
-app.set('io', io);
-app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+app.use(cors({ origin: true, credentials: true }));
 
 app.use(
   session({
@@ -31,21 +23,18 @@ app.use(
     cookie: {
       // 옵션 추가하면 정확한 이유는 모르지만
       // 클라이언트에 쿠키가 저장 안 됨 옵션 추가하면 안 됩니다!!
-      // domain: 'http://localhost:3000',
-      // secure: true,
-      // path: '/',
       maxAge: 60 * 60 * 1000, // 세션 유지 시간을 한 시간으로 설정합니다.
     },
   })
 );
-
-app.use(cors({ origin: true, credentials: true }));
 
 const io = require('socket.io')(server, {
   cors: {
     origin: 'http://localhost:3000',
   },
 });
+
+app.set('io', io);
 
 app.use('/', router);
 
@@ -56,7 +45,6 @@ app.use('/', router);
 //   console.log(res.locals.user);
 //   next();
 // });
-
 
 app.use(async (req, res, next) => {
   if (req.session.isAuthenticated) {
@@ -79,16 +67,13 @@ app.use(async (req, res, next) => {
       where: { u_idx: req.session.user.u_idx },
     });
 
-//     res.locals.userCount = userCount;
-//     res.locals.boardCount = boardCount;
-//     res.locals.chatmessageCount = chatmessageCount;
-//     res.locals.chattingroomCount = chattingroomCount;
-//     res.locals.usedgoodsCount = usedgoodsCount;
-//     res.locals.studyCount = studyCount;
-//   }
-//   next();
-// });
-
+    res.locals.userCount = userCount;
+    res.locals.boardCount = boardCount;
+    res.locals.chatmessageCount = chatmessageCount;
+    res.locals.chattingroomCount = chattingroomCount;
+    res.locals.usedgoodsCount = usedgoodsCount;
+    res.locals.studyCount = studyCount;
+  }
   next();
 });
 
@@ -97,7 +82,6 @@ const userIdArr = {};
 const updateUserList = () => {
   io.emit('userList', userIdArr);
 };
-
 
 // 소켓 연결시
 io.on('connection', (socket) => {
