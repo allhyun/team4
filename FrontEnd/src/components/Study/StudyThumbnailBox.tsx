@@ -3,10 +3,10 @@
 //여기서 데이터를 받아온다음에 mab사용해서 정보 표시
 
 //비동기처리해야하는지 알아보기
-import axios from "axios";
-import { type } from "os";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { type } from 'os';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //서버에서 넘어오는 데이터 타입
 interface StudyTable {
@@ -29,7 +29,7 @@ const StudyThumbnailBox = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get("http://localhost:8000/study");
+        const res = await axios.get('http://localhost:8000/study');
         setStudyList(res.data);
       } catch (error) {
         console.log(error);
