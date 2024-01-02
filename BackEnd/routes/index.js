@@ -6,6 +6,14 @@ const studyController = require('../controller/Cstudy');
 const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
+router.all('/*', function (req, res, next) {
+  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 // 게시판 목록 조회
 router.get('/board/list', boardController.board);
 // 게시판 등록
@@ -34,7 +42,6 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 
 // 스터디 검색
 router.get('/study/search', studyController.searchStudy);
-
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
@@ -90,19 +97,14 @@ router.patch('/user/updateMypagePassword', user.updateMypagePassword);
 // 마이페이지 회원 탈퇴
 router.delete('/user/deleteAccount', userController.deleteAccount);
 
-router.post(
-  '/user/upload',
-  upload.single('image'),
-  user.uploadImage,
-  (error, req, res, next) => {
-    if (error) {
-      console.error(error);
-      res.status(500).json({ message: error.message });
-    } else {
-      next();
-    }
+router.post('/user/upload', upload.single('image'), user.uploadImage, (error, req, res, next) => {
+  if (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  } else {
+    next();
   }
-);
+});
 
 const chatRoom = require('../controller/Cchattingroom');
 // 소켓룸 생성
