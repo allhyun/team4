@@ -36,10 +36,8 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 // 스터디 검색
 router.get('/study/search', studyController.searchStudy);
 
-
 // 중고물품 리스트
 router.get('/usedgoods', usedgoodsController.getUsedgoods);
-
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
@@ -71,17 +69,7 @@ router.get('/user/changePassword', user.changePassword);
 router.post('/user/changePassword', user.updatePassword);
 
 // 로그아웃
-router.get('/user/logout', (req, res) => {
-  req.session.destroy((err) => {
-    // 세션 삭제
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('세션 삭제, 현재 세션 상태:', req.session); // 세션 상태 출력
-      res.redirect('/'); // 로그인 페이지로 리다이렉트
-    }
-  });
-});
+router.get('/user/logout', userController.logout);
 
 // 마이페이지
 router.get('/user/mypage', user.mypage);

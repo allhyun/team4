@@ -44,7 +44,6 @@ app.use((req, res, next) => {
 
 app.use(async (req, res, next) => {
   if (req.session.isAuthenticated) {
-    sa;
     const userCount = await user.count({
       where: { u_idx: req.session.user.u_idx },
     });
