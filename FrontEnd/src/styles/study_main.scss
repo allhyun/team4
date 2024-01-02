@@ -1,5 +1,24 @@
+@import "../styles/style.scss";
+
+.st-main-container {
+  display: flex;
+  flex-wrap: wrap;
+}
 .thum {
-  width: 300px;
-  height: 150px;
-  background-color: gray;
+  width: 600px;
+  height: 300px;
+  margin: 20px;
+
+  transform: translateY(-5rem);
+  display: flex;
+  flex-direction: column;
+  color: $main-white;
+  background-color: $main-color;
+
+  padding: 2em;
+  border: {
+    radius: 16px;
+    top: 0.5px solid $main-white;
+    left: 0.5px solid $main-white;
+  }
 }
