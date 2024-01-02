@@ -7,13 +7,13 @@ const usedgoodsController = require('../controller/Cusedgoods');
 const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
-router.all('/*', function (req, res, next) {
-  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Headers', '*');
-  res.header('Access-Control-Allow-Credentials', true);
-  next();
-});
+// router.all('/*', function (req, res, next) {
+//   res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.header('Access-Control-Allow-Headers', '*');
+//   res.header('Access-Control-Allow-Credentials', true);
+//   next();
+// });
 
 // 게시판 목록 조회
 router.get('/board/list', boardController.board);
@@ -46,7 +46,6 @@ router.get('/study/search', studyController.searchStudy);
 
 // 중고물품 리스트
 router.get('/usedgoods', usedgoodsController.getUsedgoods);
-
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
@@ -111,6 +110,5 @@ router.get('/chatRoom/:r_idx', chatRoom.renderRoom);
 router.post('/chatRoom/:r_idx', chatRoom.enterRoom);
 // 방 나가기
 router.delete('/chatRoom/:r_idx', chatRoom.outRoom);
-
 
 module.exports = router;
