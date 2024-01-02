@@ -7,8 +7,17 @@ const PORT = 8000;
 const router = require('./routes');
 const session = require('express-session');
 const cors = require('cors');
-const Chattingroom = require('./model/Chattingroom');
+const axios = require('axios');
 
+const io = require('socket.io')(server, {
+  path: '/socket.io',
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+});
+
+
+app.set('io', io);
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -48,27 +57,27 @@ app.use('/', router);
 //   next();
 // });
 
-// app.use(async (req, res, next) => {
-//   if (req.session.isAuthenticated) {
-//     // sa;
-//     const userCount = await user.count({
-//       where: { u_idx: req.session.user.u_idx },
-//     });
-//     const boardCount = await board.count({
-//       where: { u_idx: req.session.user.u_idx },
-//     });
-//     const chatmessageCount = await chatmessage.count({
-//       where: { u_idx: req.session.user.u_idx },
-//     });
-//     const chattingroomCount = await chattingroom.count({
-//       where: { u_idx: req.session.user.u_idx },
-//     });
-//     const usedgoodsCount = await usedgoods.count({
-//       where: { u_idx: req.session.user.u_idx },
-//     });
-//     const studyCount = await study.count({
-//       where: { u_idx: req.session.user.u_idx },
-//     });
+
+app.use(async (req, res, next) => {
+  if (req.session.isAuthenticated) {
+    const userCount = await user.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const boardCount = await board.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const chatmessageCount = await chatmessage.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const chattingroomCount = await chattingroom.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const usedgoodsCount = await usedgoods.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const studyCount = await study.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
 
 //     res.locals.userCount = userCount;
 //     res.locals.boardCount = boardCount;
@@ -80,34 +89,56 @@ app.use('/', router);
 //   next();
 // });
 
+  next();
+});
+
+// socket 파트
+const userIdArr = {};
+const updateUserList = () => {
+  io.emit('userList', userIdArr);
+};
+
+
 // 소켓 연결시
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
   // 클라이언트가 소켓 룸 생성 요청
-  socket.on('newRoom', async (room) => {
-    const newRoom = await Chattingroom.create(room);
-    console.log(`room created: ${newRoom}`);
+  socket.on('createroom', (data) => {
+    try {
+      socket.join(data.r_name);
+      console.log('조인한건가?', data);
+      io.to(data.r_name).emit('notice', { msg: '채팅방 생성 성공!!' });
+    } catch (err) {
+      console.error('Room 생성 Error 발생 ', err);
+      socket.emit('error', { msg: '알수 없는 오류가 발생했습니다.' });
+    }
   });
 
-  // 사용자 방에 입장시 join
-  socket.on('joinroom', async (r_idx) => {
-    const room = await Chattingroom.findAll({
-      where: {
-        r_idx: r_idx,
-        // r_name: r_name,
-      },
-    }).then((result) => {
-      if (room) {
-        // 방이 있을 시에만 join
-        socket.join(r_idx);
-        console.log(`user joinedRoom: ${r_idx}, ${r_name}`);
-      } else {
-        console.log('없는 방인디????');
-      }
+  socket.on('joinRoom', (data) => {
+    try {
+      // 방만들기와 비슷하게 data.r_name을 써야 할지?
+      socket.join(data.r_idx);
+      console.log('조인할려는 룸', data);
+      io.to(data.r_idx).emit('enter', {
+        msg: `${data.userid} 님이 ${data.r_name} 방에 입장합니다`,
+      });
+    } catch (err) {
+      console.error(err);
+      socket.emit('error', { msg: '불러오기 실패' });
+    }
+  });
+
+  socket.on('disconnect', (data) => {
+    console.log('user disconnected::', data);
+    // Postman에서 테스트 해서는 알수 없다 바로 디스커넥트가 실행이 되므로
+    // 다른 사용자의 페이지에서 확인해야 한다.
+    io.emit('exit', {
+      msg: `${data.userid}님이 방을 떠났습니다.`,
     });
+    // 방을 나갈때 axios를 걸어 주어야 하는가
+    socket.leave(data.r_idx);
   });
-
   // 다른 소켓 이벤트 핸들러 등록!!!
 });
 
