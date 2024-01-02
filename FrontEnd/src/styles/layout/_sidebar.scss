@@ -3,6 +3,7 @@
   flex-direction: column; // 요소들을 세로로 정렬
   height: 100%; // 전체 높이를 채우도록 설정
   overflow: hidden;
+  width: 7.5rem;
 }
 
 .sidebar_menu {
@@ -26,7 +27,6 @@
         transition: all 0.3s;
         color: var(--main-color);
         display: block;
-
         white-space: nowrap;
         margin-right: 50px;
         text-decoration: none;
