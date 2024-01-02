@@ -106,8 +106,14 @@ router.post(
 
 const chatRoom = require('../controller/Cchattingroom');
 // 소켓룸 생성
-router.post('/chatcre', chatRoom.createChatRoom);
-
+router.post('/chatRoom', chatRoom.createChatRoom);
+// 방 목록 받아오기
+router.get('/chatRoom', chatRoom.renderRooms);
+router.get('/chatRoom/:r_idx', chatRoom.renderRoom);
 // 방에 입장하기
-// router.post('/joinroom', chatRoom.enterChatRoom);
+router.post('/chatRoom/:r_idx', chatRoom.enterRoom);
+// 방 나가기
+router.delete('/chatRoom/:r_idx', chatRoom.outRoom);
+
+
 module.exports = router;
