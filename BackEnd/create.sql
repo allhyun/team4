@@ -72,6 +72,13 @@ CREATE TABLE chatmessage (
     FOREIGN KEY(u_idx) REFERENCES user(u_idx),
     FOREIGN KEY(r_idx) REFERENCES chattingroom(r_idx) on DELETE cascade
 );
+CREATE TABLE chatuser(
+	cu_idx int not null primary key auto_increment,
+	u_idx int not null,
+    r_idx int not null,
+    foreign key(u_idx) references user(u_idx) on delete cascade,
+    foreign key(r_idx) references chattingroom(r_idx) on delete cascade
+);
 
 
 CREATE TABLE volunteer (
