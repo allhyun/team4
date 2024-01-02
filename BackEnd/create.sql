@@ -100,3 +100,33 @@ CREATE TABLE heart (
 	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
 	FOREIGN KEY(ud_idx) REFERENCES usedgoods(ud_idx) ON DELETE CASCADE
 );
+
+
+--중고물품 
+-- 데이터베이스?
+CREATE TABLE useproduct (
+    ud_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    u_idx INT NOT NULL,
+    buy_idx INT NOT NULL,
+    ud_price INT NOT NULL,
+    ud_title VARCHAR(20) NOT NULL,
+    ud_category INT NOT NULL,
+    ud_image VARCHAR(250) NOT NULL,
+    ud_content TEXT NOT NULL,
+    ud_region VARCHAR(20) NOT NULL,
+    viewcount INT NOT NULL,
+    ud_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
+    FOREIGN KEY (ud_category) REFERENCES category(c_idx) ON DELETE CASCADE
+);
+
+
+CREATE TABLE  category  (
+	c_idx int NOT NULL PRIMARY KEY, 
+  name varchar(20) NOT NULL
+);
+
+INSERT INTO category VALUES('1', '도서' );
+INSERT INTO category VALUES('2', '강의' );
+INSERT INTO category VALUES('3', '전자기기' );
+INSERT INTO category VALUES('4', '기타' );
