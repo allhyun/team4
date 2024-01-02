@@ -1,0 +1,17 @@
+.study-edit-ouline {
+  @include container;
+  padding: 1%;
+
+  @include inner-contents;
+}
+input {
+  @include market-s-box;
+}
+.study-button {
+  @include main-button;
+}
+.study-modify-container {
+  padding: 1%;
+  @include container;
+  @include inner-contents;
+}
