@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  ChangeEvent,
-  FormEvent,
-} from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import '../../styles/style.scss';
 import { BsImage } from 'react-icons/bs'; // 이미지 아이콘
 import MarketCategory from './MarketCategory';
@@ -14,13 +8,16 @@ import { SassColor } from 'sass';
 
 // 데이터 타입
 interface DataType {
-  category: string;
-  location: string;
-  title: string;
-  price: number | null;
-  description: string;
-  image: File | null;
-  textarea: string;
+  u_idx: number; // 유저 아이디
+  buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
+  ud_price: number | null; // 가격
+  ud_title: string; // 상품명
+  ud_category: string; // 카테고리
+  ud_image: string | null; // 상품사진
+  ud_content: string; // 상품설명
+  ud_region: string; // 거래지역
+  viewcount: number; // 조회수
+  ud_date: string; // 작성시간
 }
 
 const MarketEditor: React.FC = () => {
@@ -40,13 +37,16 @@ const MarketEditor: React.FC = () => {
 
   // 데이터 초기값
   const [DataType, setDataType] = useState<DataType>({
-    category: '',
-    location: '',
-    title: '',
-    price: null,
-    description: '',
-    image: null,
-    textarea: '',
+    u_idx: 1,
+    buy_idx: 1,
+    ud_price: null,
+    ud_title: '',
+    ud_category: '',
+    ud_image: '../../public/img/jordy.gif',
+    ud_content: '',
+    ud_region: '',
+    viewcount: 0,
+    ud_date: '',
   });
 
   const handleInputChange = (
@@ -56,30 +56,49 @@ const MarketEditor: React.FC = () => {
   };
 
   const handleCategoryChange = (category: string) => {
-    setDataType({ ...DataType, category });
+    setDataType({ ...DataType, ud_category: category });
   };
 
-  // 데이터 서버에 전송
+  // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     const formData = new FormData();
-    images.forEach((image) => formData.append('images', image));
-    formData.append('category', DataType.category);
-    formData.append('location', DataType.location);
-    formData.append('title', DataType.title);
-    formData.append('price', DataType.price?.toString() ?? '');
-    formData.append('description', DataType.textarea);
+
+    // 이미지가 있으면 첫 번째 이미지를 사용, 없으면 기본 이미지 URL을 사용
+    const imageData = images.length > 0 ? images[0] : DataType.ud_image;
+
+    // 이미지가 실제 파일 객체인 경우에만 formData에 추가
+    if (imageData instanceof File) {
+      formData.append('images', imageData);
+    } else if (imageData) {
+      // imageData가 null이 아닌 경우에만 실행
+      formData.append('ud_image', imageData);
+    }
+
+    const data = {
+      u_idx: DataType.u_idx,
+      buy_idx: DataType.buy_idx,
+      ud_price: DataType.ud_price,
+      ud_title: DataType.ud_title,
+      ud_category: DataType.ud_category,
+      ud_image: DataType.ud_image, // 이미지 처리 방식 확인 필요
+      ud_content: DataType.ud_content,
+      ud_region: DataType.ud_region,
+      viewcount: DataType.viewcount,
+      ud_date: new Date().toISOString(), // 현재 시간 설정
+    };
 
     try {
       const response = await axios.post(
         'http://localhost:8000/product/regist',
-        formData,
+        data,
         {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: { 'Content-Type': 'application/json' },
         }
       );
-      console.log(response.data);
-      navigate('/market'); // 또는 성공 시 다른 경로로 리다이렉트
+      console.log('데이터 잘 보내지는지?:', response.data);
+      navigate('/market');
     } catch (error) {
       console.error('게시글 등록 에러:', error);
     }
@@ -130,7 +149,7 @@ const MarketEditor: React.FC = () => {
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setTitleLength(newTitle.length); // 타이틀 길이 업데이트
-    setDataType({ ...DataType, title: newTitle });
+    setDataType({ ...DataType, ud_title: newTitle });
   };
 
   // 설명창 관련 ------------------------------------------------------------------------------------------
@@ -139,7 +158,7 @@ const MarketEditor: React.FC = () => {
   const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newDescription = e.target.value;
     setTextareaLength(newDescription.length); // 설명 길이 업데이트
-    setDataType({ ...DataType, textarea: newDescription });
+    setDataType({ ...DataType, ud_content: newDescription });
   };
 
   // 가격창 관련 ------------------------------------------------------------------------------------------
@@ -157,10 +176,16 @@ const MarketEditor: React.FC = () => {
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const numbersOnly = e.target.value.replace(/[^0-9]/g, '');
     const limitedValue = Math.min(Number(numbersOnly), 100000000);
-    setDataType({ ...DataType, price: limitedValue }); // 1억 이하로 제한
+    setDataType({ ...DataType, ud_price: limitedValue }); // 1억 이하로 제한
     setFormattedPrice(
       limitedValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     ); // 숫자만 가능
+  };
+
+  // 거래지역 관련 ------------------------------------------------------------------------------------------
+
+  const handleRegionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDataType({ ...DataType, ud_region: e.target.value });
   };
 
   return (
@@ -188,6 +213,7 @@ const MarketEditor: React.FC = () => {
               id="market-title"
               name="title"
               maxLength={40}
+              value={DataType.ud_title}
               onChange={handleTitleChange}
             />
             <span className="title-length">{titleLength}/40</span>
@@ -202,7 +228,13 @@ const MarketEditor: React.FC = () => {
         <section className="market-region">
           거래지역<span style={{ color: '#fcbaba' }}>＊</span>
           <div className="region_container">
-            <input type="text" id="market-region" name="region" />
+            <input
+              value={DataType.ud_region}
+              type="text"
+              id="market-region"
+              name="region"
+              onChange={handleRegionChange}
+            />
           </div>
         </section>
         <section className="market-price">
@@ -227,6 +259,7 @@ const MarketEditor: React.FC = () => {
               id="market-textarea"
               name="textarea"
               maxLength={1000}
+              value={DataType.ud_content}
               onChange={handleTextareaChange}
             />
             <div className="textarea-length">{textareaLength}/1000</div>
