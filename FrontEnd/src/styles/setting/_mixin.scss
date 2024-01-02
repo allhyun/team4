@@ -77,3 +77,15 @@
   margin: 100px 0px 0px 0px;
   justify-content: center;
 }
+
+//페이지네이션
+@mixin pagenation {
+  ul {
+    justify-content: center;
+    li {
+      :first-child {
+        color: $main-white;
+      }
+    }
+  }
+}

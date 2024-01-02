@@ -15,14 +15,15 @@
   justify-content: center;
 }
 .st-main-page-container {
-  ul {
-    justify-content: center;
-    li {
-      :first-child {
-        color: $main-white;
-      }
-    }
-  }
+  //   ul {
+  //     justify-content: center;
+  //     li {
+  //       :first-child {
+  //         color: $main-white;
+  //       }
+  //     }
+  //   }
+  @include pagenation;
 }
 
 .thum {
