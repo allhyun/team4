@@ -105,8 +105,16 @@ router.get('/chatRoom', chatRoom.renderRooms);
 router.get('/chatRoom/:r_idx', chatRoom.renderRoom);
 // 방에 입장하기
 router.post('/chatRoom/:r_idx', chatRoom.enterRoom);
+// 이 방나가기 삭제하기 고민좀...해야할듯?
 // 방 나가기
 router.delete('/chatRoom/:r_idx', chatRoom.outRoom);
+// 방 삭제하기
+router.delete('/deleteRoom', chatRoom.deleteChatRoom);
 
+// 채팅 파트
+// 채팅 전송
+router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
+// 채팅 조회
+router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
 
 module.exports = router;

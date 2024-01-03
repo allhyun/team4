@@ -5,6 +5,7 @@ function ChatMessage(Sequelize, DataTypes) {
       ms_idx: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
       u_idx: {
@@ -28,7 +29,9 @@ function ChatMessage(Sequelize, DataTypes) {
     {
       tableName: 'chatmessage',
       freezeTableName: true,
-      timestamps: false,
+      timestamps: { createdAt: true, updatedAt: false },
+      createdAt: 'c_date',
+      updatedAt: false,
     }
   );
 }
