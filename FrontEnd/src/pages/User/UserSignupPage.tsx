@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import '../../styles/pages/_user_login.scss';
 interface SignupForm {
   userId: string;
   userPw: string;
+  samePwCheck: string;
   userNickname: string;
   userEmail: string;
 }
@@ -16,10 +17,13 @@ const UserSignupPage = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
+  const [samePwCheck, setSamePwCheck] = useState<string>('');
   const [userNickname, setUserNickname] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
   const [isNicknameDuplicated, setIsNicknameDuplicated] = useState<Boolean>(false);
+
+  const inputRef = useRef<any>();
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
   const {
@@ -42,6 +46,9 @@ const UserSignupPage = () => {
         break;
       case 'userPw':
         setUserPw(event.currentTarget.value);
+        break;
+      case 'samePwCheck':
+        setSamePwCheck(event.currentTarget.value);
         break;
       case 'userNickname':
         setUserNickname(event.currentTarget.value);
@@ -118,6 +125,7 @@ const UserSignupPage = () => {
                   message: '잘못된 형식입니다.',
                 },
               })}
+              ref={inputRef}
               name="userId"
               onChange={onUserInfoHandler}
               // onBlur={onBlurHandler}
@@ -142,6 +150,24 @@ const UserSignupPage = () => {
               })}
               autoComplete="off"
               name="userPw"
+              onChange={onUserInfoHandler}
+            />
+            <p className="alert">{errors.userPw?.message}</p>
+          </div>
+          <div className="input-wrap">
+            <input
+              type="password"
+              placeholder="password"
+              value={userPw}
+              {...register('samePwCheck', {
+                required: '같은 password를 입력해주세요.',
+                // pattern: {
+                //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                //   message: '잘못된 형식입니다.',
+                // },
+              })}
+              autoComplete="off"
+              name="samePwCheck"
               onChange={onUserInfoHandler}
             />
             <p className="alert">{errors.userPw?.message}</p>
