@@ -1,4 +1,5 @@
 const { Chattingroom, User, Chatuser, Chatmessage } = require('../model');
+const ChatMessage = require('../model/Chatmessage');
 
 // 방생성
 exports.createChatRoom = async (req, res) => {
@@ -99,6 +100,59 @@ exports.outRoom = async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.send({ result: false, msg: '뭐가 문제일가요?' });
+    res.send({ result: false, msg: '서버 오류 발생' });
+  }
+};
+
+// 채팅방 삭제
+exports.deleteChatRoom = async (req, res) => {
+  try {
+    await Chattingroom.destroy({
+      where: { r_name: req.body.r_name },
+    });
+    res.send({ result: true, msg: '채팅방이 삭제되었습니다.' });
+  } catch (err) {
+    console.error(err);
+    res.send({ result: false, msg: '서버 오류 발생' });
+  }
+};
+
+// 채팅메시지 기능들 ==========================
+// 채팅메시지 생성하기
+exports.createChat = async (req, res) => {
+  try {
+    const userIdx = req.session.user.u_idx;
+    const room = await Chattingroom.findOne({
+      where: { r_idx: req.params.r_idx },
+    });
+    const data = {
+      u_idx: userIdx,
+      r_idx: room.r_idx,
+      c_content: req.body.c_content,
+    };
+    const newChat = await Chatmessage.create(data);
+    const createdTime = newChat.c_date;
+    res.send({ result: true, msg: '채팅생성 성공' });
+  } catch (err) {
+    console.error('채팅생성 실패!!!', err);
+    res.send({ result: false, msg: '서버에서 오류가 발생했습니다.' });
+  }
+};
+
+// 채팅메시지 조회
+exports.getAllMsg = async (req, res) => {
+  try {
+    const chatRoom = await Chattingroom.findOne({
+      //  body로 방이름 받을건지 아니면 params로 번호를 받아올지
+      where: { r_idx: req.params.r_idx },
+    });
+    const dm = await Chatmessage.findAll({
+      where: { r_idx: chatRoom.r_idx },
+      attributes: ['c_date', 'c_content', 'u_idx'],
+    });
+    res.send({ result: true, msg: '채팅한 내용 불러오기 성공.', data: dm });
+  } catch (err) {
+    console.error(err);
+    res.send({ result: false });
   }
 };

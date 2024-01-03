@@ -78,10 +78,7 @@ app.use(async (req, res, next) => {
 });
 
 // socket 파트
-const userIdArr = {};
-const updateUserList = () => {
-  io.emit('userList', userIdArr);
-};
+let user = {};
 
 // 소켓 연결시
 io.on('connection', (socket) => {
@@ -102,10 +99,18 @@ io.on('connection', (socket) => {
   socket.on('joinRoom', (data) => {
     try {
       // 방만들기와 비슷하게 data.r_name을 써야 할지?
+      const { r_idx, r_name, nickname, userid } = data;
+      user = {
+        r_idx: r_idx,
+        r_name: r_name,
+        nickname: nickname,
+        userid: userid,
+      };
       socket.join(data.r_idx);
       console.log('조인할려는 룸', data);
       io.to(data.r_idx).emit('enter', {
-        msg: `${data.userid} 님이 ${data.r_name} 방에 입장합니다`,
+        // user닉네임으로 들어올지 아니면 userid로 들어올지
+        msg: `${user.nickname} 님이 ${data.r_name} 방에 입장합니다`,
       });
     } catch (err) {
       console.error(err);
@@ -113,17 +118,24 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', (data) => {
-    console.log('user disconnected::', data);
+  socket.on('disconnect', () => {
+    console.log('user disconnected::', user);
     // Postman에서 테스트 해서는 알수 없다 바로 디스커넥트가 실행이 되므로
     // 다른 사용자의 페이지에서 확인해야 한다.
     io.emit('exit', {
-      msg: `${data.userid}님이 방을 떠났습니다.`,
+      msg: `${user.nickname}님이 방을 떠났습니다.`,
     });
-    // 방을 나갈때 axios를 걸어 주어야 하는가
-    socket.leave(data.r_idx);
+    socket.leave(user.r_idx);
   });
-  // 다른 소켓 이벤트 핸들러 등록!!!
+
+  // 채팅 메시지 전송
+  socket.on('sendMsg', (data) => {
+    console.log('채팅메시지 보내기', data);
+    io.to(user.r_name).emit('chat', {
+      nickname: user.nickname,
+      msg: data.msg,
+    });
+  });
 });
 
 server.listen(PORT, function () {
