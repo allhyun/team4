@@ -18,31 +18,17 @@ interface DataType {
   viewcount: number; // 조회수
   ud_date: string; // 작성시간
 }
+// 에러 메시지 타입 정의
+interface ErrorMessages {
+  ud_title: string;
+  ud_price: string;
+  ud_category: string;
+  ud_region: string;
+  ud_content: string;
+  ud_image: string;
+}
 
 const MarketEditor: React.FC = () => {
-  const editorRef = useRef<any>();
-  // 이미지
-  const [images, setImages] = useState<File[]>([]);
-  // 이미지 미리보기
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  // 글자수
-  const [titleLength, setTitleLength] = useState(0);
-  const [textareaLength, setTextareaLength] = useState(0);
-  // 이미지수
-  const [imageLength, setImageLength] = useState(0);
-  // 리다이렉트용
-  const navigate = useNavigate();
-  // 가격 형식
-  const [formattedPrice, setFormattedPrice] = useState('');
-  // 안내 메시지
-  const [errorMessages, setErrorMessages] = useState({
-    ud_title: '',
-    ud_price: '',
-    ud_category: '',
-    ud_region: '',
-    ud_content: '',
-    ud_image: '',
-  });
   // 데이터 초기값
   const [data, setData] = useState<DataType>({
     u_idx: 1,
@@ -56,6 +42,38 @@ const MarketEditor: React.FC = () => {
     viewcount: 0,
     ud_date: '',
   });
+
+  // 이미지
+  const [images, setImages] = useState<File[]>([]);
+  // 이미지 미리보기
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  // 글자수
+  const [titleLength, setTitleLength] = useState(0);
+  const [textareaLength, setTextareaLength] = useState(0);
+  // 이미지수
+  const [imageLength, setImageLength] = useState(0);
+  // 리다이렉트용
+  const navigate = useNavigate();
+  // 가격 형식
+  const [formattedPrice, setFormattedPrice] = useState('');
+  // 에러 메시지
+  const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
+    ud_title: '',
+    ud_price: '',
+    ud_category: '',
+    ud_region: '',
+    ud_content: '',
+    ud_image: '',
+  });
+
+  // 포커싱용 참조 생성
+  const titleRef = useRef<HTMLInputElement>(null);
+  const regionRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  // 카테고리 컨테이너에 대한 참조 생성
+  const marketCategoryRef = useRef<HTMLDivElement>(null);
 
   // 이미지창 관련 ------------------------------------------------------------------------------------------
 
@@ -105,12 +123,22 @@ const MarketEditor: React.FC = () => {
       // 기타 일반 텍스트 필드
       setData({ ...data, [name]: value });
     }
+    // 오류 메시지 업데이트 로직 - 입력이 시작되면 해당 필드의 오류 메시지를 제거
+    if (Object.keys(errorMessages).includes(name)) {
+      setErrorMessages({ ...errorMessages, [name]: '' });
+    }
+
     console.log('변경 후 예상되는 데이터 상태:', { ...data, [name]: value });
   };
 
   // 카테고리 제출 핸들러
   const handleCategoryChange = (category: string) => {
     setData({ ...data, ud_category: category });
+
+    // 카테고리 선택 시 관련 오류 메시지 제거
+    if (errorMessages.ud_category) {
+      setErrorMessages({ ...errorMessages, ud_category: '' });
+    }
   };
 
   // 유효성 검사 함수 ------------------------------------------------------------------------------------------
@@ -127,22 +155,23 @@ const MarketEditor: React.FC = () => {
 
     if (!data.ud_title) {
       errors.ud_title = '상품명을 입력해주세요.';
+      titleRef.current?.focus();
       isValid = false;
-    }
-    if (!data.ud_price) {
-      errors.ud_price = '가격을 입력해주세요.';
-      isValid = false;
-    }
-    if (!data.ud_category) {
+    } else if (!data.ud_category) {
       errors.ud_category = '카테고리를 선택해주세요.';
+      marketCategoryRef.current?.focus();
       isValid = false;
-    }
-    if (!data.ud_region) {
+    } else if (!data.ud_region) {
       errors.ud_region = '거래지역을 입력해주세요.';
+      regionRef.current?.focus();
       isValid = false;
-    }
-    if (!data.ud_content) {
+    } else if (!data.ud_price || data.ud_price === 0) {
+      errors.ud_price = '가격을 입력해주세요.';
+      priceRef.current?.focus();
+      isValid = false;
+    } else if (!data.ud_content) {
       errors.ud_content = '설명을 입력해주세요.';
+      contentRef.current?.focus();
       isValid = false;
     }
 
@@ -226,6 +255,7 @@ const MarketEditor: React.FC = () => {
               id="market-title"
               name="ud_title"
               maxLength={40}
+              ref={titleRef}
               value={data.ud_title}
               onChange={handleInputChange}
             />
@@ -236,7 +266,11 @@ const MarketEditor: React.FC = () => {
           </div>
         </section>
         <section className="market-category">
-          <div className="market-category">
+          <div
+            className="market-category"
+            ref={marketCategoryRef}
+            tabIndex={-1}
+          >
             카테고리<span style={{ color: '#fcbaba' }}>＊</span>
             <MarketCategory onSelectCategory={handleCategoryChange} />
           </div>
@@ -251,6 +285,7 @@ const MarketEditor: React.FC = () => {
               value={data.ud_region}
               type="text"
               id="market-region"
+              ref={regionRef}
               name="ud_region"
               onChange={handleInputChange}
             />
@@ -268,6 +303,7 @@ const MarketEditor: React.FC = () => {
                 type="text"
                 id="market-price"
                 name="ud_price"
+                ref={priceRef}
                 value={formattedPrice}
                 onChange={handleInputChange}
               />
@@ -284,6 +320,7 @@ const MarketEditor: React.FC = () => {
               id="market-textarea"
               name="ud_content"
               maxLength={1000}
+              ref={contentRef}
               value={data.ud_content}
               onChange={handleInputChange}
             />
