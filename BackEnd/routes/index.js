@@ -29,7 +29,9 @@ router.put('/board/list/:b_idx', boardController.modifyBoard);
 router.delete('/board/list/:b_idx', boardController.deleteBoard);
 
 // 스터디 리스트
-router.get('/study', studyController.getStudies);
+// router.get('/study', studyController.getStudies);
+// 스터디 리스트 페이지
+router.get('/study', studyController.getStudiesPage);
 // 스터디 등록
 router.post('/study/regist', studyController.createStudy);
 // 스터디 상세 조회
@@ -47,7 +49,7 @@ router.get('/study/search', studyController.searchStudy);
 // 중고물품 리스트
 router.get('/product', usedgoodsController.getUsedgoods);
 // 중고물품 판매하기
-router.post('/product/regist', usedgoodsController.createusedGoods);
+router.post('/product/regist',upload.array('image',5), usedgoodsController.createusedGoods);
 // 중고물품 상세 조회
 router.get('/product/detail/:ud_idx', usedgoodsController.detailusedGoods);
 // 중고물품 내용 수정
