@@ -41,8 +41,11 @@ section.market-textarea {
   }
   div {
     &.textarea-length {
-      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding-right: 3px;
+      margin: -6px 0 15px 0;
     }
   }
 }
@@ -129,4 +132,10 @@ button.marketeditor-regi {
       width: 100%;
     }
   }
+}
+
+// 에러 메시지
+.error-message {
+  @include error-message;
+  padding: 0 3px 0 3px;
 }

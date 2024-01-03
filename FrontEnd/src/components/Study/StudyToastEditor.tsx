@@ -1,12 +1,12 @@
-import React, { useRef, useState } from "react";
-import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import "@toast-ui/editor/dist/i18n/ko-kr";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import "tui-color-picker/dist/tui-color-picker.css";
-import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState } from 'react';
+import { Editor } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import '@toast-ui/editor/dist/i18n/ko-kr';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface DataType {
   u_idx: number;
@@ -24,8 +24,8 @@ const StudyToastEditor = () => {
   const editorRef = useRef<any>();
   const [data, setData] = useState<DataType>({
     u_idx: 1,
-    st_title: "",
-    st_intro: "",
+    st_title: '',
+    st_intro: '',
     st_now_mem: 0,
     st_limit: 0,
     st_fe: 0,
@@ -33,7 +33,7 @@ const StudyToastEditor = () => {
     st_pub: 0,
   });
 
-  const [inputErrorMessage, setInputErrorMessage] = useState<string>("");
+  const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
 
   const handleEditorChange = () => {
     setData((prevData) => ({
@@ -46,17 +46,17 @@ const StudyToastEditor = () => {
     const { name, value } = e.target;
 
     // 정규식을 사용하여 숫자만 허용
-    if (name === "st_limit" && !/^\d*$/.test(value)) {
-      setInputErrorMessage("숫자만 입력하세요.");
+    if (name === 'st_limit' && !/^\d*$/.test(value)) {
+      setInputErrorMessage('숫자만 입력하세요.');
     } else {
-      setInputErrorMessage("");
+      setInputErrorMessage('');
       setData((prevData) => ({
         ...prevData,
         [name]:
-          name === "st_limit"
-            ? value !== ""
+          name === 'st_limit'
+            ? value !== ''
               ? parseInt(value, 10)
-              : ""
+              : ''
             : value,
       }));
     }
@@ -74,29 +74,29 @@ const StudyToastEditor = () => {
     if (!data.st_title || !data.st_limit) {
       // 필수 입력 필드가 비어있다면 포커스
       if (!data.st_title) {
-        document.getElementsByName("st_title")[0].focus();
+        document.getElementsByName('st_title')[0].focus();
       } else if (!data.st_limit) {
-        document.getElementsByName("st_limit")[0].focus();
+        document.getElementsByName('st_limit')[0].focus();
       }
 
       // 메시지를 통해 사용자에게 알림
-      setInputErrorMessage("필수 입력 항목을 모두 입력하세요.");
+      setInputErrorMessage('필수 입력 항목을 모두 입력하세요.');
       return; // 데이터가 비어 있으면 함수 종료
     }
 
     // 필수 입력 필드가 모두 입력되었다면 메시지 초기화
-    setInputErrorMessage("");
+    setInputErrorMessage('');
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/study/regist",
+        'http://localhost:8000/study/regist',
         data
       );
-      console.log("Server response:", response.data);
+      console.log('Server response:', response.data);
       //성공시 스터디메인페이지로 리다이렉트
-      navigate("/study");
+      navigate('/study');
     } catch (error) {
-      console.error("Error submitting data:", error);
+      console.error('Error submitting data:', error);
     }
   };
 

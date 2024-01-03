@@ -37,6 +37,13 @@
   color: black;
 }
 
+// 에러 메시지(ex.필수값 입력하세요)
+@mixin error-message {
+  color: #fcbaba;
+  font-size: smaller;
+  margin: 7px 0 7px 0;
+}
+
 // 정렬 관련 -------------------------------------
 
 // 가운데 정렬
