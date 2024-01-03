@@ -127,6 +127,10 @@ CREATE TABLE  category  (
 );
 
 INSERT INTO category VALUES('1', '도서' );
-INSERT INTO category VALUES('2', '강의' );
-INSERT INTO category VALUES('3', '전자기기' );
-INSERT INTO category VALUES('4', '기타' );
+INSERT INTO category VALUES('2', '전자기기' );
+INSERT INTO category VALUES('3', '문구' );
+INSERT INTO category VALUES('4', '티켓/쿠폰' );
+INSERT INTO category VALUES('5', '생활' );
+INSERT INTO category VALUES('6', '취미' );
+INSERT INTO category VALUES('7', '무료나눔' );
+INSERT INTO category VALUES('8', '기타' );

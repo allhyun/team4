@@ -17,6 +17,32 @@ exports.getStudies = async (req, res) => {
   }
 };
 
+// 페이지네이션 값 받아오기..?
+exports.getStudiesPage = async (req, res) => {
+  try {
+    const page = req.query.page || 1; // 현재 페이지
+    const pageSize = 6; // 페이지당 보여질 항목 수
+
+    const offset = (page - 1) * pageSize;
+
+    const resultstudy = await db.Study.findAll({
+      attributes: ["st_idx", "u_idx", "st_title", "st_intro", "st_now_mem", "st_limit", "st_date", "st_fe", "st_be", "st_pub", "st_full"],
+      where: {
+        st_date: {
+          [Op.lt]: new Date(),
+        },
+      },
+      order: [["st_date", "DESC"]],
+      limit: pageSize,
+      offset: offset,
+    });
+
+    res.send(resultstudy);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('메인화면 에러 발생');
+  }
+};
 // 스터디 등록
 exports.createStudy = async (req, res) => {
   try {

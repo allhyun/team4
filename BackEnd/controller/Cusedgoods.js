@@ -15,10 +15,18 @@ exports.getUsedgoods =async (req, res) => {
 }
 
 // 중고물품 판매하기 등록
+// const multer = require('../multer/multerConfig');
+
+
 exports.createusedGoods = async (req, res) => {
   try {
+    
     const { u_idx, buy_idx, ud_price, ud_title, ud_category, ud_image, ud_content, ud_region, viewcount, ud_date } = req.body;
     console.log(req.body);
+
+    if (req.files) {
+      const ud_image = req.file.filename; // 이미지 파일 이름을 저장합니다.
+      
     const newProducts = await db.Usedproducts.create({
       u_idx,
       buy_idx,
@@ -31,7 +39,13 @@ exports.createusedGoods = async (req, res) => {
       viewcount,
       ud_date
     });
+    console.log(req.file);
     res.send(newProducts);
+  }
+    else {
+      // 이미지 파일이 업로드되지 않은 경우 에러 메시지를 반환
+      res.status(400).send('이미지를 업로드해주세요.');
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
@@ -49,7 +63,8 @@ exports.detailusedGoods = async (req, res) => {
       return;
     }
     res.send(product);
-  } catch (error) {
+  } 
+   catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
   }
@@ -102,3 +117,16 @@ exports.searchusedGoods = async(req,res) => {
   }
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
