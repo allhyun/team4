@@ -1,0 +1,10 @@
+.study-detail-container {
+  @include container;
+  padding: 1%;
+
+  @include inner-contents;
+}
+
+.study-button {
+  @include main-button;
+}

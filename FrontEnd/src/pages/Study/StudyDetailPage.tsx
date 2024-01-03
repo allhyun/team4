@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import StudyDeleteModify from "../../components/Study/StudyDeleteModify";
-import { setStudyDetail } from "../../store/modifyReducer";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import StudyDeleteModify from '../../components/Study/StudyDeleteModify';
+import { setStudyDetail } from '../../store/modifyReducer';
+import { useDispatch } from 'react-redux';
+import '../../styles/style.scss';
+import StudyHeader from '../../components/Study/StudyHeader';
 
 const StudyDetailPage = () => {
   const { st_idx } = useParams();
@@ -34,15 +36,18 @@ const StudyDetailPage = () => {
 
   return (
     <>
-      {study ? (
-        <>
-          <h3>{study.st_title}</h3>
-          <div>내용:{study.st_intro}</div>
-        </>
-      ) : (
-        <div>Loading...</div>
-      )}
-      <StudyDeleteModify st_idx={parseInt(`${st_idx}`, 10)} />
+      <StudyHeader />
+      <div className="study-detail-container">
+        {study ? (
+          <>
+            <h3>{study.st_title}</h3>
+            <div>내용:{study.st_intro}</div>
+          </>
+        ) : (
+          <div>Loading...</div>
+        )}
+        <StudyDeleteModify st_idx={parseInt(`${st_idx}`, 10)} />
+      </div>
     </>
   );
 };

@@ -26,7 +26,7 @@ const UserSignupPage = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignupForm>({
     mode: 'onSubmit',
     defaultValues: {
@@ -54,14 +54,14 @@ const UserSignupPage = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<SignupForm> = async (data: SignupForm) => {
+  const onSubmit: SubmitHandler<SignupForm> = async (inputData: SignupForm) => {
     try {
-      console.log('useForm 성공', data);
+      console.log('useForm 성공', inputData);
       const user = {
-        userid: data.userId,
-        password: data.userPw,
-        nickname: data.userNickname,
-        email: data.userEmail,
+        userid: inputData.userId,
+        password: inputData.userPw,
+        nickname: inputData.userNickname,
+        email: inputData.userEmail,
       };
 
       const checkedId = await checkDuplicated('checkid', { userid: user.userid }).then(
@@ -173,7 +173,7 @@ const UserSignupPage = () => {
               placeholder="e-mail"
               value={userEmail}
               {...register('userEmail', {
-                required: '닉네임을 입력해주세요.',
+                required: '이메일을 입력해주세요.',
                 // pattern: {
                 //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
                 //   message: '잘못된 형식입니다.',
@@ -185,7 +185,9 @@ const UserSignupPage = () => {
             <p className="alert">{errors.userEmail?.message}</p>
           </div>
           <div className="input-wrap">
-            <button type="submit">회원가입</button>
+            <button type="submit" disabled={isSubmitting}>
+              회원가입
+            </button>
           </div>
         </form>
       </div>
