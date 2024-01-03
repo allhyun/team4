@@ -23,7 +23,7 @@ const UserSignupPage = () => {
   const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
   const [isNicknameDuplicated, setIsNicknameDuplicated] = useState<Boolean>(false);
 
-  const inputRef = useRef<HTMLInputElement | undefined>();
+  const inputRef = useRef<any>();
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
   const {
