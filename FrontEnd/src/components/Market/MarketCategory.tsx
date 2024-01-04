@@ -12,24 +12,9 @@ const MarketCategory = ({
   const navigate = useNavigate();
 
   // 카테고리 이벤트핸들러
-  const handleCategoryClick = async (category: string) => {
+  const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
     onSelectCategory(category); // 부모 컴포넌트로 선택된 카테고리 전달
-
-    try {
-      const response = await axios.post(
-        'http://localhost:8000/product/regist',
-        {
-          category: category,
-        }
-      );
-
-      console.log('서버 응답:', response.data);
-      //성공시 해당 카테고리 검색 페이지로 리다이렉트
-      //  navigate("/");
-    } catch (error) {
-      console.error('카테고리 전송 에러:', error);
-    }
   };
 
   const categories = [

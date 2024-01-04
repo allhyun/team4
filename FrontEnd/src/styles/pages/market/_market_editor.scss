@@ -17,6 +17,9 @@ section.market-textarea {
     &:focus {
       outline: none;
     }
+    &::placeholder {
+      color: var(--main-button);
+    }
   }
 
   // 설명창 디자인

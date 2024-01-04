@@ -22,10 +22,12 @@ const MarketThumbnailPost = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+
         const response = await axios.get(
           `${process.env.REACT_APP_HOST}/product/regist`
           // 'http://localhost:8000/product/regist'
         );
+
         setPosts(response.data);
       } catch (error) {
         console.error('게시글 로딩 에러:', error);
@@ -40,7 +42,7 @@ const MarketThumbnailPost = () => {
       {posts.map((post) => (
         <div key={post.u_idx}>
           <img
-            src={post.ud_image ? post.ud_image : 'defaultImageURL'}
+            src={post.ud_image ? post.ud_image : '../../public/img/jordy.gif'}
             alt={`preview-${post.u_idx}`}
           />
           <h3>{post.ud_title}</h3>

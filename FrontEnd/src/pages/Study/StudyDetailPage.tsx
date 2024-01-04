@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import StudyDeleteModify from '../../components/Study/StudyDeleteModify';
+//리덕스 관련
 import { setStudyDetail } from '../../store/modifyReducer';
 import { useDispatch } from 'react-redux';
+//
 import '../../styles/style.scss';
 import StudyHeader from '../../components/Study/StudyHeader';
 

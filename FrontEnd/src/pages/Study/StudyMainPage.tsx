@@ -5,18 +5,47 @@ import StudyThumbnailBox from '../../components/Study/StudyThumbnailBox';
 import StudyHeader from '../../components/Study/StudyHeader';
 import { Pagination } from '@mui/material';
 import '../../styles/style.scss';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 const StudyMainPage = () => {
+  const [page, setPage] = useState<number>(1);
+  const [Apage, setApage] = useState<number>(0);
+
+  function handleChange(e: React.ChangeEvent<unknown>, page: number) {
+    setPage(page);
+  }
+  //axios요청으로 전체페이지개수,
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await axios.get('http://localhost:8000/study');
+        //전체 페이지 갯수
+        console.log(res.data.totalCount);
+        setApage(Math.ceil((res.data.totalCount + 1) / 6));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
     <>
       <StudyHeader />
       <div>
         <div className="st-main-container">
-          <StudyCreateBox />
-          <StudyThumbnailBox />
+          {page === 1 && <StudyCreateBox />}
+          <StudyThumbnailBox page={page} />
         </div>
         <div className="st-main-page-container">
-          <Pagination count={20} size="large" />
-          {/* 전체 데이터 개수를 가져와서 10으로 나눠서 몫+1  만큼을 count props에 넣기 */}
+          <Pagination
+            count={Apage}
+            size="large"
+            onChange={handleChange}
+            page={page}
+          />
+          {/* 전체 데이터 개수+1를 가져와서 6으로 나눠서 몫+1  만큼을 count props에 넣기 */}
         </div>
       </div>
     </>

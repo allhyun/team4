@@ -13,7 +13,7 @@ function UsedProducts(Sequelize, DataTypes) {
         allowNull: false,
       },
       buy_idx: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       ud_price: {
@@ -43,6 +43,7 @@ function UsedProducts(Sequelize, DataTypes) {
       viewcount: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
       ud_date: {
         type: DataTypes.DATE,

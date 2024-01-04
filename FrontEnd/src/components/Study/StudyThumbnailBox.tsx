@@ -22,29 +22,36 @@ interface StudyTable {
   st_title: string;
   u_idx: number;
 }
+interface propsType {
+  page: number;
+}
 
-const StudyThumbnailBox = () => {
+const StudyThumbnailBox = (props: propsType) => {
+  const data = props.page;
+
   const navigate = useNavigate();
   const [studyList, setStudyList] = useState<StudyTable[]>([]);
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:8000/study');
-        setStudyList(res.data);
+        const res = await axios.get('http://localhost:8000/study', {
+          params: { page: data },
+        });
+        setStudyList(res.data.resultstudy);
       } catch (error) {
         console.log(error);
       }
     }
 
     fetchData();
-  }, []); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
+  }, [props]); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
 
   function goDetailPage(index: string): void {
     navigate(`/study/detail/${index}`);
   }
   return (
     <>
-      {studyList.reverse().map((study) => (
+      {studyList.map((study) => (
         <div
           key={study.st_idx}
           className="thum"
