@@ -4,6 +4,7 @@ div#market-main-container {
   height: 100%;
   padding: 20px;
   display: flex;
+  flex-wrap: wrap;
   .thum {
     @include container;
     padding: 20px;
