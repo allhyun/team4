@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent, useRef } from 'react';
 import '../../styles/style.scss';
 import { BsImage } from 'react-icons/bs'; // 이미지 아이콘
+import { MdCancel } from 'react-icons/md'; // 취소 아이콘
 import MarketCategory from './MarketCategory';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -86,15 +87,40 @@ const MarketEditor: React.FC = () => {
     if (e.target.files) {
       // 새로 선택된 파일들을 기존의 파일 배열에 추가
       const newFiles = Array.from(e.target.files);
+      const totalFiles = images.length + newFiles.length;
+
+      if (totalFiles > 5) {
+        setErrorMessages((prevErrors) => ({
+          ...prevErrors,
+          ud_image: '사진은 최대 5장까지만 가능합니다.',
+        }));
+        return;
+      } else {
+        setErrorMessages((prevErrors) => ({ ...prevErrors, ud_image: '' }));
+      }
+
       setImages((prevImages) => [...prevImages, ...newFiles]);
 
-      // 이미지 미리보기 URL 생성 및 추가
+      // 이미지 수 업데이트
+      setImageLength(totalFiles);
+
+      // 미리보기 URL 생성
       const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
       setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
-
-      // 이미지 수 업데이트
-      setImageLength((prevLength) => prevLength + newFiles.length);
     }
+  };
+  // 이미지 미리보기 영역
+  const renderImagePreviews = () => {
+    return previewUrls.map((url, index) => (
+      <div key={index} className="image-container">
+        <li key={index} className="image-preview">
+          <img src={url} alt={`preview-${index}`} />
+          <button onClick={() => removeImage(index)}>
+            <MdCancel />
+          </button>
+        </li>
+      </div>
+    ));
   };
 
   // 이미지 제거 핸들러 (옵션)
@@ -264,7 +290,11 @@ const MarketEditor: React.FC = () => {
                 <div className="img-length">{imageLength}/5</div>
               </div>
             </label>
+            <ul className="image-previews-list">{renderImagePreviews()}</ul>
           </div>
+          {errorMessages.ud_image && (
+            <p className="error-message">{errorMessages.ud_image}</p>
+          )}
         </section>
         <section className="market-title">
           상품명<span style={{ color: '#fcbaba' }}>＊</span>
