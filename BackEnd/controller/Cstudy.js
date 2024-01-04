@@ -35,7 +35,7 @@ exports.getStudiesPage = async (req, res) => {
       offset = (page - 1) * 6 - 1;
     }
     // 항상 6으로 설정하여 두 번째 페이지부터는 6개씩 가져오도록 함
-
+    const totalCount = await db.Study.count();
     const resultstudy = await db.Study.findAll({
       attributes: [
         'st_idx',
@@ -60,7 +60,7 @@ exports.getStudiesPage = async (req, res) => {
       offset: offset,
     });
 
-    res.send(resultstudy);
+    res.send({ resultstudy, totalCount });
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
