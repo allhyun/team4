@@ -57,8 +57,6 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
-
-
 // 로그인 페이지
 router.get('/signin', userController.signin);
 
@@ -103,14 +101,19 @@ router.patch('/user/updateMypagePassword', user.updateMypagePassword);
 // 마이페이지 회원 탈퇴
 router.delete('/user/deleteAccount', userController.deleteAccount);
 
-router.post('/user/upload', upload.single('image'), user.uploadImage, (error, req, res, next) => {
-  if (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
-  } else {
-    next();
+router.post(
+  '/user/upload',
+  upload.single('image'),
+  user.uploadImage,
+  (error, req, res, next) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: error.message });
+    } else {
+      next();
+    }
   }
-});
+);
 
 const chatRoom = require('../controller/Cchattingroom');
 // 소켓룸 생성
@@ -130,7 +133,7 @@ router.delete('/deleteRoom', chatRoom.deleteChatRoom);
 // 채팅 파트
 // 채팅 전송
 router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
-// 채팅 조회
+// 채팅방 내용조회
 router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
-
+// router.get('/chatRoom/:r_idx/chat/:c_content', chatRoom.searchMsg);
 module.exports = router;

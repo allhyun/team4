@@ -118,16 +118,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected::', user);
-    // Postman에서 테스트 해서는 알수 없다 바로 디스커넥트가 실행이 되므로
-    // 다른 사용자의 페이지에서 확인해야 한다.
-    io.emit('exit', {
-      msg: `${user.nickname}님이 방을 떠났습니다.`,
-    });
-    socket.leave(user.r_idx);
-  });
-
   // 채팅 메시지 전송
   socket.on('sendMsg', (data) => {
     console.log('채팅메시지 보내기', data);
@@ -136,6 +126,18 @@ io.on('connection', (socket) => {
       msg: data.msg,
     });
   });
+
+  // 채팅메시지 검색
+  // socket.on('searchMsg', (data) => {});
+  // socket.on('disconnect', () => {
+  //   console.log('user disconnected::', user);
+  //   // Postman에서 테스트 해서는 알수 없다 바로 디스커넥트가 실행이 되므로
+  //   // 다른 사용자의 페이지에서 확인해야 한다.
+  //   io.emit('exit', {
+  //     msg: `${user.nickname}님이 방을 떠났습니다.`,
+  //   });
+  //   socket.leave(user.r_idx);
+  // });
 });
 
 server.listen(PORT, function () {
