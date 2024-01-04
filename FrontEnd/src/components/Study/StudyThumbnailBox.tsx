@@ -37,7 +37,7 @@ const StudyThumbnailBox = (props: propsType) => {
         const res = await axios.get('http://localhost:8000/study', {
           params: { page: data },
         });
-        setStudyList(res.data);
+        setStudyList(res.data.resultstudy);
       } catch (error) {
         console.log(error);
       }
