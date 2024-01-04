@@ -22,7 +22,12 @@ const MarketThumbnailPost = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/product');
+
+        const response = await axios.get(
+          `${process.env.REACT_APP_HOST}/product/regist`
+          // 'http://localhost:8000/product/regist'
+        );
+
         setPosts(response.data);
       } catch (error) {
         console.error('게시글 로딩 에러:', error);
