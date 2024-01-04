@@ -14,11 +14,11 @@ export const userSlice = createSlice({
   name: 'userInfo',
   initialState: INITIAL_STATE,
   reducers: {
-    setUserInfo: (state: any, action: any): any => {
+    setUserInfo: (state, action) => {
       state.uid = action.payload.uid;
       state.nickname = action.payload.nickname;
     },
-    removeUserInfo: (state: any): any => {
+    removeUserInfo: (state) => {
       state.uid = null;
       state.nickname = null;
     },

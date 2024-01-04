@@ -6,6 +6,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import '../../styles/pages/_user_login.scss';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
+import { setUserInfo } from '../../store/user.slice';
+import { useDispatch } from 'react-redux';
+import { setStudyDetail } from '../../store/modifyReducer';
 
 interface LoginForm {
   userId: string;
@@ -29,6 +32,7 @@ const UserMainPage = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
+  const dispatch = useDispatch();
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
   const {
@@ -56,13 +60,19 @@ const UserMainPage = () => {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
       const response = await axios.post('http://localhost:8000/user/signin', user, {
-        // headers: {
-        //   // 'Access-Control-Allow-Origin': '*',
-        //   // 'Access-Control-Allow-Credentials': 'true',
-        // },
         withCredentials: true,
       });
-      if (response.data.result === true) navigate('/');
+      if (response.data.result === true) {
+        dispatch(setStudyDetail(response.data));
+        // console.log('response.data', response.data.u_idx);
+        dispatch(
+          setUserInfo({
+            uid: response.data.u_idx,
+            nickname: response.data.nickname,
+          })
+        );
+        // navigate('/');
+      }
       console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);
