@@ -1,10 +1,10 @@
 const express = require('express');
 const userController = require('../controller/Cuser');
 const router = express.Router();
-const boardController = require('../controller/Cboard');
+// const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
-const user = require('../controller/Cuser');
+// const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
 // router.all('/*', function (req, res, next) {
@@ -15,22 +15,9 @@ const { upload } = require('../multer/multerConfig');
 //   next();
 // });
 
-// 게시판 목록 조회
-router.get('/board/list', boardController.board);
-// 게시판 등록
-router.post('/board/regist', boardController.createBoard);
-// 게시판 상세조회
-router.get('/board/list/:b_idx', boardController.detailBoard);
-// 게시판 수정
-// 주소 수정해야함
-router.put('/board/list/:b_idx', boardController.modifyBoard);
-// 게시판 삭제
-// 주소 수정해야함
-router.delete('/board/list/:b_idx', boardController.deleteBoard);
-
 // 스터디 리스트
 // router.get('/study', studyController.getStudies);
-// 스터디 리스트 페이지
+// 스터디 리스트 페이지(6개씩)
 router.get('/study', studyController.getStudiesPage);
 // 스터디 등록
 router.post('/study/regist', studyController.createStudy);
@@ -47,8 +34,6 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 router.get('/study/search', studyController.searchStudy);
 
 // 중고물품 리스트
-
-router.get('/usedgoods', usedgoodsController.getUsedgoods);
 router.get('/product', usedgoodsController.getUsedgoods);
 // 중고물품 판매하기
 router.post('/product/regist',upload.array('image',5), usedgoodsController.createusedGoods);
