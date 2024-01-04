@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
 import { persistReducer } from 'redux-persist';
 import studySlice from './modifyReducer';
@@ -12,12 +13,11 @@ const reducers = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: storageSession,
+  storage: storage,
   whitelist: ['user'],
 };
 
 const userPersistedReducer = persistReducer(persistConfig, reducers);
-
 
 const store = configureStore({
   reducer: {
