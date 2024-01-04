@@ -14,14 +14,14 @@ db.Sequelize = Sequelize;
 
 db.User = require('./User')(sequelize, Sequelize);
 db.Study = require('./Study')(sequelize, Sequelize);
-db.Board = require('./Board')(sequelize, Sequelize);
-db.Usedgoods = require('./Usedgoods')(sequelize, Sequelize);
+// db.Board = require('./Board')(sequelize, Sequelize);
+// db.Usedgoods = require('./Usedgoods')(sequelize, Sequelize);
 db.Chattingroom = require('./Chattingroom')(sequelize, Sequelize);
 db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 db.User = require('./User')(sequelize, Sequelize);
 db.Study = require('./Study')(sequelize, Sequelize);
 db.Board = require('./Board')(sequelize, Sequelize);
-db.Usedgoods = require('./Usedgoods')(sequelize, Sequelize);
+// db.Usedgoods = require('./Usedgoods')(sequelize, Sequelize);
 db.Chattingroom = require('./Chattingroom')(sequelize, Sequelize);
 db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 db.Volunteer = require('./Volunteer')(sequelize, Sequelize);
