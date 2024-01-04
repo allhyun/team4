@@ -7,7 +7,7 @@ import '../../styles/pages/_user_login.scss';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
 import { setUserInfo } from '../../store/user.slice';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setStudyDetail } from '../../store/modifyReducer';
 
 interface LoginForm {
@@ -35,6 +35,7 @@ const UserMainPage = () => {
   const [userPw, setUserPw] = useState<string>('');
   const dispatch = useDispatch();
   const [isLogined, setIsLogined] = useState(false);
+  // const logined = useSelector((state)=>state)
 
   useEffect(() => {
     // console.log('sessionStorage', window.sessionStorage.getItem['persist:root:']);

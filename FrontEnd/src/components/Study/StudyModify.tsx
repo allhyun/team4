@@ -24,7 +24,7 @@ interface DataType {
 }
 
 const StudyModify = () => {
-  const imData = useSelector((state: any) => state.study.studyDetail); //여유되면 타입 고치기
+  const imData = useSelector((state: any) => state.study.study.studyDetail); //여유되면 타입 고치기
   //imData.st_title같은 형식으로 사용
   console.log(imData);
   const navigate = useNavigate();
@@ -58,12 +58,7 @@ const StudyModify = () => {
       setInputErrorMessage('');
       setData((prevData) => ({
         ...prevData,
-        [name]:
-          name === 'st_limit'
-            ? value !== ''
-              ? parseInt(value, 10)
-              : ''
-            : value,
+        [name]: name === 'st_limit' ? (value !== '' ? parseInt(value, 10) : '') : value,
       }));
     }
   };
@@ -92,10 +87,7 @@ const StudyModify = () => {
     setInputErrorMessage('');
 
     try {
-      const response = await axios.put(
-        `http://localhost:8000/study/detail/${imData.st_idx}`,
-        data
-      );
+      const response = await axios.put(`http://localhost:8000/study/detail/${imData.st_idx}`, data);
       console.log('Server response:', response.data);
       //성공시 스터디메인페이지로 리다이렉트
       navigate('/study');
@@ -116,20 +108,10 @@ const StudyModify = () => {
       <StudyHeader />
       <div className="study-modify-container">
         <p>프로젝트 이름</p>
-        <input
-          type="text"
-          onChange={handleInputChange}
-          name="st_title"
-          value={data.st_title}
-        />
+        <input type="text" onChange={handleInputChange} name="st_title" value={data.st_title} />
         <p>기간</p>
-        <input
-          type="text"
-          onChange={handleInputChange}
-          name="st_limit"
-          value={data.st_limit}
-        />
-        주{inputErrorMessage && <span>{inputErrorMessage}</span>}
+        <input type="text" onChange={handleInputChange} name="st_limit" value={data.st_limit} />주
+        {inputErrorMessage && <span>{inputErrorMessage}</span>}
         <p>포지션</p>
         퍼블리셔
         <select name="st_pub" onChange={handleSelectChange} value={data.st_pub}>
