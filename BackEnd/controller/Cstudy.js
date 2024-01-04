@@ -1,8 +1,7 @@
-const db = require("../model");
+const db = require('../model');
 const { Op } = require('sequelize');
 
 // const passport = require('passport');
-
 
 // 스터디 리스트
 exports.getStudies = async (req, res) => {
@@ -21,18 +20,42 @@ exports.getStudies = async (req, res) => {
 exports.getStudiesPage = async (req, res) => {
   try {
     const page = req.query.page || 1; // 현재 페이지
-    const pageSize = 6; // 페이지당 보여질 항목 수
+    let pageSize;
+    if (page == 1) {
+      pageSize = 5;
+    } else {
+      pageSize = 6;
+    }
+    // 페이지당 보여질 항목 수
 
-    const offset = (page - 1) * pageSize;
+    let offset;
+    if (page == 1) {
+      offset = 0;
+    } else {
+      offset = (page - 1) * 6 - 1;
+    }
+    // 항상 6으로 설정하여 두 번째 페이지부터는 6개씩 가져오도록 함
 
     const resultstudy = await db.Study.findAll({
-      attributes: ["st_idx", "u_idx", "st_title", "st_intro", "st_now_mem", "st_limit", "st_date", "st_fe", "st_be", "st_pub", "st_full"],
+      attributes: [
+        'st_idx',
+        'u_idx',
+        'st_title',
+        'st_intro',
+        'st_now_mem',
+        'st_limit',
+        'st_date',
+        'st_fe',
+        'st_be',
+        'st_pub',
+        'st_full',
+      ],
       where: {
         st_date: {
           [Op.lt]: new Date(),
         },
       },
-      order: [["st_date", "DESC"]],
+      order: [['st_date', 'DESC']],
       limit: pageSize,
       offset: offset,
     });
@@ -46,7 +69,17 @@ exports.getStudiesPage = async (req, res) => {
 // 스터디 등록
 exports.createStudy = async (req, res) => {
   try {
-    const { u_idx, st_title, st_intro, st_now_mem, st_limit, st_fe, st_be, st_pub, st_full } = req.body;
+    const {
+      u_idx,
+      st_title,
+      st_intro,
+      st_now_mem,
+      st_limit,
+      st_fe,
+      st_be,
+      st_pub,
+      st_full,
+    } = req.body;
     console.log(req.body);
     const newStudy = await db.Study.create({
       u_idx,
@@ -88,9 +121,27 @@ exports.modifyStudy = async (req, res) => {
   const studyId = req.params.st_idx;
   console.log(studyId);
   try {
-    const { st_title, st_intro, st_now_mem, st_limit, st_fe, st_be, st_pub, st_full } = req.body;
+    const {
+      st_title,
+      st_intro,
+      st_now_mem,
+      st_limit,
+      st_fe,
+      st_be,
+      st_pub,
+      st_full,
+    } = req.body;
     const updatedStudy = await db.Study.update(
-      { st_title, st_intro, st_now_mem, st_limit, st_fe, st_be, st_pub, st_full },
+      {
+        st_title,
+        st_intro,
+        st_now_mem,
+        st_limit,
+        st_fe,
+        st_be,
+        st_pub,
+        st_full,
+      },
       { where: { st_idx: studyId } }
     );
     res.send(updatedStudy);
@@ -103,7 +154,7 @@ exports.modifyStudy = async (req, res) => {
 // 스터디 삭제
 exports.deleteStudy = async (req, res) => {
   const studyId = req.params.st_idx;
-  console.log(studyId)
+  console.log(studyId);
   try {
     await db.Study.destroy({ where: { st_idx: studyId } });
     res.send({ message: '스터디모집이 성공적으로 삭제되었습니다.' });
@@ -115,7 +166,7 @@ exports.deleteStudy = async (req, res) => {
 
 // 스터디 참여하자
 
-exports.joinStudy = async (req,res) => {
+exports.joinStudy = async (req, res) => {
   try {
     // 로그인 여부 확인
     if (!req.session || !req.session.user) {
@@ -141,20 +192,25 @@ exports.joinStudy = async (req,res) => {
     console.error(error);
     res.status(500).send('에러 발생');
   }
-}
+};
 
 // 스터디 검색
-exports.searchStudy = async(req,res) => {
-  const keyword = req.query.value //검색어
-  console.log('received keyword:',keyword) 
+exports.searchStudy = async (req, res) => {
+  const keyword = req.query.value; //검색어
+  console.log('received keyword:', keyword);
 
-  try{let result = await db.Study.findAll({
-    where: { [Op.or] : [{st_title:{[Op.like]:`%${keyword}%`}}, { st_intro: { [Op.like]: `%${keyword}%` } }] }
-  });
-  res.send(result);
-  }catch (error) {
+  try {
+    let result = await db.Study.findAll({
+      where: {
+        [Op.or]: [
+          { st_title: { [Op.like]: `%${keyword}%` } },
+          { st_intro: { [Op.like]: `%${keyword}%` } },
+        ],
+      },
+    });
+    res.send(result);
+  } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
   }
-  
-}
+};
