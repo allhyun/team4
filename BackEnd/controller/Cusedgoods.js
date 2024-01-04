@@ -24,7 +24,7 @@ exports.getUsedgoods =async (req, res) => {
 exports.createusedGoods = async (req, res) => {
   try {
     
-    const { u_idx, buy_idx, ud_price, ud_title, ud_category, ud_image, ud_content, ud_region, viewcount, ud_date } = req.body;
+    const { u_idx, buy_idx, ud_price, ud_title, ud_category,  ud_content, ud_region, viewcount } = req.body;
     console.log(req.body);
     // const image=req.file.path;
 
@@ -40,10 +40,14 @@ exports.createusedGoods = async (req, res) => {
       ud_image,
       ud_content,
       ud_region,
-      viewcount,
-      ud_date
+      viewcount : 0,
     });
-    console.log(req.file);
+
+    // 조회수 증가 
+    await db.Usedproducts.increment('viewcount',{
+      by:1,
+      where:{ud_idx:newProducts.ud_idx}
+    })
     res.send(newProducts);
   }
     else {
