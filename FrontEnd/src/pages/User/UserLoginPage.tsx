@@ -16,9 +16,9 @@ interface LoginForm {
 }
 
 const UserMainPage = () => {
+  // firebase OAuth
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
-
   const handleAuth = () => {
     try {
       signInWithPopup(auth, provider).then((result) => {
@@ -34,8 +34,6 @@ const UserMainPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
   const dispatch = useDispatch();
-  const [isLogined, setIsLogined] = useState(false);
-  // const logined = useSelector((state)=>state)
 
   useEffect(() => {
     // console.log('sessionStorage', window.sessionStorage.getItem['persist:root:']);
@@ -70,8 +68,6 @@ const UserMainPage = () => {
         withCredentials: true,
       });
       if (response.data.result === true) {
-        dispatch(setStudyDetail(response.data));
-        // console.log('response.data', response.data.u_idx);
         dispatch(
           setUserInfo({
             uid: response.data.u_idx,
