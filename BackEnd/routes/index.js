@@ -5,6 +5,7 @@ const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
 const user = require('../controller/Cuser');
+const multer = require('multer');
 const { upload } = require('../multer/multerConfig');
 
 // router.all('/*', function (req, res, next) {
@@ -29,9 +30,7 @@ router.put('/board/list/:b_idx', boardController.modifyBoard);
 router.delete('/board/list/:b_idx', boardController.deleteBoard);
 
 // 스터디 리스트
-// router.get('/study', studyController.getStudies);
-// 스터디 리스트 페이지
-router.get('/study', studyController.getStudiesPage);
+router.get('/study', studyController.getStudies);
 // 스터디 등록
 router.post('/study/regist', studyController.createStudy);
 // 스터디 상세 조회
@@ -47,11 +46,15 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 router.get('/study/search', studyController.searchStudy);
 
 // 중고물품 리스트
-
-router.get('/usedgoods', usedgoodsController.getUsedgoods);
 router.get('/product', usedgoodsController.getUsedgoods);
+
 // 중고물품 판매하기
-router.post('/product/regist',upload.array('image',5), usedgoodsController.createusedGoods);
+const productupload = multer({ dest: 'uploads/' });
+router.post(
+  '/product/regist',
+  productupload.single('ud_image'),
+  usedgoodsController.createusedGoods
+);
 // 중고물품 상세 조회
 router.get('/product/detail/:ud_idx', usedgoodsController.detailusedGoods);
 // 중고물품 내용 수정
@@ -61,47 +64,46 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
-
 // 로그인 페이지
 router.get('/signin', userController.signin);
 
 // 회원가입 페이지
-router.get('/user/signup', userController.signup);
-router.post('/user/signup', userController.postSignup);
+router.get('/user/signup', user.signup);
+router.post('/user/signup', user.postSignup);
 
 // 아이디 중복확인
-router.post('/user/checkid', userController.checkId);
+router.post('/user/checkid', user.checkId);
 
 // 닉네임 중복확인
-router.post('/user/checknickname', userController.checkNickname);
+router.post('/user/checknickname', user.checkNickname);
 
 // 로그인 페이지
-router.get('/user/signin', userController.signin);
-router.post('/user/signin', userController.postSignin);
+router.get('/user/signin', user.signin);
+router.post('/user/signin', user.postSignin);
 
 // 아이디 찾기
-router.get('/user/findId', userController.findId);
-router.post('/user/findId', userController.postFindId);
+router.get('/user/findId', user.findId);
+router.post('/user/findId', user.postFindId);
 
 // 비밀번호 찾기
-router.get('/user/findPassword', userController.findPassword);
-router.post('/user/findPassword', userController.postFindPassword);
+router.get('/user/findPassword', user.findPassword);
+router.post('/user/findPassword', user.postFindPassword);
 
 // 비밀번호 변경페이지
-router.get('/user/changePassword', userController.changePassword);
-router.post('/user/changePassword', userController.updatePassword);
+router.get('/user/changePassword', user.changePassword);
+router.post('/user/changePassword', user.updatePassword);
 
 // 로그아웃
 router.get('/user/logout', userController.logout);
 
 // 마이페이지
-router.get('/user/mypage', userController.mypage);
+router.get('/user/mypage', user.mypage);
 
 // 마이페이지 닉네임수정
-router.patch('/user/updateMypageNickname', userController.updateMypageNickname);
+router.patch('/user/updateMypageNickname', user.updateMypageNickname);
 
 // 마이페이지 비밀번호 수정
-router.patch('/user/updateMypagePassword', userController.updateMypagePassword);
+router.patch('/user/updateMypagePassword', user.updateMypagePassword);
 
 // 마이페이지 회원 탈퇴
 router.delete('/user/deleteAccount', userController.deleteAccount);
@@ -109,7 +111,7 @@ router.delete('/user/deleteAccount', userController.deleteAccount);
 router.post(
   '/user/upload',
   upload.single('image'),
-  userController.uploadImage,
+  user.uploadImage,
   (error, req, res, next) => {
     if (error) {
       console.error(error);
@@ -128,17 +130,7 @@ router.get('/chatRoom', chatRoom.renderRooms);
 router.get('/chatRoom/:r_idx', chatRoom.renderRoom);
 // 방에 입장하기
 router.post('/chatRoom/:r_idx', chatRoom.enterRoom);
-// 이 방나가기 삭제하기 고민좀...해야할듯?
 // 방 나가기
 router.delete('/chatRoom/:r_idx', chatRoom.outRoom);
 
-// 방 삭제하기
-router.delete('/deleteRoom', chatRoom.deleteChatRoom);
-
-// 채팅 파트
-// 채팅 전송
-router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
-// 채팅방 내용조회
-router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
-// router.get('/chatRoom/:r_idx/chat/:c_content', chatRoom.searchMsg);
 module.exports = router;
