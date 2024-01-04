@@ -2,13 +2,9 @@ const { User } = require('../model');
 const crypto = require('crypto');
 
 // 홈화면 랜더링
-exports.index = (req, res) => {
-  res.render('index');
-};
+exports.index = (req, res) => {};
 // 회원가입 페이지 랜더링
-exports.signup = (req, res) => {
-  res.render('./user/signup');
-};
+exports.signup = (req, res) => {};
 // 회원가입 페이지 랜더링
 exports.postSignup = async (req, res) => {
   const salt = crypto.randomBytes(16).toString('base64');
@@ -132,10 +128,8 @@ exports.postFindId = (req, res) => {
   });
 };
 
-// 비밀번호 찾기 페이지 랜더링
-exports.findPassword = (req, res) => {
-  res.render('./user/findPassword');
-};
+// 비밀번호 찾기
+exports.findPassword = (req, res) => {};
 // 비밀번호 찾기 검증
 exports.postFindPassword = async (req, res) => {
   const { userid, email } = req.body;
@@ -149,10 +143,9 @@ exports.postFindPassword = async (req, res) => {
   res.json({ success: valid });
 };
 
-// 비밀번호 변경 페이지 랜더링
-exports.changePassword = (req, res) => {
-  res.render('./user/changePassword');
-};
+// 비밀번호 변경
+exports.changePassword = (req, res) => {};
+
 // 비밀번호 변경 암호화
 exports.updatePassword = async (req, res) => {
   const { userid, changePassword } = req.body;
@@ -182,11 +175,11 @@ exports.updatePassword = async (req, res) => {
 };
 
 // 마이페이지 랜더링
-exports.mypage = (req, res) => {
-  res.render('./user/mypage', {
-    user: req.session.user,
-    isAuthenticated: req.session.isAuthenticated,
-  });
+exports.mypage = async (req, res) => {
+  const u_idx = req.session.user;
+  const user = await User.findOne({ where: { u_idx: u_idx } });
+  console.log(user);
+  // res.render('./user/mypage', { data: user });
 };
 
 // 닉네임 변경 컨트롤러
@@ -309,7 +302,7 @@ exports.uploadImage = async (req, res) => {
     const userId = req.session.user.u_idx;
 
     // 사용자를 찾습니다.
-    const user = await User.findOne({ where: { id: userId } });
+    const user = await User.findOne({ where: { u_idx: userId } });
     if (!user) throw new Error('User not found');
 
     // 이미지 경로를 설정합니다.

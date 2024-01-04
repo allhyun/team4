@@ -47,6 +47,8 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 router.get('/study/search', studyController.searchStudy);
 
 // 중고물품 리스트
+
+router.get('/usedgoods', usedgoodsController.getUsedgoods);
 router.get('/product', usedgoodsController.getUsedgoods);
 // 중고물품 판매하기
 router.post('/product/regist',upload.array('image',5), usedgoodsController.createusedGoods);
@@ -59,46 +61,47 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
+
 // 로그인 페이지
 router.get('/signin', userController.signin);
 
 // 회원가입 페이지
-router.get('/user/signup', user.signup);
-router.post('/user/signup', user.postSignup);
+router.get('/user/signup', userController.signup);
+router.post('/user/signup', userController.postSignup);
 
 // 아이디 중복확인
-router.post('/user/checkid', user.checkId);
+router.post('/user/checkid', userController.checkId);
 
 // 닉네임 중복확인
-router.post('/user/checknickname', user.checkNickname);
+router.post('/user/checknickname', userController.checkNickname);
 
 // 로그인 페이지
-router.get('/user/signin', user.signin);
-router.post('/user/signin', user.postSignin);
+router.get('/user/signin', userController.signin);
+router.post('/user/signin', userController.postSignin);
 
 // 아이디 찾기
-router.get('/user/findId', user.findId);
-router.post('/user/findId', user.postFindId);
+router.get('/user/findId', userController.findId);
+router.post('/user/findId', userController.postFindId);
 
 // 비밀번호 찾기
-router.get('/user/findPassword', user.findPassword);
-router.post('/user/findPassword', user.postFindPassword);
+router.get('/user/findPassword', userController.findPassword);
+router.post('/user/findPassword', userController.postFindPassword);
 
 // 비밀번호 변경페이지
-router.get('/user/changePassword', user.changePassword);
-router.post('/user/changePassword', user.updatePassword);
+router.get('/user/changePassword', userController.changePassword);
+router.post('/user/changePassword', userController.updatePassword);
 
 // 로그아웃
 router.get('/user/logout', userController.logout);
 
 // 마이페이지
-router.get('/user/mypage', user.mypage);
+router.get('/user/mypage', userController.mypage);
 
 // 마이페이지 닉네임수정
-router.patch('/user/updateMypageNickname', user.updateMypageNickname);
+router.patch('/user/updateMypageNickname', userController.updateMypageNickname);
 
 // 마이페이지 비밀번호 수정
-router.patch('/user/updateMypagePassword', user.updateMypagePassword);
+router.patch('/user/updateMypagePassword', userController.updateMypagePassword);
 
 // 마이페이지 회원 탈퇴
 router.delete('/user/deleteAccount', userController.deleteAccount);
@@ -106,7 +109,7 @@ router.delete('/user/deleteAccount', userController.deleteAccount);
 router.post(
   '/user/upload',
   upload.single('image'),
-  user.uploadImage,
+  userController.uploadImage,
   (error, req, res, next) => {
     if (error) {
       console.error(error);
