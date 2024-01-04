@@ -43,6 +43,7 @@ function UsedProducts(Sequelize, DataTypes) {
       viewcount: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
       ud_date: {
         type: DataTypes.DATE,
