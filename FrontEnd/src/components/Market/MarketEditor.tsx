@@ -186,8 +186,9 @@ const MarketEditor: React.FC = () => {
     if (!validateFields()) {
       return; // 유효성 검사 실패 시 제출 중단
     }
-
+    // 데이터 서버에 전송
     const formData = new FormData();
+
     // 이미지 추가 (있는 경우에만)
     if (images.length > 0) {
       formData.append('ud_image', images[0]);
@@ -197,11 +198,11 @@ const MarketEditor: React.FC = () => {
     }
     formData.append('u_idx', data.u_idx.toString());
     formData.append('buy_idx', data.buy_idx.toString());
-    formData.append('ud_price', data.ud_price?.toString() ?? '');
     formData.append('ud_title', data.ud_title);
     formData.append('ud_category', data.ud_category);
-    formData.append('ud_content', data.ud_content);
     formData.append('ud_region', data.ud_region);
+    formData.append('ud_price', data.ud_price?.toString() ?? '');
+    formData.append('ud_content', data.ud_content);
     formData.append('viewcount', data.viewcount.toString());
     formData.append('ud_date', new Date().toISOString()); // 현재 시간 설정
     // FormData 로깅
@@ -282,6 +283,7 @@ const MarketEditor: React.FC = () => {
           거래지역<span style={{ color: '#fcbaba' }}>＊</span>
           <div className="region_container">
             <input
+              placeholder="AA시 BB구 CC동"
               value={data.ud_region}
               type="text"
               id="market-region"

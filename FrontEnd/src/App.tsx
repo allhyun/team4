@@ -14,6 +14,7 @@ import UserSignupPage from './pages/User/UserSignupPage';
 import UserInfoPage from './pages/User/UserInfoPage';
 import UserFindPage from './pages/User/UserFindPage';
 import StudyModify from './components/Study/StudyModify';
+import StudySearchPage from './pages/Study/StudySearchPage';
 
 function App() {
   return (
@@ -37,8 +38,12 @@ function App() {
           {/* 스터디게시판 */}
           <Route path="/study" element={<StudyMainPage />}></Route>
           <Route path="/study/edit" element={<StudyEditPage />}></Route>
-          <Route path="/study/detail/:st_idx" element={<StudyDetailPage />}></Route>
+          <Route
+            path="/study/detail/:st_idx"
+            element={<StudyDetailPage />}
+          ></Route>
           <Route path="/study/modify" element={<StudyModify />}></Route>
+          <Route path="/study/search" element={<StudySearchPage />}></Route>
         </Routes>
       </Main>
     </BrowserRouter>

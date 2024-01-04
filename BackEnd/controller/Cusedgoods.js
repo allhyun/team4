@@ -14,19 +14,17 @@ exports.getUsedgoods =async (req, res) => {
   }
 }
 
-// 중고물품 판매하기 등록
-// const multer = require('../multer/multerConfig');
-
-
+// 중고물품 판매등록
 exports.createusedGoods = async (req, res) => {
   try {
     
     const { u_idx, buy_idx, ud_price, ud_title, ud_category, ud_image, ud_content, ud_region, viewcount, ud_date } = req.body;
     console.log(req.body);
+    // const image=req.file.path;
 
-    if (req.files) {
-      const ud_image = req.file.filename; // 이미지 파일 이름을 저장합니다.
-      
+    if (req.files && req.files.length >0) {
+      // const ud_images = req.files.map(file => file.filename); // 이미지 파일 이름을 저장합니다.
+      const ud_image = req.files[0].filename;
     const newProducts = await db.Usedproducts.create({
       u_idx,
       buy_idx,
@@ -55,7 +53,7 @@ exports.createusedGoods = async (req, res) => {
 // 중고물품 상세 조회
 exports.detailusedGoods = async (req, res) => {
   const usedGoodsId = req.params.ud_idx;
-  console.log(usedGoodsId); // 이 부분 추가
+  console.log(usedGoodsId);
   try {
     const product = await db.Usedproducts.findByPk(usedGoodsId);
     if (!product) {
@@ -108,7 +106,7 @@ exports.searchusedGoods = async(req,res) => {
 
   try{let result = await db.Usedproducts.findAll({
     // 카테고리 검색은..?고민해보자..
-    where: { [Op.or] : [{ud_title:{[Op.like]:`%${keyword}%`}}, { ud_content: { [Op.like]: `%${keyword}%` } }] }
+    where: { [Op.or] : [{ud_title:{[Op.like]:`%${keyword}%`}}, { ud_content: { [Op.like]: `%${keyword}%` } },{ud_category:{[Op.like]:`%${keyword}%`}}] }
   });
   res.send(result);
   }catch (error) {
