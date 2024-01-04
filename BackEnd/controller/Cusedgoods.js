@@ -4,7 +4,13 @@ const { Op } = require('sequelize');
 //중고물품 리스트
 exports.getUsedgoods =async (req, res) => {
   try{
-    const usedgoods = await db.Usedproducts.findAll();
+    const usedgoods = await db.Usedproducts.findAll(
+     { where: {
+        ud_date: {
+          [Op.lt]: new Date(),
+        },
+      }, order: [['ud_date', 'DESC']]}
+    );
     console.log(usedgoods);
 
     res.send(usedgoods)
