@@ -36,7 +36,11 @@ router.get('/study/search', studyController.searchStudy);
 // 중고물품 리스트
 router.get('/product', usedgoodsController.getUsedgoods);
 // 중고물품 판매하기
-router.post('/product/regist',upload.array('image',5), usedgoodsController.createusedGoods);
+router.post(
+  '/product/regist',
+  upload.array('ud_image', 5),
+  usedgoodsController.createusedGoods
+);
 // 중고물품 상세 조회
 router.get('/product/detail/:ud_idx', usedgoodsController.detailusedGoods);
 // 중고물품 내용 수정
@@ -45,7 +49,6 @@ router.put('/product/detail/:ud_idx', usedgoodsController.modifyusedGoods);
 router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
-
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
