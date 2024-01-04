@@ -23,7 +23,8 @@ const MarketThumbnailPost = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:8000/product/regist'
+          `${process.env.REACT_APP_HOST}/product/regist`
+          // 'http://localhost:8000/product/regist'
         );
         setPosts(response.data);
       } catch (error) {

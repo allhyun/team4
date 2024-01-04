@@ -211,7 +211,8 @@ const MarketEditor: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/product/regist',
+        // 'http://localhost:8000/product/regist'
+        `${process.env.REACT_APP_HOST}/product/regist`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
