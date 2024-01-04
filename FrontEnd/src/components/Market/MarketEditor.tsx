@@ -81,11 +81,32 @@ const MarketEditor: React.FC = () => {
   // 2. 이미지 등록 버튼 오른쪽에 미리보기 사진들 -> 사진 위에 x자 버튼 생성 후 x버튼 누르면 삭제되게 구현
   // 3. 이미지 등록 박스에 올린 이미지 갯수 업데이트(삭제된 이미지갯수도 반영 필요)
 
-  // 파일 선택 핸들러
+  // 이미지 선택 핸들러
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImages([e.target.files[0]]);
+      // 새로 선택된 파일들을 기존의 파일 배열에 추가
+      const newFiles = Array.from(e.target.files);
+      setImages((prevImages) => [...prevImages, ...newFiles]);
+
+      // 이미지 미리보기 URL 생성 및 추가
+      const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
+      setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
+
+      // 이미지 수 업데이트
+      setImageLength((prevLength) => prevLength + newFiles.length);
     }
+  };
+
+  // 이미지 제거 핸들러 (옵션)
+  const removeImage = (index: number) => {
+    // 이미지 배열에서 해당 인덱스의 이미지 제거
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+
+    // 미리보기 URL 배열에서도 해당 인덱스의 URL 제거
+    setPreviewUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
+
+    // 이미지 수 업데이트
+    setImageLength((prevLength) => prevLength - 1);
   };
 
   // 공통 입력 변경 핸들러 ------------------------------------------------------------------------------------------
@@ -189,13 +210,9 @@ const MarketEditor: React.FC = () => {
     // 데이터 서버에 전송
     const formData = new FormData();
 
-    // 이미지 추가 (있는 경우에만)
-    if (images.length > 0) {
-      formData.append('ud_image', images[0]);
-    } else {
-      // 기본 이미지 경로를 서버가 처리할 수 있는 방식으로 추가 (예: URL 혹은 서버에 저장된 파일 이름)
-      formData.append('ud_image', '../../public/img/jordy.gif'); // 예시, 실제 경로로 변경 필요
-    }
+    // 모든 이미지 파일을 'ud_image' 필드로 추가
+    images.forEach((image) => formData.append('ud_image', image));
+
     formData.append('u_idx', data.u_idx.toString());
     formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
