@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import '../../styles/pages/_user_login.scss';
 interface SignupForm {
   userId: string;
   userPw: string;
+  samePwCheck: string;
   userNickname: string;
   userEmail: string;
 }
@@ -16,17 +17,20 @@ const UserSignupPage = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
+  const [samePwCheck, setSamePwCheck] = useState<string>('');
   const [userNickname, setUserNickname] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
   const [isNicknameDuplicated, setIsNicknameDuplicated] = useState<Boolean>(false);
+
+  const inputRef = useRef<any>();
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignupForm>({
     mode: 'onSubmit',
     defaultValues: {
@@ -43,6 +47,9 @@ const UserSignupPage = () => {
       case 'userPw':
         setUserPw(event.currentTarget.value);
         break;
+      case 'samePwCheck':
+        setSamePwCheck(event.currentTarget.value);
+        break;
       case 'userNickname':
         setUserNickname(event.currentTarget.value);
         break;
@@ -54,14 +61,14 @@ const UserSignupPage = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<SignupForm> = async (data: SignupForm) => {
+  const onSubmit: SubmitHandler<SignupForm> = async (inputData: SignupForm) => {
     try {
-      console.log('useForm 성공', data);
+      console.log('useForm 성공', inputData);
       const user = {
-        userid: data.userId,
-        password: data.userPw,
-        nickname: data.userNickname,
-        email: data.userEmail,
+        userid: inputData.userId,
+        password: inputData.userPw,
+        nickname: inputData.userNickname,
+        email: inputData.userEmail,
       };
 
       const checkedId = await checkDuplicated('checkid', { userid: user.userid }).then(
@@ -118,6 +125,7 @@ const UserSignupPage = () => {
                   message: '잘못된 형식입니다.',
                 },
               })}
+              ref={inputRef}
               name="userId"
               onChange={onUserInfoHandler}
               // onBlur={onBlurHandler}
@@ -142,6 +150,24 @@ const UserSignupPage = () => {
               })}
               autoComplete="off"
               name="userPw"
+              onChange={onUserInfoHandler}
+            />
+            <p className="alert">{errors.userPw?.message}</p>
+          </div>
+          <div className="input-wrap">
+            <input
+              type="password"
+              placeholder="password"
+              value={userPw}
+              {...register('samePwCheck', {
+                required: '같은 password를 입력해주세요.',
+                // pattern: {
+                //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                //   message: '잘못된 형식입니다.',
+                // },
+              })}
+              autoComplete="off"
+              name="samePwCheck"
               onChange={onUserInfoHandler}
             />
             <p className="alert">{errors.userPw?.message}</p>
@@ -173,7 +199,7 @@ const UserSignupPage = () => {
               placeholder="e-mail"
               value={userEmail}
               {...register('userEmail', {
-                required: '닉네임을 입력해주세요.',
+                required: '이메일을 입력해주세요.',
                 // pattern: {
                 //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
                 //   message: '잘못된 형식입니다.',
@@ -185,7 +211,9 @@ const UserSignupPage = () => {
             <p className="alert">{errors.userEmail?.message}</p>
           </div>
           <div className="input-wrap">
-            <button type="submit">회원가입</button>
+            <button type="submit" disabled={isSubmitting}>
+              회원가입
+            </button>
           </div>
         </form>
       </div>

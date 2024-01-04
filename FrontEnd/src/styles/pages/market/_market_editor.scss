@@ -41,8 +41,11 @@ section.market-textarea {
   }
   div {
     &.textarea-length {
-      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding-right: 3px;
+      margin: -6px 0 15px 0;
     }
   }
 }
@@ -67,7 +70,10 @@ div.img_container {
       height: 40px;
     }
     div {
-      margin-top: 10px;
+      margin-top: 7px;
+    }
+    .img-length {
+      margin-top: 0px;
     }
   }
 }
@@ -117,4 +123,19 @@ button.marketeditor-regi {
   @include main-button;
   margin-right: 20px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+  #main {
+    width: 95%;
+    .market_container {
+      width: 100%;
+    }
+  }
+}
+
+// 에러 메시지
+.error-message {
+  @include error-message;
+  padding: 0 3px 0 3px;
 }

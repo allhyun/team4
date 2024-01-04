@@ -11,10 +11,10 @@
 
 // 레이아웃이라 건들면 다 어글러집니다!
 #main {
-  max-width: 2000px;
+  width: 100%;
   min-height: 100vh;
   margin: 0;
-  padding: 75px 75px 0 75px;
+  padding: 75px 120px 0 120px;
 }
 
 // 레이아웃이라 건들면 다 어글러집니다!
@@ -25,7 +25,7 @@
   width: 75px;
   height: 100%;
   overflow-y: auto;
-  z-index: 10000;
+  z-index: 9000;
 }
 
 // 반응형 -> 240101 메모: 크기 작아지면 헤더에
@@ -64,7 +64,7 @@
   }
 
   #main {
-    margin: 60px 30px 30px 30px; // 헤더와 사이드바 아래에 위치하도록 상단 마진 조정
-    padding: 0;
+    margin: 120px 10px 0 10px;
+    padding: 0px 20px 0 20px;
   }
 }
