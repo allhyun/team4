@@ -12,7 +12,7 @@ interface DataType {
   buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
   ud_price: number | null; // 가격
   ud_title: string; // 상품명
-  ud_category: string; // 카테고리
+  ud_category: number | null; // 카테고리
   ud_image: string | null; // 상품사진
   ud_content: string; // 상품설명
   ud_region: string; // 거래지역
@@ -29,14 +29,34 @@ interface ErrorMessages {
   ud_image: string;
 }
 
+// 카테고리 숫자 변환 함수 타입 정의
+interface CategoryMap {
+  [key: string]: number;
+}
+
 const MarketEditor: React.FC = () => {
+  // 카테고리 문자열을 숫자 ID로 매핑하는 함수
+  const getCategoryID = (categoryName: string): number | null => {
+    const categoryMap: CategoryMap = {
+      도서: 1,
+      전자기기: 2,
+      문구: 3,
+      '티켓/쿠폰': 4,
+      생활: 5,
+      취미: 6,
+      무료나눔: 7,
+      기타: 8,
+    };
+    // 카테고리 이름이 없으면 null 반환
+    return categoryMap[categoryName] || null;
+  };
   // 데이터 초기값
   const [data, setData] = useState<DataType>({
     u_idx: 1,
     buy_idx: 1,
     ud_price: null,
     ud_title: '',
-    ud_category: '',
+    ud_category: null,
     ud_image: '',
     ud_content: '',
     ud_region: '',
@@ -175,12 +195,13 @@ const MarketEditor: React.FC = () => {
       setErrorMessages({ ...errorMessages, [name]: '' });
     }
 
-    console.log('변경 후 예상되는 데이터 상태:', { ...data, [name]: value });
+    // console.log('변경 후 예상되는 데이터 상태:', { ...data, [name]: value });
   };
 
   // 카테고리 제출 핸들러
-  const handleCategoryChange = (category: string) => {
-    setData({ ...data, ud_category: category });
+  const handleCategoryChange = (categoryName: string) => {
+    const categoryID = getCategoryID(categoryName);
+    setData({ ...data, ud_category: categoryID });
 
     // 카테고리 선택 시 관련 오류 메시지 제거
     if (errorMessages.ud_category) {
@@ -229,7 +250,7 @@ const MarketEditor: React.FC = () => {
   // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('제출 전 데이터 상태:', data);
+    // console.log('제출 전 데이터 상태:', data);
     if (!validateFields()) {
       return; // 유효성 검사 실패 시 제출 중단
     }
@@ -242,32 +263,32 @@ const MarketEditor: React.FC = () => {
     formData.append('u_idx', data.u_idx.toString());
     formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
-    formData.append('ud_category', data.ud_category);
+    formData.append('ud_category', data.ud_category?.toString() ?? '');
     formData.append('ud_region', data.ud_region);
     formData.append('ud_price', data.ud_price?.toString() ?? '');
     formData.append('ud_content', data.ud_content);
     formData.append('viewcount', data.viewcount.toString());
     formData.append('ud_date', new Date().toISOString()); // 현재 시간 설정
     // FormData 로깅
-    for (let key of formData.keys()) {
-      console.log(key, formData.get(key));
-    }
+    // for (let key of formData.keys()) {
+    //   console.log(key, formData.get(key));
+    // }
 
     try {
       const response = await axios.post(
-        // 'http://localhost:8000/product/regist'
-        `${process.env.REACT_APP_HOST}/product/regist`,
+        'http://localhost:8000/product/regist',
+        // `${process.env.REACT_APP_HOST}/product/regist`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      console.log('데이터 잘 보내지는지?:', response.data);
+      // console.log('데이터 잘 보내지는지?:', response.data);
       navigate('/market');
     } catch (error) {
-      console.error('게시글 등록 에러:', error);
+      // console.error('게시글 등록 에러:', error);
     }
-    console.log('FormData 객체의 상태 출력:', formData);
+    // console.log('FormData 객체의 상태 출력:', formData);
   };
 
   return (

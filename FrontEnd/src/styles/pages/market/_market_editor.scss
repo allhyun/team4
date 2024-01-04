@@ -1,3 +1,10 @@
+div#marketcontainer {
+  @include container;
+  margin: 100px 0 50px 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
 // 입력창들간 간격조절
 section.market-img,
 section.market-title,
@@ -110,8 +117,8 @@ ul.image-previews-list {
     margin-bottom: 10px;
     img {
       @include market-s-box;
-      width: 130px;
-      height: 130px;
+      width: 100%;
+      height: 100%;
       margin-left: 10px;
     }
     button {
@@ -120,7 +127,7 @@ ul.image-previews-list {
       right: -105px;
       border: none;
       background-color: transparent;
-      color: hsla(0, 0%, 22%, 0.4);
+      color: hsla(0, 0%, 45%, 0.7);
       cursor: pointer;
       svg {
         width: 1.5em;
