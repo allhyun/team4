@@ -111,7 +111,7 @@ const StudyModify = () => {
     editorRef.current?.getInstance().setHTML(htmlString);
   }, []);
 
-  출처: https: return (
+  return (
     <>
       <StudyHeader />
       <div className="study-modify-container">
