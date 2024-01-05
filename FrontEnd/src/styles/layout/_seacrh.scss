@@ -4,6 +4,7 @@
   form.search_inner {
     @include s-box;
     @include flex-center;
+    backdrop-filter: blur(30px);
     width: 90%;
     height: 2.2rem;
 

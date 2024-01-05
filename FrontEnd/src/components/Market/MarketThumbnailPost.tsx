@@ -91,27 +91,29 @@ const MarketThumbnailPost = (props: propsType) => {
 
   return (
     <div id="market-main-container" className="market-main-container">
-      {postList &&
-        postList.map((data) => (
-          <div
-            key={data.u_idx}
-            className="thum"
-            onClick={() => goDetailPage(`${data.ud_idx}`)}
-          >
-            <div className="img-container">
-              <img
-                src={`http://localhost:8000/static/userImg/${data.ud_image}`}
-                alt={`preview-${data.ud_idx}`}
-              />
+      <div id="market-main-box" className="market-main-box">
+        {postList &&
+          postList.map((data) => (
+            <div
+              key={data.u_idx}
+              className="thum"
+              onClick={() => goDetailPage(`${data.ud_idx}`)}
+            >
+              <div className="img-container">
+                <img
+                  src={`http://localhost:8000/static/userImg/${data.ud_image}`}
+                  alt={`preview-${data.ud_idx}`}
+                />
+              </div>
+              <p className="title">{truncateTitle(data.ud_title, 14)}</p>
+              <p className="price">{formatPrice(data.ud_price)} 원</p>
+              <div className="redgion-date-container">
+                <p>{data.ud_region}</p>
+                <p>{timeSince(data.ud_date)}</p>
+              </div>
             </div>
-            <p className="title">{truncateTitle(data.ud_title, 14)}</p>
-            <p className="price">{formatPrice(data.ud_price)} 원</p>
-            <div className="redgion-date-container">
-              <p>{data.ud_region}</p>
-              <p>{timeSince(data.ud_date)}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+      </div>
     </div>
   );
 };

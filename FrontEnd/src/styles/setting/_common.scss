@@ -1,20 +1,35 @@
 // 페이지 전체 공통적용할 스타일 넣는 부분
 body {
   width: 100vw;
-  height: 100vh;
-  background: linear-gradient(217deg, #6b2d9f, rgba(255, 0, 0, 0)),
-    linear-gradient(127deg, #29347d, rgba(255, 0, 0, 0)),
-    linear-gradient(336deg, #ecc152, rgba(0, 0, 255, 0));
-
+  min-height: 100%;
   color: var(--main-white);
   font-family: var(--mainfont-SUIT);
   font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
+  position: relative; /* 추가 */
+  z-index: 1; /* 추가 */
+
+  // 배경 그러데이션
+  background: linear-gradient(17deg, #6b2d9f, rgba(255, 0, 0, 0)),
+    linear-gradient(127deg, #29347d, rgba(255, 0, 0, 0)),
+    linear-gradient(336deg, #ecc152, rgba(0, 0, 255, 0));
 
   // 아래는 임시 배경 적용시 삭제 예정
-  background-size: 200% 200%;
+  background-size: 500% 500%;
   animation: moveGrad 10s ease infinite;
-}
 
-// 아래는 임시 배경 적용시 삭제 예정
+  //  grian 추가
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 0;
+    width: 100%;
+    min-height: auto;
+    opacity: 0.5;
+    background-repeat: repeat;
+    background-position: center;
+    background-image: url(https://grainy-gradients.vercel.app/noise.svg);
+    z-index: -1;
+  }
+}
