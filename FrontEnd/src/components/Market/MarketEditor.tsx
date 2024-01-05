@@ -5,6 +5,7 @@ import { MdCancel } from 'react-icons/md'; // 취소 아이콘
 import MarketCategory from './MarketCategory';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import MarketRegion from './MarketRegion';
 
 // 데이터 타입
 interface DataType {
@@ -35,7 +36,21 @@ interface CategoryMap {
 }
 
 const MarketEditor: React.FC = () => {
-  // 카테고리 문자열을 숫자 ID로 매핑하는 함수
+  // 데이터 초기값
+  const [data, setData] = useState<DataType>({
+    u_idx: 1,
+    buy_idx: 1,
+    ud_price: null,
+    ud_title: '',
+    ud_category: null,
+    ud_image: '',
+    ud_content: '',
+    ud_region: '',
+    viewcount: 0,
+    ud_date: '',
+  });
+
+  // 카테고리 문자열을 숫자 ID로 매핑
   const getCategoryID = (categoryName: string): number | null => {
     const categoryMap: CategoryMap = {
       도서: 1,
@@ -50,19 +65,6 @@ const MarketEditor: React.FC = () => {
     // 카테고리 이름이 없으면 null 반환
     return categoryMap[categoryName] || null;
   };
-  // 데이터 초기값
-  const [data, setData] = useState<DataType>({
-    u_idx: 1,
-    buy_idx: 1,
-    ud_price: null,
-    ud_title: '',
-    ud_category: null,
-    ud_image: '',
-    ud_content: '',
-    ud_region: '',
-    viewcount: 0,
-    ud_date: '',
-  });
 
   // 이미지
   const [images, setImages] = useState<File[]>([]);
@@ -96,11 +98,17 @@ const MarketEditor: React.FC = () => {
   // 카테고리 컨테이너에 대한 참조 생성
   const marketCategoryRef = useRef<HTMLDivElement>(null);
 
+  // MarketRegion 컴포넌트로부터 지역값 변경을 처리
+  const handleRegionChange = (newRegion: string) => {
+    setData({ ...data, ud_region: newRegion });
+  };
+
   // 이미지창 관련 ------------------------------------------------------------------------------------------
 
   // 1. 이미지 5개까지만 제한
   // 2. 이미지 등록 버튼 오른쪽에 미리보기 사진들 -> 사진 위에 x자 버튼 생성 후 x버튼 누르면 삭제되게 구현
   // 3. 이미지 등록 박스에 올린 이미지 갯수 업데이트(삭제된 이미지갯수도 반영 필요)
+  // 4. 이미지 확장자 image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif 만 가능하게 설정.
 
   // 이미지 선택 핸들러
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -302,6 +310,7 @@ const MarketEditor: React.FC = () => {
               type="file"
               id="market-img"
               name="ud_image"
+              accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
               onChange={handleFileChange}
             />
             <label htmlFor="market-img">
@@ -351,14 +360,9 @@ const MarketEditor: React.FC = () => {
         <section className="market-region">
           거래지역<span style={{ color: '#fcbaba' }}>＊</span>
           <div className="region_container">
-            <input
-              placeholder="AA시 BB구 CC동"
+            <MarketRegion
               value={data.ud_region}
-              type="text"
-              id="market-region"
-              ref={regionRef}
-              name="ud_region"
-              onChange={handleInputChange}
+              onChange={handleRegionChange}
             />
             {errorMessages.ud_region && (
               <p className="error-message">{errorMessages.ud_region}</p>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // 서버에서 넘어오는 데이터 타입
 interface DataType {
+  ud_idx: number;
   u_idx: number; // 유저 아이디
   buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
   ud_price: number | null; // 가격
@@ -47,6 +48,12 @@ const MarketThumbnailPost = (props: propsType) => {
     }
   };
 
+  // 가격 변환 함수
+  const formatPrice = (price: number | null): string => {
+    if (price === null) return '가격 미정';
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -74,6 +81,14 @@ const MarketThumbnailPost = (props: propsType) => {
     navigate(`/product/detail/${index}`);
   }
 
+  // 상품명 글자수 제한
+  const truncateTitle = (title: string, maxLength: number): string => {
+    if (title.length > maxLength) {
+      return title.substring(0, maxLength) + '…';
+    }
+    return title;
+  };
+
   return (
     <div id="market-main-container" className="market-main-container">
       {postList &&
@@ -81,14 +96,16 @@ const MarketThumbnailPost = (props: propsType) => {
           <div
             key={data.u_idx}
             className="thum"
-            onClick={() => goDetailPage(`${data.u_idx}`)}
+            onClick={() => goDetailPage(`${data.ud_idx}`)}
           >
-            <img
-              src={data.ud_image ? data.ud_image : '../../public/img/jordy.gif'}
-              alt={`preview-${data.u_idx}`}
-            />
-            <h3 className="title">{data.ud_title}</h3>
-            <h2 className="price">{data.ud_price} 원</h2>
+            <div className="img-container">
+              <img
+                src={`http://localhost:8000/static/userImg/${data.ud_image}`}
+                alt={`preview-${data.ud_idx}`}
+              />
+            </div>
+            <p className="title">{truncateTitle(data.ud_title, 14)}</p>
+            <p className="price">{formatPrice(data.ud_price)} 원</p>
             <div className="redgion-date-container">
               <p>{data.ud_region}</p>
               <p>{timeSince(data.ud_date)}</p>
