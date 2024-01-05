@@ -1,6 +1,6 @@
 import React, { ChangeEvent, SyntheticEvent, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import '../../styles/pages/_user_login.scss';
@@ -8,7 +8,6 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
 import { setUserInfo } from '../../store/user.slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { setStudyDetail } from '../../store/modifyReducer';
 
 interface LoginForm {
   userId: string;
@@ -16,9 +15,9 @@ interface LoginForm {
 }
 
 const UserMainPage = () => {
+  // firebase OAuth
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
-
   const handleAuth = () => {
     try {
       signInWithPopup(auth, provider).then((result) => {
@@ -30,15 +29,20 @@ const UserMainPage = () => {
   };
 
   const navigate = useNavigate();
-  const location = useLocation();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
   const dispatch = useDispatch();
-  const [isLogined, setIsLogined] = useState(false);
-  // const logined = useSelector((state)=>state)
 
   useEffect(() => {
+    // 쿠키 삭제 테스트
     // console.log('sessionStorage', window.sessionStorage.getItem['persist:root:']);
+  }, []);
+
+  // 중복 로그인 방지
+  // 로그인 페이지 들어올 시 리덕스에 로그인 유저 정보가 있을 시 강제로 메인화면 이동
+  const loginUser = useSelector((state: any) => state.user.user.uid);
+  useEffect(() => {
+    if (loginUser !== null) navigate('/');
   }, []);
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
@@ -70,8 +74,6 @@ const UserMainPage = () => {
         withCredentials: true,
       });
       if (response.data.result === true) {
-        dispatch(setStudyDetail(response.data));
-        // console.log('response.data', response.data.u_idx);
         dispatch(
           setUserInfo({
             uid: response.data.u_idx,

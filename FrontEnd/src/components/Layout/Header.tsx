@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import '../../styles/style.scss';
+import { removeUserInfo } from '../../store/user.slice';
 
 export default function Header() {
   const location = useLocation();
@@ -10,7 +11,17 @@ export default function Header() {
     return location.pathname === path ? 'active' : '';
   };
 
-  const isLogined = useSelector((state: any) => console.log(state.user.user));
+  const [isLogined, setIsLogined] = useState(false);
+  const loginUser: any = useSelector((state: any) => state.user.user.uid);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(removeUserInfo());
+    // 쿠키 삭제 추가 예정
+  };
+
+  useEffect(() => {
+    setIsLogined(loginUser !== null);
+  }, [loginUser]);
 
   return (
     <>
@@ -20,8 +31,14 @@ export default function Header() {
             <li className={getActiveClass('/')}>
               <Link to="/">dev.join()</Link>
             </li>
-            <li className={getActiveClass('/login')}>
-              <Link to="/login">로그인</Link>
+            <li className={getActiveClass('/login')} onClick={logoutHandler}>
+              {isLogined ? (
+                <Link to="/" onClick={logoutHandler}>
+                  로그아웃
+                </Link>
+              ) : (
+                <Link to="/login">로그인</Link>
+              )}
             </li>
           </ul>
         </nav>
