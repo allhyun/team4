@@ -11,7 +11,7 @@ interface DataType {
   ud_price: number | null; // 가격
   ud_title: string; // 상품명
   ud_category: number | null; // 카테고리
-  ud_image: string | null; // 상품사진
+  ud_image: string | string[] | null; // 상품사진
   ud_content: string; // 상품설명
   ud_region: string; // 거래지역
   viewcount: number; // 조회수
@@ -54,33 +54,6 @@ const MarketThumbnailPost = (props: propsType) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const res = await axios.get('http://localhost:8000/product', {
-          params: { page: data },
-        });
-
-        // console.log('서버 응답:', res.data); // 서버로부터 받은 전체 응답 확인
-        if (res.data.usedgoods) {
-          setPostList(res.data.usedgoods);
-          //console.log('postList 상태 업데이트 후:', res.data.usedgoods); // postList에 저장될 데이터 확인
-        } else {
-          //   console.log('서버 응답에 usedgoods 없음');
-        }
-      } catch (error) {
-        console.error('게시글 로딩 에러:', error);
-      }
-    }
-
-    fetchPosts();
-  }, [props.page]); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
-
-  // 상세 페이지 이동
-  function goDetailPage(ud_idx: string): void {
-    navigate(`/product/detail/${ud_idx}`);
-  }
-
   // 상품명 글자수 제한
   const truncateTitle = (title: string, maxLength: number): string => {
     if (title.length > maxLength) {
@@ -88,6 +61,63 @@ const MarketThumbnailPost = (props: propsType) => {
     }
     return title;
   };
+
+  // 상세 페이지 이동
+  function goDetailPage(ud_idx: string): void {
+    navigate(`/product/detail/${ud_idx}`);
+  }
+
+  // useEffect(() => {
+  //   async function fetchPosts() {
+  //     try {
+  //       const res = await axios.get('http://localhost:8000/product', {
+  //         params: { page: data },
+  //       });
+
+  //       // console.log('서버 응답:', res.data); // 서버로부터 받은 전체 응답 확인
+  //       if (res.data.usedgoods) {
+  //         setPostList(res.data.usedgoods);
+  //         // console.log('postList 상태 업데이트 후:', res.data.usedgoods); // postList에 저장될 데이터 확인
+  //       } else {
+  //       }
+  //     } catch (error) {
+  //       console.error('게시글 로딩 에러:', error);
+  //     }
+  //   }
+
+  //   fetchPosts();
+  // }, [props.page]); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const res = await axios.get('http://localhost:8000/product', {
+          params: { page: data },
+        });
+
+        if (res.data.usedgoods) {
+          const modifiedData = res.data.usedgoods.map((item: DataType) => {
+            // 여기서 item은 DataType 타입을 가집니다.
+            if (typeof item.ud_image === 'string') {
+              try {
+                item.ud_image = JSON.parse(item.ud_image);
+              } catch (error) {
+                console.error('JSON 파싱 에러:', error);
+                item.ud_image = null;
+              }
+            }
+            return item;
+          });
+
+          setPostList(modifiedData);
+        }
+      } catch (error) {
+        console.error('게시글 로딩 에러:', error);
+      }
+    }
+
+    fetchPosts();
+  }, [props.page]);
 
   return (
     <div id="market-main-container" className="market-main-container">
@@ -100,10 +130,12 @@ const MarketThumbnailPost = (props: propsType) => {
               onClick={() => goDetailPage(`${data.ud_idx}`)}
             >
               <div className="img-container">
-                <img
-                  src={`http://localhost:8000/static/userImg/${data.ud_image}`}
-                  alt={`preview-${data.ud_idx}`}
-                />
+                {data.ud_image && data.ud_image.length > 0 && (
+                  <img
+                    src={`http://localhost:8000/static/userImg/${data.ud_image[0]}`}
+                    alt={`preview-${data.ud_idx}`}
+                  />
+                )}
               </div>
               <p className="title">{truncateTitle(data.ud_title, 14)}</p>
               <p className="price">{formatPrice(data.ud_price)} 원</p>

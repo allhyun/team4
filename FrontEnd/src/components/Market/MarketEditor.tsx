@@ -142,6 +142,10 @@ const MarketEditor: React.FC = () => {
     return previewUrls.map((url, index) => (
       <div key={index} className="image-container">
         <li key={index} className="image-preview">
+          {/* 첫 번째 이미지에만 '대표사진' 표시 */}
+          {index === 0 && (
+            <div className="primary-photo-label">대표사진</div>
+          )}{' '}
           <img src={url} alt={`preview-${index}`} />
           <button onClick={() => removeImage(index)}>
             <MdCancel />
@@ -291,12 +295,12 @@ const MarketEditor: React.FC = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      // console.log('데이터 잘 보내지는지?:', res.data);
+      console.log('데이터 잘 보내지는지?:', res.data);
       navigate('/market');
     } catch (error) {
       // console.error('게시글 등록 에러:', error);
     }
-    // console.log('FormData 객체의 상태 출력:', formData);
+    console.log('FormData 객체의 상태 출력:', formData);
   };
 
   return (

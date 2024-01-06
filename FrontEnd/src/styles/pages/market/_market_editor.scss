@@ -121,6 +121,17 @@ ul.image-previews-list {
       height: 100%;
       margin-left: 10px;
     }
+    div {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      border-radius: 30px;
+      padding: 3px;
+      background-color: hsla(0, 0%, 45%, 0.7);
+      top: 1.1rem;
+      left: 9.2rem;
+    }
     button {
       position: relative;
       top: -132px;
