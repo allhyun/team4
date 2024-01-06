@@ -138,15 +138,20 @@ exports.createChat = async (req, res) => {
   }
 };
 
-// 채팅메시지 조회
+// 채팅메시지 조회 + 채팅 메시지 검색
 exports.getAllMsg = async (req, res) => {
   try {
     const chatRoom = await Chattingroom.findOne({
       //  body로 방이름 받을건지 아니면 params로 번호를 받아올지
       where: { r_idx: req.params.r_idx },
     });
+
+    let where = { r_idx: chatRoom.r_idx };
+    const keyword = req.query.keyword;
+    if (keyword) where.c_content = { [Op.like]: `%${keyword}%` };
+
     const dm = await Chatmessage.findAll({
-      where: { r_idx: chatRoom.r_idx },
+      where: where,
       attributes: ['c_date', 'c_content', 'u_idx'],
     });
     res.send({ result: true, msg: '채팅한 내용 불러오기 성공.', data: dm });
@@ -156,34 +161,4 @@ exports.getAllMsg = async (req, res) => {
   }
 };
 
-// 채팅 메시지 검색
-// exports.searchMsg = async (req, res) => {
-//   try {
-//     const keyword = req.body.value; // 검색
-//     console.log('받은 keyword', keyword);
-//     const chatRoom = await Chattingroom.findOne({
-//       where: { r_idx: req.params.r_idx },
-//     });
-//     const messages = await Chatmessage.findAll({
-//       where: {
-//         r_idx: chatRoom.r_idx,
-//         c_content: {
-//           [Op.like]: '%' + keyword + '%',
-//         },
-//       },
-//       attributes: ['c_date', 'c_content', 'u_idx'],
-//     });
-//     if (messages.length > 0) {
-//       res.send({
-//         result: true,
-//         msg: '검색한 내용 불러오기 성공',
-//         data: messages,
-//       });
-//     } else {
-//       res.send({ result: false, msg: '검색한 내용이 존재하지 않습니다.' });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     res.send({ result: false, msg: '서버에 오류가 발생했습니다' });
-//   }
-// };
+//

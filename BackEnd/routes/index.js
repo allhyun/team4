@@ -126,7 +126,7 @@ router.delete('/deleteRoom', chatRoom.deleteChatRoom);
 // 채팅 파트
 // 채팅 전송
 router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
-// 채팅방 내용조회
+// 채팅방 내용조회 + 채팅내용 찾기 !!!
 router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
-// router.get('/chatRoom/:r_idx/chat/:c_content', chatRoom.searchMsg);
+
 module.exports = router;
