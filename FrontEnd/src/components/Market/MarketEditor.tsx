@@ -117,6 +117,19 @@ const MarketEditor: React.FC = () => {
       const newFiles = Array.from(e.target.files);
       const totalFiles = images.length + newFiles.length;
 
+      // 파일 크기 검사(5mb)
+      const fileExceedsSize = newFiles.some(
+        (file) => file.size > 5 * 1024 * 1024
+      );
+      if (fileExceedsSize) {
+        setErrorMessages((prevErrors) => ({
+          ...prevErrors,
+          ud_image: '파일 크기는 5MB를 초과할 수 없습니다.',
+        }));
+        return;
+      }
+
+      // 파일 수 검사 (5개 제한)
       if (totalFiles > 5) {
         setErrorMessages((prevErrors) => ({
           ...prevErrors,
@@ -142,6 +155,10 @@ const MarketEditor: React.FC = () => {
     return previewUrls.map((url, index) => (
       <div key={index} className="image-container">
         <li key={index} className="image-preview">
+          {/* 첫 번째 이미지에만 '대표사진' 표시 */}
+          {index === 0 && (
+            <div className="primary-photo-label">대표사진</div>
+          )}{' '}
           <img src={url} alt={`preview-${index}`} />
           <button onClick={() => removeImage(index)}>
             <MdCancel />
@@ -291,12 +308,12 @@ const MarketEditor: React.FC = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      // console.log('데이터 잘 보내지는지?:', res.data);
+      console.log('데이터 잘 보내지는지?:', res.data);
       navigate('/market');
     } catch (error) {
       // console.error('게시글 등록 에러:', error);
     }
-    // console.log('FormData 객체의 상태 출력:', formData);
+    console.log('FormData 객체의 상태 출력:', formData);
   };
 
   return (
@@ -306,13 +323,6 @@ const MarketEditor: React.FC = () => {
           상품이미지
           <span style={{ color: '#fcbaba' }}>＊</span>
           <div className="img_container">
-            <input
-              type="file"
-              id="market-img"
-              name="ud_image"
-              accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
-              onChange={handleFileChange}
-            />
             <label htmlFor="market-img">
               <div className="market-img">
                 <BsImage />
@@ -320,6 +330,14 @@ const MarketEditor: React.FC = () => {
                 <div className="img-length">{imageLength}/5</div>
               </div>
             </label>
+            <input
+              type="file"
+              id="market-img"
+              name="ud_image"
+              accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
+              onChange={handleFileChange}
+            />
+
             <ul className="image-previews-list">{renderImagePreviews()}</ul>
           </div>
           {errorMessages.ud_image && (

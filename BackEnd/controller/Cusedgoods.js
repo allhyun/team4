@@ -39,14 +39,18 @@ exports.createusedGoods = async (req, res) => {
 
     if (req.files && req.files.length > 0) {
       // const ud_images = req.files.map(file => file.filename); // 이미지 파일 이름을 저장합니다.
-      const ud_image = req.files[0].filename;
+      // 여러장의 이미지 파일의 이름을 배열로 저장
+      const ud_images = req.files.map((file) => file.filename);
+
+      // const ud_image = req.files[0].filename;
       const newProducts = await db.Usedproducts.create({
         u_idx,
         buy_idx,
         ud_price,
         ud_title,
         ud_category,
-        ud_image,
+        // 여러장의 이미지 이름을 배열로 저장
+        ud_image: JSON.stringify(ud_images),
         ud_content,
         ud_region,
         viewcount: 0,

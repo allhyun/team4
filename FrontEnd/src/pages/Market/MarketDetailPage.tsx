@@ -11,6 +11,8 @@ import '../../styles/style.scss';
 import { IoEyeSharp } from 'react-icons/io5'; // 조회수 아이콘
 import { PiHeartFill } from 'react-icons/pi'; // 좋아요 아이콘
 import { MdOutlineAccessTimeFilled } from 'react-icons/md'; // 시간 아이콘
+import { IoIosArrowDropleftCircle } from 'react-icons/io'; // 왼쪽 아이콘
+import { IoIosArrowDroprightCircle } from 'react-icons/io'; // 오른쪽 아이콘
 
 interface DetailDataType {
   ud_idx: number; // 게시판 포린키
@@ -25,6 +27,7 @@ interface DetailDataType {
   viewcount: number; // 조회수
   ud_date: string; // 작성시간
   nickname: string; // 사용자 닉네임
+  ud_images?: string[]; // 이미지 배열
 }
 // // 카테고리 문자 변환 함수 타입 정의
 // interface CategoryMap {
@@ -57,7 +60,16 @@ const MarketDetailPage = () => {
     axios
       .get(`http://localhost:8000/product/detail/${ud_idx}`)
       .then((response) => {
-        console.log('서버 응답 데이터:', response.data);
+        // console.log('서버 응답 데이터:', response.data);
+        const productData = response.data;
+
+        // ud_image 필드가 JSON 문자열인 경우 배열로 변환
+        if (productData.ud_image && typeof productData.ud_image === 'string') {
+          productData.ud_images = JSON.parse(productData.ud_image);
+        } else {
+          productData.ud_images = []; // 또는 기본값 설정
+        }
+
         setMarketDetail(response.data);
       })
       .catch((error) => console.error(error));
@@ -95,6 +107,39 @@ const MarketDetailPage = () => {
     }
   };
 
+  // 이미지 관련 함수
+
+  // 이미지 다음 이미지로 이동
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : prevIndex
+    );
+  };
+  // 이미지 이전 이미지로 이동
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      marketDetail &&
+      marketDetail.ud_images &&
+      prevIndex < marketDetail.ud_images.length - 1
+        ? prevIndex + 1
+        : prevIndex
+    );
+  };
+
+  // 인디케이터
+  const renderIndicators = () => {
+    return (
+      marketDetail &&
+      marketDetail.ud_images &&
+      marketDetail.ud_images.map((_, index) => (
+        <span
+          key={index}
+          className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
+          onClick={() => setCurrentImageIndex(index)}
+        ></span>
+      ))
+    );
+  };
   // 홈 클릭시 마켓 메인 이동
   const handleHomeClick = () => {
     navigate('/market');
@@ -106,11 +151,21 @@ const MarketDetailPage = () => {
       <div id="market-detail-container" className="market-detail-container">
         <div id="market-detail-box" className="market-detail-box">
           <div className="img-container">
-            <img
-              src={`http://localhost:8000/static/userImg/${marketDetail.ud_image}`}
-              alt={`preview-${marketDetail.ud_idx}`}
-            />
+            {marketDetail && marketDetail.ud_images && (
+              <img
+                src={`http://localhost:8000/static/userImg/${marketDetail.ud_images[currentImageIndex]}`}
+                alt={`Image ${currentImageIndex}`}
+              />
+            )}
+            <button className="left" onClick={handlePrevImage}>
+              <IoIosArrowDropleftCircle />
+            </button>
+            <div className="indicators">{renderIndicators()}</div>
+            <button className="right" onClick={handleNextImage}>
+              <IoIosArrowDroprightCircle />
+            </button>
           </div>
+
           <div className="market-detail-box">
             <nav aria-label="detail-category">
               <ol className="detail-category">
