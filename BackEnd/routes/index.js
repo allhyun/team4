@@ -6,6 +6,7 @@ const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
 // const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
+const heartController = require('../controller/Cheart')
 
 // router.all('/*', function (req, res, next) {
 //   res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
@@ -49,6 +50,13 @@ router.put('/product/detail/:ud_idx', usedgoodsController.modifyusedGoods);
 router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
+
+// 찜하기
+router.post('/favorites',heartController.addHeart)
+
+// 찜목록리스트?
+router.get('/favorites/:u_idx',heartController.heartList)
+router.delete('/favorites/:u_idx',heartController.outHeart)
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
