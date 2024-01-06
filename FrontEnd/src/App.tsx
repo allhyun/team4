@@ -1,5 +1,4 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Main from './pages/Main/Main';
@@ -31,9 +30,12 @@ function App() {
           <Route path="/find" element={<UserFindPage />}></Route>
 
           {/* 중고마켓 */}
-          <Route path="/market" element={<MarketMainPage />}></Route>
-          <Route path="/market/edit" element={<MarketEditPage />}></Route>
-          <Route path="/market/detail" element={<MarketDetailPage />}></Route>
+          <Route path="/market" element={<MarketMainPage />} />
+          <Route path="/market/edit" element={<MarketEditPage />} />
+          <Route
+            path="/product/detail/:ud_idx"
+            element={<MarketDetailPage />}
+          />
 
           {/* 스터디게시판 */}
           <Route path="/study" element={<StudyMainPage />}></Route>

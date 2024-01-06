@@ -1,8 +1,8 @@
 // studySlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const studySlice = createSlice({
-  name: "study",
+  name: 'study',
   initialState: {
     studyDetail: null,
   },
