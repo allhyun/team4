@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UserInfo {
-  uid: string | null;
+  u_idx: string | null;
   nickname: string | null;
 }
 
 const INITIAL_STATE: UserInfo = {
-  uid: null,
+  u_idx: null,
   nickname: null,
 };
 
@@ -15,11 +15,11 @@ export const userSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     setUserInfo: (state, action) => {
-      state.uid = action.payload.uid;
+      state.u_idx = action.payload.u_idx;
       state.nickname = action.payload.nickname;
     },
     removeUserInfo: (state) => {
-      state.uid = null;
+      state.u_idx = null;
       state.nickname = null;
     },
   },
