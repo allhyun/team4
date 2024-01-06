@@ -60,7 +60,6 @@ const UserSignupPage = () => {
         break;
     }
   };
-
   const onSubmit: SubmitHandler<SignupForm> = async (inputData: SignupForm) => {
     try {
       console.log('useForm 성공', inputData);
@@ -125,7 +124,7 @@ const UserSignupPage = () => {
                   message: '잘못된 형식입니다.',
                 },
               })}
-              ref={inputRef}
+              // ref={inputRef}
               name="userId"
               onChange={onUserInfoHandler}
               // onBlur={onBlurHandler}
@@ -158,7 +157,7 @@ const UserSignupPage = () => {
             <input
               type="password"
               placeholder="password"
-              value={userPw}
+              value={samePwCheck}
               {...register('samePwCheck', {
                 required: '같은 password를 입력해주세요.',
                 // pattern: {

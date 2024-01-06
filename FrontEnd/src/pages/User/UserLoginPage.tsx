@@ -35,15 +35,15 @@ const UserMainPage = () => {
 
   useEffect(() => {
     // 쿠키 삭제 테스트
-    // console.log('sessionStorage', window.sessionStorage.getItem['persist:root:']);
   }, []);
 
   // 중복 로그인 방지
   // 로그인 페이지 들어올 시 리덕스에 로그인 유저 정보가 있을 시 강제로 메인화면 이동
-  const loginUser = useSelector((state: any) => state.user.user.uid);
+  const loginUser = useSelector((state: any) => state.user.user.u_idx);
   useEffect(() => {
+    console.log('loginpage loginUser', loginUser);
     if (loginUser !== null) navigate('/');
-  }, []);
+  }, [loginUser]);
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
   const {
@@ -76,7 +76,7 @@ const UserMainPage = () => {
       if (response.data.result === true) {
         dispatch(
           setUserInfo({
-            uid: response.data.u_idx,
+            u_idx: response.data.u_idx,
             nickname: response.data.nickname,
           })
         );
