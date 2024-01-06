@@ -13,7 +13,7 @@ function Study(Sequelize, DataTypes) {
         allowNull: false,
       },
       st_title: DataTypes.STRING(20),
-      st_intro: DataTypes.STRING(100),
+      st_intro: DataTypes.TEXT,
       st_now_mem: DataTypes.INTEGER,
       st_limit: DataTypes.INTEGER,
       st_date: {
