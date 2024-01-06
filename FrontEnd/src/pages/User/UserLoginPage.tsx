@@ -3,7 +3,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import '../../styles/pages/_user_login.scss';
+import '../../styles/style.scss';
+
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
 import { setUserInfo } from '../../store/user.slice';
