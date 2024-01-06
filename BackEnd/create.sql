@@ -2,6 +2,8 @@
 -- CREATE DATABASE (DB이름)
 -- DEFAULT CHARACTER SET UTF8MB4 DEFAULT COLLATE UTF8MB4_UNICODE_CI;
 
+-- use (DB이름)
+
 -- table 생성
 CREATE TABLE user (
 	u_idx	int	NOT NULL auto_increment PRIMARY KEY ,
@@ -85,32 +87,31 @@ CREATE TABLE heart (
 	u_idx INT NOT NULL,
 	ud_idx INT NOT NULL,
 	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
-	FOREIGN KEY(ud_idx) REFERENCES usedgoods(ud_idx) ON DELETE CASCADE
+	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
 );
 
 
---중고물품 
+-- 중고물품 
+
+CREATE TABLE  category  (
+	c_idx int NOT NULL PRIMARY KEY, 
+  name varchar(20) NOT NULL
+);
 -- 데이터베이스?
 CREATE TABLE useproduct (
     ud_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     u_idx INT NOT NULL,
-    buy_idx VARCHAR(20) NOT NULL,
+    buy_idx INT NOT NULL,
     ud_price INT NOT NULL,
     ud_title VARCHAR(20) NOT NULL,
-    ud_category VARCHAR(20) NOT NULL,
+    ud_category INT NOT NULL,
     ud_image VARCHAR(250) NOT NULL,
     ud_content TEXT NOT NULL,
     ud_region VARCHAR(20) NOT NULL,
     viewcount INT NOT NULL,
     ud_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
-    FOREIGN KEY (ud_category) REFERENCES category(name) ON DELETE CASCADE
-);
-
-
-CREATE TABLE  category  (
-	c_idx int NOT NULL, 
-  name varchar(20) NOT NULL PRIMARY KEY
+    FOREIGN KEY (ud_category) REFERENCES category(c_idx) ON DELETE CASCADE
 );
 
 INSERT INTO category VALUES('1', '도서' );
