@@ -7,6 +7,7 @@ import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { upload } from '@testing-library/user-event/dist/upload';
 
 interface DataType {
   u_idx: number;
@@ -22,6 +23,34 @@ interface DataType {
 const StudyToastEditor = () => {
   const navigate = useNavigate();
   const editorRef = useRef<any>();
+  //이미지관련 훅 새로 생성
+  type HookCallback = (url: string, text?: string) => void;
+
+  const onUploadImage = async (blob: Blob | File, callback: HookCallback) => {
+    let imageUrl = '';
+    // blob 자체가 file 임,
+    if (blob instanceof File) {
+      const formData = new FormData();
+      formData.append('image', blob);
+      try {
+        const response = await axios.post(
+          'http://localhost:8000/study/upload',
+          formData
+        );
+
+        console.log(response.data.imageUrl);
+        imageUrl = response.data.imageUrl;
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+      const url: string = 'http://localhost:8000/' + imageUrl;
+      //이런이미지로 이름이 정해짐
+
+      callback(url, blob.name);
+      //미리보기에서 보여줄 url
+    }
+  };
+
   const [data, setData] = useState<DataType>({
     u_idx: 1,
     st_title: '',
@@ -153,8 +182,14 @@ const StudyToastEditor = () => {
         plugins={[colorSyntax]}
         ref={editorRef}
         onChange={handleEditorChange}
+        hooks={{
+          addImageBlobHook: onUploadImage,
+        }}
+        height="1000px"
       />
-      <button onClick={handleSubmit}>제출</button>
+      <button onClick={handleSubmit} className="study-button">
+        제출
+      </button>
     </>
   );
 };

@@ -6,6 +6,7 @@ const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
 // const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
+const heartController = require('../controller/Cheart')
 
 // router.all('/*', function (req, res, next) {
 //   res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
@@ -29,6 +30,26 @@ router.put('/study/detail/:st_idx', studyController.modifyStudy);
 router.delete('/study/delete/:st_idx', studyController.deleteStudy);
 // 스터디 참여(?)
 router.post('/study/join/:st_idx', studyController.joinStudy);
+//스터디 이미지
+router.post('/study/upload', async (req, res) => {
+  try {
+    // 이미지 업로드 미들웨어
+    upload.single('image')(req, res, (err) => {
+      if (err) {
+        // 업로드 실패
+        console.error(err);
+        res.status(500).json({ message: err.message });
+      } else {
+        // 업로드 성공 시 이미지 URL을 클라이언트에 응답
+        res.json({ imageUrl: req.file.path.replace(/\\/g, '/') });
+      }
+    });
+  } catch (error) {
+    // 기타 에러 처리
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // 스터디 검색
 router.get('/study/search', studyController.searchStudy);
@@ -49,6 +70,13 @@ router.put('/product/detail/:ud_idx', usedgoodsController.modifyusedGoods);
 router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
+
+// 찜하기
+router.post('/favorites',heartController.addHeart)
+
+// 찜목록리스트?
+router.get('/favorites/:u_idx',heartController.heartList)
+router.delete('/favorites/:u_idx',heartController.outHeart)
 
 // 로그인 페이지
 router.get('/signin', userController.signin);
@@ -126,7 +154,7 @@ router.delete('/deleteRoom', chatRoom.deleteChatRoom);
 // 채팅 파트
 // 채팅 전송
 router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
-// 채팅방 내용조회
+// 채팅방 내용조회 + 채팅내용 찾기 !!!
 router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
-// router.get('/chatRoom/:r_idx/chat/:c_content', chatRoom.searchMsg);
+
 module.exports = router;
