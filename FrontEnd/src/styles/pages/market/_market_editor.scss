@@ -60,14 +60,19 @@ section.market-textarea {
   }
 }
 
-// 이미지 삽입버튼 디자인
+section.market-img {
+}
+
+// 이미지 등록버튼 디자인
 div.img_container {
+  margin-top: 10px;
   position: relative;
   display: flex;
   input[type='file'] {
     display: none;
   }
   label[for='market-img'] {
+    position: relative;
     display: flex;
     width: 130px;
     height: 130px;
@@ -78,7 +83,7 @@ div.img_container {
   }
   div.market-img {
     cursor: pointer;
-    margin-top: 10px;
+    // margin-top: 10px;
     @include market-s-box;
     @include flex-center;
     flex-direction: column;
@@ -108,45 +113,52 @@ ul.image-previews-list {
   display: flex;
   flex-wrap: wrap;
   padding: 0;
-  margin: 10px 0 0 0;
-  li.image-preview {
-    list-style: none;
+  margin: 0;
+  div.image-container {
     width: 130px;
     height: 130px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    img {
-      @include market-s-box;
-      width: 100%;
-      height: 100%;
-      margin-left: 10px;
-    }
-    div {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      border-radius: 30px;
-      padding: 3px;
-      background-color: hsla(0, 0%, 45%, 0.7);
-      top: 1.1rem;
-      left: 9.2rem;
-    }
-    button {
-      position: relative;
-      top: -132px;
-      right: -105px;
-      border: none;
-      background-color: transparent;
-      color: hsla(0, 0%, 45%, 0.7);
-      cursor: pointer;
-      svg {
-        width: 1.5em;
-        height: 1.5rem;
+    margin-left: 10px;
+    li.image-preview {
+      list-style: none;
+      width: 130px;
+      height: 130px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      img {
+        @include market-s-box;
+        width: 100%;
+        height: 100%;
+      }
+      div {
+        // 대표사진 글자 스타일
+        position: absolute;
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        border-radius: 30px;
+        padding: 3px;
+        background-color: hsla(0, 0%, 45%, 0.7);
+        top: 0.5rem;
+        left: 9.2rem;
+      }
+      button {
+        // x자 버튼 스타일
+        position: relative;
+        top: -132px;
+        right: -95px;
+        border: none;
+        background-color: transparent;
+        color: hsla(0, 0%, 45%, 0.7);
+        cursor: pointer;
+        svg {
+          width: 1.5em;
+          height: 1.5rem;
+        }
       }
     }
   }
 }
+
 // 가격창 디자인
 section.market-price {
   margin-bottom: 20px;
@@ -178,10 +190,12 @@ section.market-price {
   }
 }
 
+// 설명창
 section.market-textarea {
   margin-bottom: 0 !important;
 }
 
+// 등록 버튼
 button.marketeditor-regi {
   height: 2.5rem;
   width: 12rem;
