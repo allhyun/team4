@@ -61,7 +61,7 @@ const MarketThumbnailPost = (props: propsType) => {
           params: { page: data },
         });
 
-        console.log('서버 응답:', res.data); // 서버로부터 받은 전체 응답 확인
+        // console.log('서버 응답:', res.data); // 서버로부터 받은 전체 응답 확인
         if (res.data.usedgoods) {
           setPostList(res.data.usedgoods);
           //console.log('postList 상태 업데이트 후:', res.data.usedgoods); // postList에 저장될 데이터 확인
@@ -77,8 +77,8 @@ const MarketThumbnailPost = (props: propsType) => {
   }, [props.page]); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
 
   // 상세 페이지 이동
-  function goDetailPage(index: string): void {
-    navigate(`/product/detail/${index}`);
+  function goDetailPage(ud_idx: string): void {
+    navigate(`/product/detail/${ud_idx}`);
   }
 
   // 상품명 글자수 제한
