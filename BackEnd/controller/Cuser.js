@@ -11,21 +11,24 @@ exports.postSignup = async (req, res) => {
   const iterations = 100;
   const keylen = 64;
   const digest = 'sha512';
-  const hashedPassword = crypto
-    .pbkdf2Sync(req.body.password, salt, iterations, keylen, digest)
-    .toString('base64');
+  const hashedPassword = crypto;
+  // .pbkdf2Sync(req.body.password, salt, iterations, keylen, digest)
+  // .toString('base64');
 
-  const data = {
-    userid: req.body.userid,
-    password: hashedPassword, // 암호화된 비밀번호 저장
-    salt: salt, // 솔트 저장
-    email: req.body.email,
-    nickname: req.body.nickname,
-  };
-  const createUser = await User.create(data);
-  // result 결과 필요해서 추가했습니
-  // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
-  res.send({ createUser, result: true });
+  console.log('req', req);
+
+  // const data = {
+  //   // userProfileImg: req.files[0].filename,
+  //   userid: req.body.userid,
+  //   password: hashedPassword, // 암호화된 비밀번호 저장
+  //   salt: salt, // 솔트 저장
+  //   email: req.body.email,
+  //   nickname: req.body.nickname,
+  // };
+  // const createUser = await User.create(data);
+  // // result 결과 필요해서 추가했습니
+  // // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
+  // res.send({ createUser, result: true });
 };
 // 아이디 중복확인
 exports.checkId = (req, res) => {
