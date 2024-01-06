@@ -283,7 +283,7 @@ const MarketEditor: React.FC = () => {
     // }
 
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         'http://localhost:8000/product/regist',
         // `${process.env.REACT_APP_HOST}/product/regist`,
         formData,
@@ -291,7 +291,7 @@ const MarketEditor: React.FC = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      // console.log('데이터 잘 보내지는지?:', response.data);
+      // console.log('데이터 잘 보내지는지?:', res.data);
       navigate('/market');
     } catch (error) {
       // console.error('게시글 등록 에러:', error);
