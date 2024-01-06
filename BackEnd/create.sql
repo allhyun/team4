@@ -1,8 +1,7 @@
 -- 데이터 베이스 이름 생성
--- CREATE DATABASE (DB이름)
+-- CREATE DATABASE (DB명)
 -- DEFAULT CHARACTER SET UTF8MB4 DEFAULT COLLATE UTF8MB4_UNICODE_CI;
-
--- use (DB이름)
+-- USE (DB명);
 
 -- table 생성
 CREATE TABLE user (
@@ -81,23 +80,25 @@ CREATE TABLE volunteer (
 
 
 
-
-CREATE TABLE heart (
-	h_idx INT NOT NULL PRIMARY KEY,
-	u_idx INT NOT NULL,
-	ud_idx INT NOT NULL,
-	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
-	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
-);
-
-
--- 중고물품 
+-- 중고물품
+-- 데이터베이스?
 
 CREATE TABLE  category  (
 	c_idx int NOT NULL PRIMARY KEY, 
   name varchar(20) NOT NULL
 );
--- 데이터베이스?
+
+
+INSERT INTO category VALUES('1', '도서' );
+INSERT INTO category VALUES('2', '전자기기' );
+INSERT INTO category VALUES('3', '문구' );
+INSERT INTO category VALUES('4', '티켓/쿠폰' );
+INSERT INTO category VALUES('5', '생활' );
+INSERT INTO category VALUES('6', '취미' );
+INSERT INTO category VALUES('7', '무료나눔' );
+INSERT INTO category VALUES('8', '기타' );
+
+
 CREATE TABLE useproduct (
     ud_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     u_idx INT NOT NULL,
@@ -114,11 +115,11 @@ CREATE TABLE useproduct (
     FOREIGN KEY (ud_category) REFERENCES category(c_idx) ON DELETE CASCADE
 );
 
-INSERT INTO category VALUES('1', '도서' );
-INSERT INTO category VALUES('2', '전자기기' );
-INSERT INTO category VALUES('3', '문구' );
-INSERT INTO category VALUES('4', '티켓/쿠폰' );
-INSERT INTO category VALUES('5', '생활' );
-INSERT INTO category VALUES('6', '취미' );
-INSERT INTO category VALUES('7', '무료나눔' );
-INSERT INTO category VALUES('8', '기타' );
+
+CREATE TABLE heart (
+	h_idx INT NOT NULL PRIMARY KEY,
+	u_idx INT NOT NULL,
+	ud_idx INT NOT NULL,
+	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
+	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
+);
