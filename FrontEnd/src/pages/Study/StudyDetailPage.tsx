@@ -43,7 +43,7 @@ const StudyDetailPage = () => {
         {study ? (
           <>
             <h3>{study.st_title}</h3>
-            <div>내용:{study.st_intro}</div>
+            <div dangerouslySetInnerHTML={{ __html: study.st_intro }} />
           </>
         ) : (
           <div>Loading...</div>

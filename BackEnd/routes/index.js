@@ -29,6 +29,26 @@ router.put('/study/detail/:st_idx', studyController.modifyStudy);
 router.delete('/study/delete/:st_idx', studyController.deleteStudy);
 // 스터디 참여(?)
 router.post('/study/join/:st_idx', studyController.joinStudy);
+//스터디 이미지
+router.post('/study/upload', async (req, res) => {
+  try {
+    // 이미지 업로드 미들웨어
+    upload.single('image')(req, res, (err) => {
+      if (err) {
+        // 업로드 실패
+        console.error(err);
+        res.status(500).json({ message: err.message });
+      } else {
+        // 업로드 성공 시 이미지 URL을 클라이언트에 응답
+        res.json({ imageUrl: req.file.path.replace(/\\/g, '/') });
+      }
+    });
+  } catch (error) {
+    // 기타 에러 처리
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // 스터디 검색
 router.get('/study/search', studyController.searchStudy);
