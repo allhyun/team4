@@ -27,14 +27,25 @@ const StudyToastEditor = () => {
   type HookCallback = (url: string, text?: string) => void;
 
   const onUploadImage = async (blob: Blob | File, callback: HookCallback) => {
+    let imageUrl = '';
     // blob 자체가 file 임,
     if (blob instanceof File) {
       const formData = new FormData();
       formData.append('image', blob);
-      const url: string =
-        'http://localhost:8000/static/userImg/' + blob.lastModified + blob.name;
+      try {
+        const response = await axios.post(
+          'http://localhost:8000/study/upload',
+          formData
+        );
+
+        console.log(response.data.imageUrl);
+        imageUrl = response.data.imageUrl;
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+      const url: string = 'http://localhost:8000/' + imageUrl;
       //이런이미지로 이름이 정해짐
-      console.log(url);
+
       callback(url, blob.name);
       //미리보기에서 보여줄 url
     }
@@ -174,8 +185,11 @@ const StudyToastEditor = () => {
         hooks={{
           addImageBlobHook: onUploadImage,
         }}
+        height="1000px"
       />
-      <button onClick={handleSubmit}>제출</button>
+      <button onClick={handleSubmit} className="study-button">
+        제출
+      </button>
     </>
   );
 };

@@ -98,7 +98,6 @@ exports.createStudy = async (req, res) => {
     res.status(500).send('메인화면 에러 발생');
   }
 };
-
 // 스터디 상세 조회
 exports.detailStudy = async (req, res) => {
   const studyId = req.params.st_idx;

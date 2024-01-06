@@ -59,7 +59,7 @@ const StudyThumbnailBox = (props: propsType) => {
         >
           <h3>{study.st_title}</h3>
           <p>{study.st_limit}개월</p>
-          <p>{study.st_intro}</p>
+
           <p>
             p:{study.st_pub}
             F:{study.st_fe}

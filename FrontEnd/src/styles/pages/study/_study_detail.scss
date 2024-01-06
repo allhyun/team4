@@ -3,6 +3,10 @@
   padding: 1%;
 
   @include inner-contents;
+
+  img {
+    max-width: 700px;
+  }
 }
 
 .study-button {

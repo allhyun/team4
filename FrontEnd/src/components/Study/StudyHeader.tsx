@@ -57,12 +57,7 @@ const StudyHeader = () => {
                 onSearch={onSearch}
               />
             </li>
-            <li className="sale">
-              <Link to="/market/edit">
-                <Icon icon="mingcute:refund-dollar-fill" />
-                스터디 구하기
-              </Link>
-            </li>
+            <li className="sale"></li>
             <li className="chat">
               <Link to="/chatting">
                 <PiChatTextBold />
