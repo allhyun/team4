@@ -1,7 +1,7 @@
 import MarketHeader from '../../components/Market/MarketHeader';
 import '../../styles/style.scss';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 //리덕스 관련
 import { setMarketDetail } from '../../store/marketmodifyReducer';
@@ -48,8 +48,10 @@ interface DetailDataType {
 // };
 
 const MarketDetailPage = () => {
+  const navigate = useNavigate();
   const { ud_idx } = useParams();
   const [marketDetail, setMarketDetail] = useState<DetailDataType | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     axios
@@ -93,10 +95,14 @@ const MarketDetailPage = () => {
     }
   };
 
+  // 홈 클릭시 마켓 메인 이동
+  const handleHomeClick = () => {
+    navigate('/market');
+  };
   return (
     <>
       <MarketHeader />
-      <div id="detail-categoty">{marketDetail.ud_category}</div>
+
       <div id="market-detail-container" className="market-detail-container">
         <div id="market-detail-box" className="market-detail-box">
           <div className="img-container">
@@ -105,24 +111,74 @@ const MarketDetailPage = () => {
               alt={`preview-${marketDetail.ud_idx}`}
             />
           </div>
-          <h1>{marketDetail.ud_category}</h1>
-          <h1>{marketDetail.ud_title}</h1>
-          <h1>{formatPrice(marketDetail.ud_price)} 원</h1>
-          <h1>거래지역 {marketDetail.ud_region}</h1>
-          <h1>판매자 {marketDetail.u_idx}</h1>
-          <h1>상품 정보 {marketDetail.ud_content}</h1>
-          <p>
-            <IoEyeSharp />
-            {''} {''}
-            {marketDetail.viewcount}
-          </p>
-          <p>
-            <MdOutlineAccessTimeFilled /> {''} {''}
-            {timeSince(marketDetail.ud_date)}
-          </p>
-          <p>
-            <PiHeartFill />
-          </p>
+          <div className="market-detail-box">
+            <nav aria-label="detail-category">
+              <ol className="detail-category">
+                <li
+                  className="detail-category1"
+                  aria-current="page"
+                  onClick={handleHomeClick}
+                >
+                  홈{'\u00A0'}
+                  {'\u00A0'}
+                  {'\u00A0'}
+                  {'\u00A0'}
+                </li>
+                <li className="detail-category2" aria-current="page">
+                  {`>`}
+                  {'\u00A0'}
+                  {'\u00A0'}
+                  {'\u00A0'}
+                  {'\u00A0'}
+                </li>
+                <li className="detail-category2" aria-current="page">
+                  {marketDetail.ud_category}
+                </li>
+              </ol>
+            </nav>
+            <div className="detail-title">{marketDetail.ud_title}</div>
+            <div className="detail-price">
+              {formatPrice(marketDetail.ud_price)} 원
+            </div>
+            <div>
+              거래지역{'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {marketDetail.ud_region}
+            </div>
+            <div>
+              판매자{'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {marketDetail.u_idx}
+            </div>
+            <div className="detail-ect">
+              <span>
+                <IoEyeSharp />
+                {'\u00A0'} {'\u00A0'}
+                {marketDetail.viewcount}
+              </span>
+              <span>
+                <MdOutlineAccessTimeFilled /> {'\u00A0'}
+                {'\u00A0'}
+                {timeSince(marketDetail.ud_date)}
+              </span>
+              <span>
+                <PiHeartFill />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="market-content-container">
+          {' '}
+          <div className="detail-info">상품 정보</div>
+          <div className="detail-content">{marketDetail.ud_content}</div>
         </div>
       </div>
     </>

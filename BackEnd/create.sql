@@ -104,7 +104,7 @@ CREATE TABLE useproduct (
     u_idx INT NOT NULL,
     buy_idx INT NOT NULL,
     ud_price INT NOT NULL,
-    ud_title VARCHAR(20) NOT NULL,
+    ud_title VARCHAR(120) NOT NULL,
     ud_category INT NOT NULL,
     ud_image VARCHAR(250) NOT NULL,
     ud_content TEXT NOT NULL,
