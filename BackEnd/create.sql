@@ -74,10 +74,12 @@ CREATE TABLE volunteer (
     FOREIGN KEY(st_idx) REFERENCES study(st_idx) on DELETE cascade
 );
 
+
 -- 중고물품
 -- 데이터베이스?
 CREATE TABLE  category  (
     c_idx int NOT NULL PRIMARY KEY,
+
   name varchar(20) NOT NULL
 );
 
@@ -95,6 +97,7 @@ CREATE TABLE useproduct (
     u_idx INT NOT NULL,
     buy_idx INT NOT NULL,
     ud_price INT NOT NULL,
+
     ud_title VARCHAR(120) NOT NULL,
     ud_category INT NOT NULL,
     ud_image VARCHAR(250) NOT NULL,
@@ -107,9 +110,9 @@ CREATE TABLE useproduct (
 );
 
 CREATE TABLE heart (
-    h_idx INT NOT NULL PRIMARY KEY,
-    u_idx INT NOT NULL,
-    ud_idx INT NOT NULL,
-    FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
-    FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
+	h_idx INT NOT NULL PRIMARY KEY,
+	u_idx INT NOT NULL,
+	ud_idx INT NOT NULL,
+	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
+	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
 );

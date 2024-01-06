@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import '../../styles/pages/_user_login.scss';
+import '../../styles/style.scss';
 
 interface SignupForm {
   userId: string;
@@ -60,7 +60,6 @@ const UserSignupPage = () => {
         break;
     }
   };
-
   const onSubmit: SubmitHandler<SignupForm> = async (inputData: SignupForm) => {
     try {
       console.log('useForm 성공', inputData);
@@ -115,62 +114,70 @@ const UserSignupPage = () => {
           <h1>Sign Up</h1>
           <div className="input-wrap">
             <input
-              type="text"
-              placeholder="id"
-              value={userId}
-              {...register('userId', {
-                required: 'id를 입력해주세요.',
-                pattern: {
-                  value: /^[a-zA-Z0-9-]+$/i,
-                  message: '잘못된 형식입니다.',
-                },
-              })}
-              ref={inputRef}
-              name="userId"
-              onChange={onUserInfoHandler}
-              // onBlur={onBlurHandler}
-              // onBlur={checkDuplicate}
-            />
-            <p className="alert">
-              {errors.userId?.message}
-              {isUseridDuplicated ? `중복된 id입니다.` : ''}
-            </p>
-          </div>
-          <div className="input-wrap">
-            <input
-              type="password"
-              placeholder="password"
-              value={userPw}
-              {...register('userPw', {
-                required: 'password를 입력해주세요.',
-                // pattern: {
-                //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                //   message: '잘못된 형식입니다.',
-                // },
-              })}
-              autoComplete="off"
-              name="userPw"
-              onChange={onUserInfoHandler}
-            />
-            <p className="alert">{errors.userPw?.message}</p>
-          </div>
-          <div className="input-wrap">
-            <input
-              type="password"
-              placeholder="password"
-              value={userPw}
-              {...register('samePwCheck', {
-                required: '같은 password를 입력해주세요.',
-                // pattern: {
-                //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                //   message: '잘못된 형식입니다.',
-                // },
-              })}
-              autoComplete="off"
-              name="samePwCheck"
-              onChange={onUserInfoHandler}
-            />
-            <p className="alert">{errors.userPw?.message}</p>
+              // {...register('image')}
+              id="userProfileImg"
+              type="file"
+              accept="image/*"
+            ></input>
+            <div>
+              <input
+                type="text"
+                placeholder="id"
+                value={userId}
+                {...register('userId', {
+                  required: 'id를 입력해주세요.',
+                  pattern: {
+                    value: /^[a-zA-Z0-9-]+$/i,
+                    message: '잘못된 형식입니다.',
+                  },
+                })}
+                // ref={inputRef}
+                name="userId"
+                onChange={onUserInfoHandler}
+                // onBlur={onBlurHandler}
+                // onBlur={checkDuplicate}
+              />
+              <p className="alert">
+                {errors.userId?.message}
+                {isUseridDuplicated ? `중복된 id입니다.` : ''}
+              </p>
+            </div>
+            <div className="input-wrap">
+              <input
+                type="password"
+                placeholder="password"
+                value={userPw}
+                {...register('userPw', {
+                  required: 'password를 입력해주세요.',
+                  // pattern: {
+                  //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                  //   message: '잘못된 형식입니다.',
+                  // },
+                })}
+                autoComplete="off"
+                name="userPw"
+                onChange={onUserInfoHandler}
+              />
+              <p className="alert">{errors.userPw?.message}</p>
+            </div>
+            <div className="input-wrap">
+              <input
+                type="password"
+                placeholder="check password"
+                value={samePwCheck}
+                {...register('samePwCheck', {
+                  required: '같은 password를 입력해주세요.',
+                  // pattern: {
+                  //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                  //   message: '잘못된 형식입니다.',
+                  // },
+                })}
+                autoComplete="off"
+                name="samePwCheck"
+                onChange={onUserInfoHandler}
+              />
+              <p className="alert">{errors.userPw?.message}</p>
+            </div>
           </div>
           <div className="input-wrap">
             <input

@@ -13,7 +13,7 @@ function UsedProducts(Sequelize, DataTypes) {
         allowNull: false,
       },
       buy_idx: {
-        type: DataTypes.TEXT,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       ud_price: {
@@ -25,7 +25,7 @@ function UsedProducts(Sequelize, DataTypes) {
         allowNull: false,
       },
       ud_category: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       ud_image: {
@@ -56,7 +56,7 @@ function UsedProducts(Sequelize, DataTypes) {
       freezeTableName: true,
       timestamps: { createdAt: true, updatedAt: false },
       createdAt: 'ud_date',
-      updatedAt: false
+      updatedAt: false,
     }
   );
 }

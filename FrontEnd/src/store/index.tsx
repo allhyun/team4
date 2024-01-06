@@ -5,6 +5,7 @@ import { persistReducer } from 'redux-persist';
 import studySlice from './modifyReducer';
 import searchSlice from './searchReducer';
 import userSlice from './user.slice';
+import marketSlice from './marketmodifyReducer';
 
 // 한 번 묶어줘야 하는 걸로 보임 안 묶고 그냥 하려니까 안 됨
 const studyReducers = combineReducers({
@@ -25,7 +26,10 @@ const searchPersistConfig = {
   storage: storage,
   whitelist: ['search'],
 };
-const searchPersistedReducer = persistReducer(searchPersistConfig, searchReducers);
+const searchPersistedReducer = persistReducer(
+  searchPersistConfig,
+  searchReducers
+);
 
 const userReducers = combineReducers({
   user: userSlice,
@@ -37,12 +41,30 @@ const userPersistConfig = {
 };
 const userPersistedReducer = persistReducer(userPersistConfig, userReducers);
 
+const marketReducers = combineReducers({
+  market: marketSlice,
+});
+const marketPersistConfig = {
+  key: 'market',
+  storage: storage,
+  whitelist: ['market'],
+};
+const marketPersistedReducer = persistReducer(
+  marketPersistConfig,
+  marketReducers
+);
+
+const rootReducer = combineReducers({
+  study: studyPersistedReducer,
+  search: searchPersistedReducer,
+  user: userPersistedReducer,
+  market: marketPersistedReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
 const store = configureStore({
-  reducer: {
-    study: studyPersistedReducer,
-    search: searchPersistedReducer,
-    user: userPersistedReducer,
-  },
+  reducer: rootReducer,
 });
 
 export default store;
