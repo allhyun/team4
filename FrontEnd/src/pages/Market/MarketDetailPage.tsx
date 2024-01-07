@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 //리덕스 관련
-import { setMarketDetail } from '../../store/marketmodifyReducer';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 //
 import '../../styles/style.scss';
 import { IoEyeSharp } from 'react-icons/io5'; // 조회수 아이콘
@@ -13,6 +13,7 @@ import { PiHeartFill } from 'react-icons/pi'; // 좋아요 아이콘
 import { MdOutlineAccessTimeFilled } from 'react-icons/md'; // 시간 아이콘
 import { IoIosArrowDropleftCircle } from 'react-icons/io'; // 왼쪽 아이콘
 import { IoIosArrowDroprightCircle } from 'react-icons/io'; // 오른쪽 아이콘
+import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
 
 interface DetailDataType {
   ud_idx: number; // 게시판 포린키
@@ -140,100 +141,141 @@ const MarketDetailPage = () => {
       ))
     );
   };
+
+  // 삭제 기능
+  const handleDelete = async () => {
+    // 사용자에게 삭제 확인
+    const confirmDelete = window.confirm('이 게시글을 정말 삭제하시겠습니까?');
+    if (!confirmDelete) return;
+    try {
+      // 삭제 요청 보내기
+      await axios.delete(`http://localhost:8000/product/delete/${ud_idx}`);
+      alert('게시글이 삭제되었습니다.');
+      navigate('/market'); // 삭제 후 마켓 페이지로 리다이렉트
+    } catch (error) {
+      console.error('삭제 중 오류 발생:', error);
+      alert('삭제 중 문제가 발생했습니다.');
+    }
+  };
+
   // 홈 클릭시 마켓 메인 이동
   const handleHomeClick = () => {
     navigate('/market');
   };
+
   return (
     <>
       <MarketHeader />
-
-      <div id="market-detail-container" className="market-detail-container">
-        <div id="market-detail-box" className="market-detail-box">
-          <div className="img-container">
-            {marketDetail && marketDetail.ud_images && (
-              <img
-                src={`http://localhost:8000/static/userImg/${marketDetail.ud_images[currentImageIndex]}`}
-                alt={`Image ${currentImageIndex}`}
-              />
-            )}
-            <button className="left" onClick={handlePrevImage}>
-              <IoIosArrowDropleftCircle />
-            </button>
-            <div className="indicators">{renderIndicators()}</div>
-            <button className="right" onClick={handleNextImage}>
-              <IoIosArrowDroprightCircle />
-            </button>
-          </div>
-
-          <div className="market-detail-box">
-            <nav aria-label="detail-category">
-              <ol className="detail-category">
-                <li
-                  className="detail-category1"
-                  aria-current="page"
-                  onClick={handleHomeClick}
-                >
-                  홈{'\u00A0'}
-                  {'\u00A0'}
-                  {'\u00A0'}
-                  {'\u00A0'}
-                </li>
-                <li className="detail-category2" aria-current="page">
-                  {`>`}
-                  {'\u00A0'}
-                  {'\u00A0'}
-                  {'\u00A0'}
-                  {'\u00A0'}
-                </li>
-                <li className="detail-category2" aria-current="page">
-                  {marketDetail.ud_category}
-                </li>
-              </ol>
-            </nav>
-            <div className="detail-title">{marketDetail.ud_title}</div>
-            <div className="detail-price">
-              {formatPrice(marketDetail.ud_price)} 원
+      <div className="center">
+        <div id="market-detail-container" className="market-detail-container">
+          <div id="market-detail-box" className="market-detail-box">
+            <div className="img-container">
+              {marketDetail && marketDetail.ud_images && (
+                <img
+                  src={`http://localhost:8000/static/userImg/${marketDetail.ud_images[currentImageIndex]}`}
+                  alt={`Image ${currentImageIndex}`}
+                />
+              )}
+              <div className="indicators">{renderIndicators()}</div>
+              <button className="left" onClick={handlePrevImage}>
+                <IoIosArrowDropleftCircle />
+              </button>
+              <button className="right" onClick={handleNextImage}>
+                <IoIosArrowDroprightCircle />
+              </button>
             </div>
-            <div>
-              거래지역{'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {marketDetail.ud_region}
-            </div>
-            <div>
-              판매자{'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {'\u00A0'}
-              {marketDetail.u_idx}
-            </div>
-            <div className="detail-ect">
-              <span>
-                <IoEyeSharp />
-                {'\u00A0'} {'\u00A0'}
-                {marketDetail.viewcount}
-              </span>
-              <span>
-                <MdOutlineAccessTimeFilled /> {'\u00A0'}
+            <div className="market-info-box">
+              <nav aria-label="detail-category">
+                <ol className="detail-category">
+                  <li
+                    className="detail-category1"
+                    aria-current="page"
+                    onClick={handleHomeClick}
+                  >
+                    홈{'\u00A0'}
+                    {'\u00A0'}
+                    {'\u00A0'}
+                    {'\u00A0'}
+                  </li>
+                  <li className="detail-category2" aria-current="page">
+                    {`>`}
+                    {'\u00A0'}
+                    {'\u00A0'}
+                    {'\u00A0'}
+                    {'\u00A0'}
+                  </li>
+                  <li className="detail-category2" aria-current="page">
+                    {marketDetail.ud_category}
+                  </li>
+                </ol>
+              </nav>
+              <div className="detail-title">{marketDetail.ud_title}</div>
+              <div className="detail-price">
+                {formatPrice(marketDetail.ud_price)} 원
+              </div>
+              <div className="detail-ect">
+                <span>
+                  <IoEyeSharp />
+                  {'\u00A0'} {'\u00A0'}
+                  {marketDetail.viewcount}
+                </span>
+                <span>
+                  <MdOutlineAccessTimeFilled /> {'\u00A0'}
+                  {'\u00A0'}
+                  {timeSince(marketDetail.ud_date)}
+                </span>
+              </div>
+              <div>
+                거래지역{'\u00A0'}
                 {'\u00A0'}
-                {timeSince(marketDetail.ud_date)}
-              </span>
-              <span>
-                <PiHeartFill />
-              </span>
+                {'\u00A0'}
+                {'\u00A0'}
+                {'\u00A0'}
+                {'\u00A0'}
+                {marketDetail.ud_region}
+              </div>
+              <div>
+                판매자{'\u00A0'}
+                {'\u00A0'}
+                {'\u00A0'}
+                {'\u00A0'}
+                {'\u00A0'}
+                {'\u00A0'}
+                {marketDetail.u_idx}
+              </div>
+
+              <div className="detail-button-user">
+                <button className="detailbutton heart">
+                  <PiHeartFill />
+                  {'\u00A0'}
+                  {'\u00A0'}찜 1
+                </button>
+                <button className="detailbutton chatting">
+                  <PiChatTextBold />
+                  {'\u00A0'}
+                  {'\u00A0'}
+                  채팅
+                </button>
+              </div>
+              <div className="detail-button-seller">
+                <button className="detailbutton product-change">
+                  상태 변경
+                </button>
+                <button className="detailbutton product-edit">상품 수정</button>
+                <button
+                  className="detailbutton product-delete"
+                  onClick={handleDelete}
+                >
+                  상품 삭제
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="market-content-container">
-          {' '}
-          <div className="detail-info">상품 정보</div>
-          <div className="detail-content">{marketDetail.ud_content}</div>
+          <div className="market-content-container">
+            {' '}
+            <div className="detail-info">상품 정보</div>
+            <div className="detail-content">{marketDetail.ud_content}</div>
+          </div>
         </div>
       </div>
     </>

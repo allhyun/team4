@@ -1,3 +1,16 @@
+.center {
+  @include center;
+}
+
+#market-detail-container {
+  @include container;
+  margin: 100px 0 50px 0;
+  width: 65%;
+  height: 100%;
+  padding: 40px 40px 40px 40px;
+  justify-content: center;
+}
+
 nav[aria-label='detail-category'] {
   display: flex;
   ol {
@@ -16,39 +29,44 @@ nav[aria-label='detail-category'] {
 
 .market-detail-box {
   display: flex;
-  padding: 20px 0;
+  padding: 20px 10px 35px 10px;
   width: 100%;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+  border-top: solid 1px rgba(255, 255, 255, 0.5);
 
   .img-container {
     position: relative;
     display: flex;
-    justify-content: center;
     flex: 1;
-    padding-bottom: 50%;
+    aspect-ratio: 1 / 1; // 1:1 비율을 유지
+    max-height: 360px;
 
     img {
       position: absolute;
       width: 100%;
       height: 100%;
-      border-radius: 5px;
+      max-width: 360px;
+      max-height: 360px;
     }
     button {
       position: relative;
+      display: inline-block;
       border: 0;
       background-color: transparent;
       color: hsla(0, 0%, 45%, 0.5);
-      top: 22rem;
+      top: 1rem;
+      left: -16.2rem;
+      margin-left: 250px;
       svg {
         width: 40px;
         height: 40px;
       }
     }
-    button.left {
-    }
   }
-  .market-detail-box {
+  .market-info-box {
     flex: 1;
     flex-direction: column;
+    margin-left: 20px;
   }
   .detail-title {
     font-size: 25px;
@@ -69,29 +87,50 @@ nav[aria-label='detail-category'] {
   }
 }
 
-#market-detail-container {
-  @include container;
-  margin: 100px 0 50px 0;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-}
-
 // 인디케이터
 .indicator {
   position: relative;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.2);
   display: inline-block;
-  margin: 5px;
+  left: 23.5rem;
+  margin: 2px;
   cursor: pointer;
-  top: 25.5rem;
+  &.active {
+    background-color: var(--main-color);
+  }
 }
 
-.indicator.active {
-  background-color: var(--main-color);
+//  버튼
+.detail-button-user,
+.detail-button-seller {
+  @include flex-center;
+}
+.detailbutton {
+  @include flex-center;
+  @include main-button;
+  flex: 1;
+  font-size: 20px;
+  padding: 10px;
+}
+.heart,
+.product-change,
+.product-edit {
+  margin: 10px 10px 0 0;
+}
+.chatting,
+.product-delete {
+  margin-top: 10px;
+}
+
+// 상품 정보
+.market-content-container {
+  margin-top: 20px;
+  .detail-info {
+    font-size: 25px;
+  }
 }
 
 @media (max-width: 720px) {

@@ -6,10 +6,13 @@ import MarketCategory from './MarketCategory';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MarketRegion from './MarketRegion';
+// 리덕스 관련
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 // 데이터 타입
 interface DataType {
-  u_idx: number; // 유저 아이디
+  u_idx: number | null; // 유저 포린키
   buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
   ud_price: number | null; // 가격
   ud_title: string; // 상품명
@@ -36,9 +39,14 @@ interface CategoryMap {
 }
 
 const MarketEditor: React.FC = () => {
+  // Redux 스토어에서 사용자 정보 가져오기
+  // 'user'는 combineReducers에서 지정한 키!
+  const userInfo = useSelector((state: RootState) => state.user.user);
+  const { u_idx, nickname } = userInfo;
+
   // 데이터 초기값
   const [data, setData] = useState<DataType>({
-    u_idx: 1,
+    u_idx: Number(u_idx) || null,
     buy_idx: 1,
     ud_price: null,
     ud_title: '',
@@ -94,6 +102,7 @@ const MarketEditor: React.FC = () => {
   const regionRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const imageRef = useRef<HTMLLabelElement>(null);
 
   // 카테고리 컨테이너에 대한 참조 생성
   const marketCategoryRef = useRef<HTMLDivElement>(null);
@@ -180,6 +189,14 @@ const MarketEditor: React.FC = () => {
     setImageLength((prevLength) => prevLength - 1);
   };
 
+  // 이미지 포커싱 : 라벨에 포커싱
+  const imageUploadLabel = document.querySelector(
+    'label[htmlFor="market-img"]'
+  ) as HTMLLabelElement | null;
+  if (imageUploadLabel) {
+    imageUploadLabel.focus();
+  }
+
   // 공통 입력 변경 핸들러 ------------------------------------------------------------------------------------------
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -237,38 +254,67 @@ const MarketEditor: React.FC = () => {
   // 유효성 검사 함수 ------------------------------------------------------------------------------------------
   const validateFields = (): boolean => {
     let isValid = true;
-    let errors = {
-      ud_title: '',
-      ud_price: '',
-      ud_category: '',
-      ud_region: '',
-      ud_content: '',
-      ud_image: '',
-    };
 
-    if (!data.ud_title) {
-      errors.ud_title = '상품명을 입력해주세요.';
-      titleRef.current?.focus();
-      isValid = false;
-    } else if (!data.ud_category) {
-      errors.ud_category = '카테고리를 선택해주세요.';
-      marketCategoryRef.current?.focus();
-      isValid = false;
-    } else if (!data.ud_region) {
-      errors.ud_region = '거래지역을 입력해주세요.';
-      regionRef.current?.focus();
-      isValid = false;
-    } else if (!data.ud_price || data.ud_price === 0) {
-      errors.ud_price = '가격을 입력해주세요.';
-      priceRef.current?.focus();
-      isValid = false;
-    } else if (!data.ud_content) {
-      errors.ud_content = '설명을 입력해주세요.';
-      contentRef.current?.focus();
-      isValid = false;
+    // 이미지 유효성 검사
+    if (images.length === 0) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_image: '이미지를 넣어주세요.',
+      }));
+      imageRef.current?.focus();
+      return false;
     }
 
-    setErrorMessages(errors);
+    // 상품명 유효성 검사
+    if (!data.ud_title) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_title: '상품명을 입력해주세요.',
+      }));
+      titleRef.current?.focus();
+      return false;
+    }
+
+    // 카테고리 유효성 검사
+    if (!data.ud_category) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_category: '카테고리를 선택해주세요.',
+      }));
+      marketCategoryRef.current?.focus();
+      return false;
+    }
+
+    // 거래지역 유효성 검사
+    if (!data.ud_region) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_region: '거래지역을 입력해주세요.',
+      }));
+      regionRef.current?.focus();
+      return false;
+    }
+
+    // 가격 유효성 검사
+    if (!data.ud_price || data.ud_price === 0) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_price: '가격을 입력해주세요.',
+      }));
+      priceRef.current?.focus();
+      return false;
+    }
+
+    // 상품 설명 유효성 검사
+    if (!data.ud_content) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_content: '설명을 입력해주세요.',
+      }));
+      contentRef.current?.focus();
+      return false;
+    }
+
     return isValid;
   };
 
@@ -285,7 +331,7 @@ const MarketEditor: React.FC = () => {
     // 모든 이미지 파일을 'ud_image' 필드로 추가
     images.forEach((image) => formData.append('ud_image', image));
 
-    formData.append('u_idx', data.u_idx.toString());
+    formData.append('u_idx', data.u_idx?.toString() || '');
     formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
     formData.append('ud_category', data.ud_category?.toString() ?? '');
@@ -323,7 +369,7 @@ const MarketEditor: React.FC = () => {
           상품이미지
           <span style={{ color: '#fcbaba' }}>＊</span>
           <div className="img_container">
-            <label htmlFor="market-img">
+            <label htmlFor="market-img" ref={imageRef} tabIndex={0}>
               <div className="market-img">
                 <BsImage />
                 <div>이미지등록 </div>

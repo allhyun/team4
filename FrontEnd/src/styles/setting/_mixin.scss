@@ -84,3 +84,11 @@
   margin: 100px 0px 0px 0px;
   justify-content: center;
 }
+
+// 컨테이너 박스 가운데 정렬
+@mixin center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

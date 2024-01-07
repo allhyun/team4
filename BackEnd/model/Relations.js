@@ -11,11 +11,11 @@ module.exports = (db) => {
     foreignKey: 'U_IDX',
   });
 
-  // User : Usedgoods
-  db.User.hasMany(db.Usedgoods, {
+  // User : Usedproducts
+  db.User.hasMany(db.Usedproducts, {
     foreignKey: 'u_idx',
   });
-  db.Usedgoods.belongsTo(db.User, {
+  db.Usedproducts.belongsTo(db.User, {
     onDelete: 'cascade',
     foreignKey: 'u_idx',
   });
