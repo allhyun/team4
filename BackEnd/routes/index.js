@@ -55,7 +55,11 @@ router.get('/signin', userController.signin);
 
 // 회원가입 페이지
 router.get('/user/signup', userController.signup);
-router.post('/user/signup', userController.postSignup);
+router.post(
+  '/user/signup',
+  upload.single('userProfileImg'),
+  userController.postSignup
+);
 
 // 아이디 중복확인
 router.post('/user/checkid', userController.checkId);

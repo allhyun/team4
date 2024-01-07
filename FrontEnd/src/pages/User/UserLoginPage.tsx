@@ -71,9 +71,13 @@ const UserMainPage = () => {
     try {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
-      const response = await axios.post('http://localhost:8000/user/signin', user, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/user/signin',
+        user,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.result === true) {
         dispatch(
           setUserInfo({
@@ -95,7 +99,10 @@ const UserMainPage = () => {
   return (
     <section>
       <div className="form-wrap">
-        <form className="login-form" onSubmit={handleSubmit(onSubmit, onInvalid)}>
+        <form
+          className="login-form"
+          onSubmit={handleSubmit(onSubmit, onInvalid)}
+        >
           <h1>Login</h1>
           <div className="input-wrap">
             <input

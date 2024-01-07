@@ -26,7 +26,8 @@ const UserSignupPage = () => {
   const [userNickname, setUserNickname] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
-  const [isNicknameDuplicated, setIsNicknameDuplicated] = useState<Boolean>(false);
+  const [isNicknameDuplicated, setIsNicknameDuplicated] =
+    useState<Boolean>(false);
 
   const inputRef = useRef<any>();
 
@@ -53,14 +54,18 @@ const UserSignupPage = () => {
   const onUserInfoHandler = (event: ChangeEvent<HTMLInputElement>) => {
     switch (event.currentTarget.name) {
       case 'userProfileImg':
-        const file = imgRef.current.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          setImgFile(reader.result);
-        };
-        const img = event.target.files;
-        if (img !== null) setUserProfileImg(img);
+        if (event.currentTarget.files !== null) {
+          // 유저 프로필 사진 등록과 함께 보여주는 코드
+          const file = imgRef.current.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            setImgFile(reader.result);
+          };
+
+          const img = event.currentTarget.files[0];
+          setUserProfileImg(img);
+        }
         break;
       case 'userId':
         setUserId(event.currentTarget.value);
@@ -91,19 +96,24 @@ const UserSignupPage = () => {
       formData.append('password', inputData.userPw.toString());
       formData.append('nickname', inputData.userNickname.toString());
       formData.append('email', inputData.userEmail.toString());
+      formData.append('ud_date', new Date().toISOString());
+      // FormData 로깅
+      // for (let key of formData.keys()) {
+      //   console.log(key, formData.get(key));
+      // }
 
+      // 중복 체크를 위한 데이터
       const user = {
         userid: inputData.userId,
         nickname: inputData.userNickname,
       };
 
-      const checkedId = await checkDuplicated('checkid', { userid: user.userid }).then(
-        (checked: boolean) => {
-          setIsUseridDuplicated(checked);
-          return checked;
-        }
-      );
-
+      const checkedId = await checkDuplicated('checkid', {
+        userid: user.userid,
+      }).then((checked: boolean) => {
+        setIsUseridDuplicated(checked);
+        return checked;
+      });
       const checkedNickname = await checkDuplicated('checknickname', {
         nickname: user.nickname,
       }).then((checked: boolean) => {
@@ -133,29 +143,34 @@ const UserSignupPage = () => {
   };
 
   const checkDuplicated = (checkUrl: string, data: {}): any => {
-    return axios.post(`http://localhost:8000/user/${checkUrl}`, data).then((res) => {
-      return res.data.duplicate;
-    });
+    return axios
+      .post(`http://localhost:8000/user/${checkUrl}`, data)
+      .then((res) => {
+        return res.data.duplicate;
+      });
   };
 
   return (
     <section>
       <div className="form-wrap">
-        <form className="login-form" onSubmit={handleSubmit(onSubmit, onInvalid)}>
+        <form
+          className="login-form"
+          onSubmit={handleSubmit(onSubmit, onInvalid)}
+        >
           <h1>Sign Up</h1>
           <div className="img-id-pw-wrap">
             <div className="input-wrap">
               <div className="img-wrap">
                 <input
+                  ref={imgRef}
                   type="file"
                   id="upload-img"
+                  name="userProfileImg"
                   accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
                   // {...register('userProfileImg', {
                   //   required: '이미지를 등록해주세요.',
                   // })}
-                  ref={imgRef}
                   onChange={onUserInfoHandler}
-                  name="userProfileImg"
                 />
                 {userProfileImg?.length > 0 ? (
                   <label htmlFor="upload-img">

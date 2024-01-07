@@ -11,24 +11,26 @@ exports.postSignup = async (req, res) => {
   const iterations = 100;
   const keylen = 64;
   const digest = 'sha512';
-  const hashedPassword = crypto;
-  // .pbkdf2Sync(req.body.password, salt, iterations, keylen, digest)
-  // .toString('base64');
+  const hashedPassword = crypto
+    .pbkdf2Sync(req.body.password, salt, iterations, keylen, digest)
+    .toString('base64');
 
-  console.log('req', req);
+  console.log('req.body', req.body);
+  console.log('req.file.path', req.file.path);
 
-  // const data = {
-  //   // userProfileImg: req.files[0].filename,
-  //   userid: req.body.userid,
-  //   password: hashedPassword, // 암호화된 비밀번호 저장
-  //   salt: salt, // 솔트 저장
-  //   email: req.body.email,
-  //   nickname: req.body.nickname,
-  // };
-  // const createUser = await User.create(data);
-  // // result 결과 필요해서 추가했습니
-  // // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
-  // res.send({ createUser, result: true });
+  const data = {
+    userid: req.body.userid,
+    password: hashedPassword, // 암호화된 비밀번호 저장
+    salt: salt, // 솔트 저장
+    email: req.body.email,
+    nickname: req.body.nickname,
+    image: req.file.path,
+  };
+  console.log('data', data);
+  const createUser = await User.create(data);
+  // result 결과 필요해서 추가했습니
+  // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
+  res.send({ result: true });
 };
 // 아이디 중복확인
 exports.checkId = (req, res) => {
@@ -88,7 +90,12 @@ exports.postSignin = async (req, res) => {
     req.session.user = user; // 세션에 사용자 정보 저장
     req.session.isAuthenticated = true; // 로그인 상태를 true로 설정
     console.log('세션 생성:', req.session); // 세션 상태 출력
-    res.send({ result: true, u_idx: user.u_idx, nickname: user.nickname });
+    res.send({
+      result: true,
+      u_idx: user.u_idx,
+      nickname: user.nickname,
+      u_img: user.img,
+    });
   } else {
     res.send({ result: false });
   }

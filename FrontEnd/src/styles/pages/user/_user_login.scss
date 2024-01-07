@@ -38,7 +38,10 @@
       justify-content: center;
       align-items: center;
       label {
-        width: 100%;
+        // width: 100%;
+        width: 130px;
+        height: 130px;
+        cursor: pointer;
         // overflow: hidden;
       }
       .img-wrap {
@@ -48,11 +51,16 @@
         .upload-img {
           display: flex;
           flex-direction: column;
+          justify-content: center;
+          align-items: center;
           border-radius: 10em;
           border: solid 1px var(--main-white);
           // padding: 1em;
           width: 10em;
           height: 10em;
+          svg {
+            width: 10em;
+          }
         }
         .uploaded-img {
           width: 10em;
