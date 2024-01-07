@@ -50,6 +50,8 @@ function App() {
           <Route path="/study/search" element={<StudySearchPage />}></Route>
           <Route path="/chatting" element={<ChatPage />}></Route>
         </Routes>
+        {/* 유저 메뉴를 위한 포탈 */}
+        <div id="portal"></div>
       </Main>
     </BrowserRouter>
   );

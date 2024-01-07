@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import '../../styles/style.scss';
-import { removeUserInfo } from '../../store/user.slice';
 import axios from 'axios';
 import HeaderUser from '../User/HeaderUser';
 
