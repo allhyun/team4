@@ -83,6 +83,7 @@ const UserMainPage = () => {
           setUserInfo({
             u_idx: response.data.u_idx,
             nickname: response.data.nickname,
+            u_img: response.data.u_img,
           })
         );
         navigate('/');
