@@ -14,6 +14,7 @@ import UserInfoPage from './pages/User/UserInfoPage';
 import UserFindPage from './pages/User/UserFindPage';
 import StudyModify from './components/Study/StudyModify';
 import StudySearchPage from './pages/Study/StudySearchPage';
+import ChatPage from './pages/Chat/ChatPage';
 
 function App() {
   return (
@@ -46,6 +47,8 @@ function App() {
           ></Route>
           <Route path="/study/modify" element={<StudyModify />}></Route>
           <Route path="/study/search" element={<StudySearchPage />}></Route>
+          <Route path="/study/search" element={<StudySearchPage />}></Route>
+          <Route path="/chatting" element={<ChatPage />}></Route>
         </Routes>
       </Main>
     </BrowserRouter>
