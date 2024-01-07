@@ -123,7 +123,7 @@ const StudyToastEditor = () => {
       );
       console.log('Server response:', response.data);
       //성공시 스터디메인페이지로 리다이렉트
-      navigate('/study');
+      navigate('/study', { state: { key: 'study-page' } });
     } catch (error) {
       console.error('Error submitting data:', error);
     }
