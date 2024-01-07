@@ -144,13 +144,12 @@ const MarketDetailPage = () => {
 
   // 삭제 기능
   const handleDelete = async () => {
-    // 사용자에게 삭제 확인
-    const confirmDelete = window.confirm('이 게시글을 정말 삭제하시겠습니까?');
-    if (!confirmDelete) return;
+    // 사용자에게 삭제 확인 -> 발표할 땐 주석하고 실제 운용할땐 쓰는게 좋을듯!
+    // const confirmDelete = window.confirm('이 게시글을 정말 삭제하시겠습니까?');
+    // if (!confirmDelete) return;
     try {
       // 삭제 요청 보내기
       await axios.delete(`http://localhost:8000/product/delete/${ud_idx}`);
-      alert('게시글이 삭제되었습니다.');
       navigate('/market'); // 삭제 후 마켓 페이지로 리다이렉트
     } catch (error) {
       console.error('삭제 중 오류 발생:', error);

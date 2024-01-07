@@ -6,8 +6,10 @@ export default function MarketEditPage() {
   return (
     <>
       <MarketHeader />
-      <div id="marketcontainer" className="market_container">
-        <MarketEditor />
+      <div className="center">
+        <div id="marketcontainer" className="market_container">
+          <MarketEditor />
+        </div>
       </div>
     </>
   );

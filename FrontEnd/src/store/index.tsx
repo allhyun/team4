@@ -60,7 +60,6 @@ const rootReducer = combineReducers({
   user: userPersistedReducer,
   market: marketPersistedReducer,
 });
-
 export type RootState = ReturnType<typeof rootReducer>;
 
 const store = configureStore({

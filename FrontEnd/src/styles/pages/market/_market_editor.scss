@@ -1,9 +1,10 @@
 div#marketcontainer {
   @include container;
   margin: 100px 0 50px 0;
-  width: 100%;
+  width: 65%;
   height: 100%;
-  padding: 20px;
+  padding: 40px 40px 40px 40px;
+  justify-content: center;
 }
 // 입력창들간 간격조절
 section.market-img,
@@ -60,14 +61,12 @@ section.market-textarea {
   }
 }
 
-section.market-img {
-}
-
 // 이미지 등록버튼 디자인
 div.img_container {
   margin-top: 10px;
   position: relative;
   display: flex;
+  margin-bottom: 10px;
   input[type='file'] {
     display: none;
   }
@@ -118,12 +117,11 @@ ul.image-previews-list {
     width: 130px;
     height: 130px;
     margin-left: 10px;
+    margin-bottom: 10px;
     li.image-preview {
       list-style: none;
       width: 130px;
       height: 130px;
-      margin-right: 10px;
-      margin-bottom: 10px;
       img {
         @include market-s-box;
         width: 100%;
