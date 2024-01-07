@@ -1,0 +1,28 @@
+.menu-wrap {
+  padding: 0 2.5rem;
+  position: fixed;
+  right: 0;
+  .user-menu {
+    @include flex-center;
+    flex-direction: column;
+    padding: 0.5em 1em;
+    // width: 10em;
+    gap: 2px;
+    background-color: var(--main-bgcolor);
+    border: 1px solid var(--main-white);
+    border-radius: 5px 0 5px 5px;
+    font-size: 0.9em;
+    color: var(--main-white);
+  }
+  animation: slideAni 0.2s ease-out;
+  @keyframes slideAni {
+    from {
+      opacity: 0.25;
+      transform: translateY(-3%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
