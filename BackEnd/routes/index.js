@@ -107,7 +107,7 @@ router.post('/user/changePassword', userController.updatePassword);
 router.get('/user/logout', userController.logout);
 
 // 마이페이지
-router.get('/user/mypage', userController.mypage);
+router.post('/user/mypage', userController.mypage);
 
 // 마이페이지 닉네임수정
 router.patch('/user/updateMypageNickname', userController.updateMypageNickname);

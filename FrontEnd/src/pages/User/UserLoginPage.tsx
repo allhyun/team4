@@ -156,11 +156,11 @@ const UserMainPage = () => {
             </Link>
           </div>
 
-          <div className="input-wrap">
+          {/* <div className="input-wrap">
             <button type="button" onClick={handleAuth}>
               구글로 로그인
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </section>

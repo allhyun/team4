@@ -24,8 +24,11 @@ const FindId = () => {
       email: inputData.userEmail,
     };
 
-    const response = await axios.post('http://localhost:8000/user/findId', data);
-    if (!response) return;
+    const response = await axios.post(
+      'http://localhost:8000/user/findId',
+      data
+    );
+    // console.log('response', response);
   };
 
   return (

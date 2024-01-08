@@ -38,8 +38,6 @@ const io = require('socket.io')(server, {
 
 app.set('io', io);
 
-app.use('/', router);
-
 // 미들웨어를 사용하여 모든 뷰에 로그인 상태(세션)를 전달
 // app.use((req, res, next) => {
 //   res.locals.isAuthenticated = req.session.isAuthenticated;
@@ -47,6 +45,8 @@ app.use('/', router);
 //   console.log(res.locals.user);
 //   next();
 // });
+
+app.use('/', router);
 
 app.use(async (req, res, next) => {
   if (req.session.isAuthenticated) {
