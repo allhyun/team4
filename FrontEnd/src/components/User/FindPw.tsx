@@ -32,7 +32,6 @@ const FindPw = () => {
       data
     );
     if (!response) return;
-
   };
 
   return (

@@ -192,14 +192,26 @@ exports.mypage = async (req, res) => {
 
 // 유저정보 변경 컨트롤러
 exports.updateUserInfo = async (req, res) => {
-  const u_idx = req.session.user.u_idx;
+  // const u_idx = req.session.user.u_idx;
   // console.log(req.session);
   const { nickname } = req.body;
 
   const user = await User.findOne({ where: { u_idx: u_idx } });
 
+  const salt = crypto.randomBytes(16).toString('base64');
+  const iterations = 100;
+  const keylen = 64;
+  const digest = 'sha512';
+  const hashedPassword = crypto
+    .pbkdf2Sync(changePassword, salt, iterations, keylen, digest)
+    .toString('base64');
+
+  user.password = hashedPassword;
+  user.salt = salt;
+
   if (user) {
     user.nickname = nickname;
+
     await user.save();
 
     // 세션에 있는 사용자 정보도 업데이트
@@ -215,6 +227,7 @@ exports.updateUserInfo = async (req, res) => {
         });
       }
     });
+    console.log('req.session', req.session);
   } else {
     res.send({ result: false, message: '유저를 찾을 수 없습니다.' });
   }

@@ -73,7 +73,7 @@ router.get('/product/search', usedgoodsController.searchusedGoods);
 // 로그인 페이지
 router.get('/user/signin', userController.signin);
 
-// 회원가입 페이지
+// 회원가입
 router.get('/user/signup', userController.signup);
 router.post(
   '/user/signup',
