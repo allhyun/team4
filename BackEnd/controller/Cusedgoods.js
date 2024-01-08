@@ -26,6 +26,9 @@ exports.getUsedgoods = async (req, res) => {
 // 중고물품 판매등록
 exports.createusedGoods = async (req, res) => {
   try {
+    // req.body와 req.files 로깅
+    console.log('req.body:', req.body);
+    console.log('req.files:', req.files);
     const {
       u_idx,
       buy_idx,
@@ -71,7 +74,7 @@ exports.createusedGoods = async (req, res) => {
       res.status(400).send('이미지를 업로드해주세요.');
     }
   } catch (error) {
-    console.error(error);
+    console.error('createusedGoods 에러:', error);
     res.status(500).send('메인화면 에러 발생');
   }
 };

@@ -26,7 +26,6 @@ const MarketModify: React.FC = () => {
     buy_idx: 0,
     ud_price: 0,
     ud_title: '',
-    ud_category: 0,
     ud_image: '',
     ud_content: '',
     ud_region: '',
@@ -80,11 +79,10 @@ const MarketModify: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
     ud_title: '',
     ud_price: '',
-    ud_category: '',
     ud_region: '',
     ud_content: '',
     ud_image: '',
-    c_idx: null,
+    c_idx_error: null,
   });
 
   // 포커싱용 참조 생성
@@ -264,11 +262,11 @@ const MarketModify: React.FC = () => {
   // 카테고리 제출 핸들러
   const handleCategoryChange = (categoryName: string) => {
     const categoryID = getCategoryID(categoryName);
-    setData({ ...data, ud_category: categoryID });
+    setData({ ...data, c_idx: categoryID });
 
     // 카테고리 선택 시 관련 오류 메시지 제거
-    if (errorMessages.ud_category) {
-      setErrorMessages({ ...errorMessages, ud_category: '' });
+    if (errorMessages.c_idx_error) {
+      setErrorMessages({ ...errorMessages, c_idx_error: null });
     }
   };
 
@@ -297,10 +295,10 @@ const MarketModify: React.FC = () => {
     }
 
     // 카테고리 유효성 검사
-    if (!data.ud_category) {
+    if (!data.c_idx) {
       setErrorMessages((prev) => ({
         ...prev,
-        ud_category: '카테고리를 선택해주세요.',
+        c_idx_error: '카테고리를 선택해주세요.',
       }));
       marketCategoryRef.current?.focus();
       return false;
@@ -355,7 +353,7 @@ const MarketModify: React.FC = () => {
     formData.append('u_idx', data.u_idx?.toString() || '');
     formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
-    formData.append('ud_category', data.ud_category?.toString() ?? '');
+    formData.append('ud_category', data.c_idx?.toString() ?? '');
     formData.append('ud_region', data.ud_region);
     formData.append('ud_price', data.ud_price?.toString() ?? '');
     formData.append('ud_content', data.ud_content);
@@ -450,8 +448,8 @@ const MarketModify: React.FC = () => {
                   카테고리<span style={{ color: '#fcbaba' }}>＊</span>
                   <MarketCategory onSelectCategory={handleCategoryChange} />
                 </div>
-                {errorMessages.ud_category && (
-                  <p className="error-message">{errorMessages.ud_category}</p>
+                {errorMessages.c_idx_error && (
+                  <p className="error-message">{errorMessages.c_idx_error}</p>
                 )}
               </section>
               <section className="market-region">
