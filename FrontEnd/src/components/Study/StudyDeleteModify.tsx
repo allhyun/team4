@@ -23,7 +23,7 @@ const StudyDeleteModify = (props: PropsType) => {
   };
 
   const joinStudy = async () => {
-    navigate('/study/join');
+    navigate('/chatting', { state: { key: 'study-page' } });
   };
 
   return (
