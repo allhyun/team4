@@ -14,7 +14,10 @@ const StudyDeleteModify = (props: PropsType) => {
   };
   const deleteStudy = async () => {
     try {
-      await axios.delete(`http://localhost:8000/study/delete/${pageNumber}`);
+      // await axios.delete(`http://localhost:8000/study/delete/${pageNumber}`);
+      await axios.delete(
+        `${process.env.REACT_APP_HOST}/study/delete/${pageNumber}`
+      );
 
       navigate('/study');
     } catch (error) {

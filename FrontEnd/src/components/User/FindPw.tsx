@@ -28,10 +28,11 @@ const FindPw = () => {
     };
 
     const response = await axios.post(
-      'http://localhost:8000/user/findPassword',
+      `${process.env.REACT_APP_HOST}/user/findPassword`,
       data
     );
-    // console.log('response', response);
+    if (!response) return;
+
   };
 
   return (

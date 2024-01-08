@@ -126,7 +126,8 @@ const UserSignupPage = () => {
       // if (isUseridDuplicated !== true && isNicknameDuplicated !== true) {
       if (checkedId !== true && checkedNickname !== true) {
         axios
-          .post('http://localhost:8000/user/signup', formData, {
+          // .post('http://localhost:8000/user/signup'
+          .post(`${process.env.REACT_APP_HOST}/user/signup`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
           .then((res) => {
@@ -143,11 +144,15 @@ const UserSignupPage = () => {
   };
 
   const checkDuplicated = (checkUrl: string, data: {}): any => {
-    return axios
-      .post(`http://localhost:8000/user/${checkUrl}`, data)
-      .then((res) => {
-        return res.data.duplicate;
-      });
+    return (
+      axios
+        // .post(`http://localhost:8000/user/${checkUrl}`
+        // 배포용
+        .post(`${process.env.REACT_APP_HOST}/user/${checkUrl}`, data)
+        .then((res) => {
+          return res.data.duplicate;
+        })
+    );
   };
 
   return (
@@ -293,6 +298,7 @@ const UserSignupPage = () => {
             </button>
           </div>
         </form>
+        :
       </div>
     </section>
   );

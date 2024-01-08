@@ -79,7 +79,9 @@ const UserMainPage = () => {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
       const response = await axios.post(
-        'http://localhost:8000/user/signin',
+        // 'http://localhost:8000/user/signin'
+        // 배포용
+        `${process.env.REACT_APP_HOST}/user/signin`,
         user,
         {
           withCredentials: true,

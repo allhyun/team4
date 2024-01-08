@@ -20,7 +20,7 @@ interface DetailDataType {
   buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
   ud_price: number | null; // 가격
   ud_title: string; // 상품명
-  ud_category: number | null; // 카테고리
+  c_idx: number | null; // 카테고리
   ud_image: string | null; // 상품사진
   ud_content: string; // 상품설명
   ud_region: string; // 거래지역
@@ -58,7 +58,9 @@ const MarketDetailPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/product/detail/${ud_idx}`)
+      // .get(`http://localhost:8000/product/detail/${ud_idx}`)
+      // 배포용
+      .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
       .then((response) => {
         // console.log('서버 응답 데이터:', response.data);
         const productData = response.data;
@@ -187,7 +189,7 @@ const MarketDetailPage = () => {
                   {'\u00A0'}
                 </li>
                 <li className="detail-category2" aria-current="page">
-                  {marketDetail.ud_category}
+                  {marketDetail.c_idx}
                 </li>
               </ol>
             </nav>

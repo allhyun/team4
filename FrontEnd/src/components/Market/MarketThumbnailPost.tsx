@@ -10,7 +10,7 @@ interface DataType {
   buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
   ud_price: number | null; // 가격
   ud_title: string; // 상품명
-  ud_category: number | null; // 카테고리
+  c_idx: number | null; // 카테고리
   ud_image: string | string[] | null; // 상품사진
   ud_content: string; // 상품설명
   ud_region: string; // 거래지역
@@ -91,7 +91,9 @@ const MarketThumbnailPost = (props: propsType) => {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await axios.get('http://localhost:8000/product', {
+        // const res = await axios.get('http://localhost:8000/product'
+        // 배포용
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/product`, {
           params: { page: data },
         });
 

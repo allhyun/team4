@@ -20,7 +20,9 @@ const StudyMainPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:8000/study');
+        // const res = await axios.get('http://localhost:8000/study');
+        // 배포용
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/study`);
         //전체 페이지 갯수
 
         setApage(Math.ceil((res.data.totalCount + 1) / 6));

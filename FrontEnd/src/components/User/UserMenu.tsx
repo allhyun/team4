@@ -10,8 +10,14 @@ const UserMenu = ({ setUserMenuClicked }: any) => {
   const logoutHandler = () => {
     dispatch(removeUserInfo());
     // 다른 리덕스 상태들도 삭제하는 dispatch도 추가해야 함
+    // axios
+    //   .get('http://localhost:8000/user/logout', {
+    //     withCredentials: true,
+    //   })
+    //   .then((res) => console.log(res));
+    // setUserMenuClicked(false);
     axios
-      .get('http://localhost:8000/user/logout', {
+      .get(`${process.env.REACT_APP_HOST}/user/logout`, {
         withCredentials: true,
       })
       .then((res) => console.log(res));

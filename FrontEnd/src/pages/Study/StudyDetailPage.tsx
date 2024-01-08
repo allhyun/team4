@@ -21,8 +21,11 @@ const StudyDetailPage = () => {
   useEffect(() => {
     const fetchStudyDetail = async () => {
       try {
+        // const res = await axios.get(
+        //   `http://localhost:8000/study/detail/${st_idx}`
+        // );
         const res = await axios.get(
-          `http://localhost:8000/study/detail/${st_idx}`
+          `${process.env.REACT_APP_HOST}/study/detail/${st_idx}`
         );
         setStudy(res.data);
         dispatch(setStudyDetail(res.data));
