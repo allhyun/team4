@@ -23,10 +23,7 @@ exports.postSignup = async (req, res) => {
     nickname: req.body.nickname,
     image: req.file.path,
   };
-
   const createUser = await User.create(data);
-  // result 결과 필요해서 추가했습니
-  // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
   res.send({ result: true });
 };
 // 아이디 중복확인
@@ -64,11 +61,11 @@ exports.checkNickname = (req, res) => {
     }
   });
 };
-
 // 로그인 화면 랜더링
 exports.signin = (req, res) => {
   res.render('./user/signin');
 };
+
 // 로그인 화면 랜더링
 exports.postSignin = async (req, res) => {
   const user = await User.findOne({ where: { userid: req.body.userid } });
@@ -88,7 +85,6 @@ exports.postSignin = async (req, res) => {
     req.session.user = user; // 세션에 사용자 정보 저장
     req.session.isAuthenticated = true; // 로그인 상태를 true로 설정
     console.log('세션 생성:', req.session); // 세션 상태 출력
-
     res.send({
       result: true,
       u_idx: user.u_idx,
@@ -120,7 +116,7 @@ exports.logout = (req, res) => {
 exports.findId = (req, res) => {
   res.render('./user/findId');
 };
-//
+// 아이디 찾기 요청
 exports.postFindId = (req, res) => {
   User.findOne({
     where: {
@@ -185,17 +181,49 @@ exports.updatePassword = async (req, res) => {
 
 // 마이페이지 랜더링
 exports.mypage = async (req, res) => {
-  const u_idx = req.session.user;
+  console.log('req.body', req.body);
+  console.log('req.sessionId', req.session.id);
+  if (req.session.id) {
+    const u_idx = req.body.u_idx;
+    const user = await User.findOne({ where: { u_idx: u_idx } });
+    await res.send({ user });
+  }
+};
+
+// 유저정보 변경 컨트롤러
+exports.updateUserInfo = async (req, res) => {
+  const u_idx = req.session.user.u_idx;
+  // console.log(req.session);
+  const { nickname } = req.body;
+
   const user = await User.findOne({ where: { u_idx: u_idx } });
-  console.log(user);
-  // res.render('./user/mypage', { data: user });
+
+  if (user) {
+    user.nickname = nickname;
+    await user.save();
+
+    // 세션에 있는 사용자 정보도 업데이트
+    req.session.user = user;
+    req.session.save((err) => {
+      if (err) {
+        // 에러 처리
+        res.send({ result: false, message: '세션 업데이트에 실패하였습니다.' });
+      } else {
+        res.send({
+          result: true,
+          message: '닉네임이 성공적으로 수정되었습니다.',
+        });
+      }
+    });
+  } else {
+    res.send({ result: false, message: '유저를 찾을 수 없습니다.' });
+  }
 };
 
 // 닉네임 변경 컨트롤러
 exports.updateMypageNickname = async (req, res) => {
   const u_idx = req.session.user.u_idx;
   // console.log(req.session);
-  // const u_idx = 8;
   const { nickname } = req.body;
 
   const user = await User.findOne({ where: { u_idx: u_idx } });

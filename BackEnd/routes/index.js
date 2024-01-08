@@ -4,7 +4,7 @@ const router = express.Router();
 // const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
-// const user = require('../controller/Cuser');
+const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
 // router.all('/*', function (req, res, next) {
@@ -71,7 +71,7 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
 // 로그인 페이지
-router.get('/signin', userController.signin);
+router.get('/user/signin', userController.signin);
 
 // 회원가입 페이지
 router.get('/user/signup', userController.signup);
@@ -107,9 +107,12 @@ router.post('/user/changePassword', userController.updatePassword);
 router.get('/user/logout', userController.logout);
 
 // 마이페이지
-router.get('/user/mypage', userController.mypage);
+router.post('/user/mypage', userController.mypage);
 
-// 마이페이지 닉네임수정
+// 마이페이지 유저 정보 수정
+router.patch('/user/updateUserInfo', userController.updateUserInfo);
+
+// 마이페이지 닉네임 수정
 router.patch('/user/updateMypageNickname', userController.updateMypageNickname);
 
 // 마이페이지 비밀번호 수정

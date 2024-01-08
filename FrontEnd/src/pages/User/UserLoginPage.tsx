@@ -4,11 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import '../../styles/style.scss';
+import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
 import { setUserInfo } from '../../store/user.slice';
 import { useSelector, useDispatch } from 'react-redux';
+import Modal from '../../components/User/Modal';
 
 interface LoginForm {
   userId: string;
@@ -16,18 +18,23 @@ interface LoginForm {
 }
 
 const UserMainPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const ref: React.LegacyRef<HTMLDivElement | null | undefined> | any =
+    useRef();
+  useOnClickOutside(ref, () => setIsModalOpen(false));
+
   // firebase OAuth
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  const handleAuth = () => {
-    try {
-      signInWithPopup(auth, provider).then((result) => {
-        console.log('result', result);
-      });
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
+  // const auth = getAuth(app);
+  // const provider = new GoogleAuthProvider();
+  // const handleAuth = () => {
+  //   try {
+  //     signInWithPopup(auth, provider).then((result) => {
+  //       console.log('result', result);
+  //     });
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   }
+  // };
 
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string>('');
@@ -89,7 +96,10 @@ const UserMainPage = () => {
           })
         );
         navigate('/');
+      } else {
+        setIsModalOpen(true);
       }
+
       console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);
@@ -158,12 +168,17 @@ const UserMainPage = () => {
             </Link>
           </div>
 
-          <div className="input-wrap">
+          {/* <div className="input-wrap">
             <button type="button" onClick={handleAuth}>
               구글로 로그인
             </button>
-          </div>
+          </div> */}
         </form>
+        {isModalOpen && (
+          <div ref={ref}>
+            <Modal text={'아이디와 비밀번호를 확인해주세요.'} />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -29,7 +29,7 @@ const UserMenu = ({ setUserMenuClicked }: any) => {
       <div className="menu-wrap">
         <div className="user-menu">
           <Link to="/">관심 목록</Link>
-          <Link to="/">마이페이지</Link>
+          <Link to="/user">마이페이지</Link>
           <Link to="/" onClick={logoutHandler}>
             로그아웃
           </Link>
