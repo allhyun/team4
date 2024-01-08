@@ -109,7 +109,10 @@ router.get('/user/logout', userController.logout);
 // 마이페이지
 router.post('/user/mypage', userController.mypage);
 
-// 마이페이지 닉네임수정
+// 마이페이지 유저 정보 수정
+router.patch('/user/updateUserInfo', userController.updateUserInfo);
+
+// 마이페이지 닉네임 수정
 router.patch('/user/updateMypageNickname', userController.updateMypageNickname);
 
 // 마이페이지 비밀번호 수정

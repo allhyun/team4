@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useRef, useEffect } from 'react';
+import React, { ChangeEvent, useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import '../../styles/style.scss';
 import { BsImage } from 'react-icons/bs';
@@ -29,7 +28,7 @@ const UserSignupPage = () => {
   const [isNicknameDuplicated, setIsNicknameDuplicated] =
     useState<Boolean>(false);
 
-  const inputRef = useRef<any>();
+  // const inputRef = useRef<any>();
 
   // react-hook-form input 초기값 제공하지 않으면 undefined로 관리됨
   const {
@@ -62,8 +61,9 @@ const UserSignupPage = () => {
           reader.onloadend = () => {
             setImgFile(reader.result);
           };
-
-          const img = event.currentTarget.files[0];
+          const img = event.currentTarget.files;
+          // img 파일의 legnth 속성을 조회해서 등록한 프로필 이미지 미리보기 구현
+          // 폼에 담아 보낼 때는 '0' 속성 내용만 따로 보내줘야 함.
           setUserProfileImg(img);
         }
         break;
@@ -91,7 +91,7 @@ const UserSignupPage = () => {
       console.log('useForm 성공', inputData);
 
       const formData = new FormData();
-      formData.append('userProfileImg', userProfileImg);
+      formData.append('userProfileImg', userProfileImg[0]);
       formData.append('userid', inputData.userId);
       formData.append('password', inputData.userPw.toString());
       formData.append('nickname', inputData.userNickname.toString());
