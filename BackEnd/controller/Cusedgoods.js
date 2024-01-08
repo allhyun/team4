@@ -7,6 +7,7 @@ const path = require('path');
 exports.getUsedgoods = async (req, res) => {
   try {
     const usedgoods = await db.Useproduct.findAll({
+
       where: {
         ud_date: {
           [Op.lt]: new Date(),
@@ -45,7 +46,9 @@ exports.createusedGoods = async (req, res) => {
       const ud_images = req.files.map((file) => file.filename);
 
       // const ud_image = req.files[0].filename;
+
       const newProducts = await db.Useproduct.create({
+
         u_idx,
         buy_idx,
         ud_price,
@@ -59,7 +62,9 @@ exports.createusedGoods = async (req, res) => {
       });
 
       // 조회수 증가
+
       await db.Useproduct.increment('viewcount', {
+
         by: 1,
         where: { ud_idx: newProducts.ud_idx },
       });
@@ -80,6 +85,7 @@ exports.detailusedGoods = async (req, res) => {
   console.log(usedGoodsId);
   try {
 
+
     const product = await db.Useproduct.findByPk(usedGoodsId);
 
     if (!product) {
@@ -93,7 +99,7 @@ exports.detailusedGoods = async (req, res) => {
   }
 };
 
-//     const product = await db.Usedproducts.findByPk(usedGoodsId, {
+//     const product = await db.Usedproduct.findByPk(usedGoodsId, {
 //       include: [
 //         {
 //           model: db.User, // User 모델을 포함
@@ -119,8 +125,10 @@ exports.modifyusedGoods = async (req, res) => {
   try {
     const { ud_price, ud_title, c_idx, ud_image, ud_content, ud_region } =
       req.body;
+
     const updatedusedGoods = await db.Useproduct.update(
       { ud_price, ud_title, c_idx, ud_image, ud_content, ud_region },
+
       { where: { ud_idx: usedproductId } }
     );
     res.send({ updatedusedGoods, msg: '수정완료!' });
@@ -137,7 +145,7 @@ exports.modifyusedGoods = async (req, res) => {
 //   console.log(usedproductId);
 //   try {
 
-//     await db.Usedproducts.destroy({ where: { ud_idx: usedproductId } });
+//     await db.Usedproduct.destroy({ where: { ud_idx: usedproductId } });
 //     res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
 //   } catch (error) {
 //     console.error(error);
@@ -149,6 +157,11 @@ exports.deleteusedGoods = async (req, res) => {
   const usedproductId = req.params.ud_idx;
 
   try {
+
+    const useproduct = await db.Usedproduct.findOne({
+      where: { ud_idx: usedproductId },
+    });
+
 
 //   디벨롭 서버 코드기준(240108)
     await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
@@ -211,7 +224,9 @@ exports.searchusedGoods = async (req, res) => {
   console.log('received keyword:', keyword);
 
   try {
+
     let result = await db.Useproduct.findAll({
+
       // 카테고리 검색은..?고민해보자..
       where: {
         [Op.or]: [

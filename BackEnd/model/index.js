@@ -28,6 +28,7 @@ db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 db.Volunteer = require('./Volunteer')(sequelize, Sequelize);
 db.Heart = require('./Heart')(sequelize, Sequelize);
 db.Chatuser = require('./Chatuser')(sequelize, Sequelize);
+
 db.Useproduct = require('./Useproduct')(sequelize, Sequelize);
 db.Category = require('./Category')(sequelize, Sequelize);
 
