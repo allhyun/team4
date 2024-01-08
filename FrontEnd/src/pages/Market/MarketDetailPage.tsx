@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 //리덕스 관련
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModifyPost } from '../../store/marketmodifyReducer';
 //
 import '../../styles/style.scss';
 import { IoEyeSharp } from 'react-icons/io5'; // 조회수 아이콘
@@ -14,55 +14,35 @@ import { MdOutlineAccessTimeFilled } from 'react-icons/md'; // 시간 아이콘
 import { IoIosArrowDropleftCircle } from 'react-icons/io'; // 왼쪽 아이콘
 import { IoIosArrowDroprightCircle } from 'react-icons/io'; // 오른쪽 아이콘
 import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
-
-interface DetailDataType {
-  ud_idx: number; // 게시판 포린키
-  u_idx: number; // 유저 아이디
-  buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
-  ud_price: number | null; // 가격
-  ud_title: string; // 상품명
-  ud_category: number | null; // 카테고리
-  ud_image: string | null; // 상품사진
-  ud_content: string; // 상품설명
-  ud_region: string; // 거래지역
-  viewcount: number; // 조회수
-  ud_date: string; // 작성시간
-  nickname: string; // 사용자 닉네임
-  ud_images?: string[]; // 이미지 배열
-}
-// // 카테고리 문자 변환 함수 타입 정의
-// interface CategoryMap {
-//   [key: string]: string;
-// }
-
-// // 카테고리 숫자 ID를 문자열로 매핑
-// const getCategoryID = (categoryName: string): number | null => {
-//   const categoryMap: CategoryMap = {
-//     1: '도서',
-//     2: '전자기기',
-//     3: '문구',
-//     4: '티켓/쿠폰',
-//     5: '생활',
-//     6: '취미',
-//     7: '무료나눔',
-//     8: '기타',
-//   };
-//   // 카테고리 이름이 없으면 null 반환
-//   return categoryMap[categoryName] || null;
-// };
+import MarketDeleteModify from '../../components/Market/MarketDeleteModify';
+import { DetailDataType } from '../../components/Types/MarketType';
 
 const MarketDetailPage = () => {
   const navigate = useNavigate();
   const { ud_idx } = useParams();
-  const [marketDetail, setMarketDetail] = useState<DetailDataType | null>(null);
+  const [marketDetailState, setMarketDetailState] =
+    useState<DetailDataType | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const dispatch = useDispatch();
+  const marketDetail = useSelector((state: any) => state.market.modifyPost);
+
+  // 수정 관련 :  Redux에 상태 업데이트
 
   useEffect(() => {
     axios
       .get(`http://localhost:8000/product/detail/${ud_idx}`)
-      .then((response) => {
-        // console.log('서버 응답 데이터:', response.data);
-        const productData = response.data;
+      .then((res) => {
+        dispatch(setModifyPost(res.data)); // 상태 업데이트
+      })
+      .catch((error) => console.error(error));
+  }, [ud_idx, dispatch]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/product/detail/${ud_idx}`)
+      .then((res) => {
+        // console.log('서버 응답 데이터:', res.data);
+        const productData = res.data;
 
         // ud_image 필드가 JSON 문자열인 경우 배열로 변환
         if (productData.ud_image && typeof productData.ud_image === 'string') {
@@ -71,7 +51,7 @@ const MarketDetailPage = () => {
           productData.ud_images = []; // 또는 기본값 설정
         }
 
-        setMarketDetail(response.data);
+        setMarketDetailState(res.data);
       })
       .catch((error) => console.error(error));
   }, [ud_idx]);
@@ -82,7 +62,7 @@ const MarketDetailPage = () => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  if (!marketDetail) {
+  if (!marketDetailState) {
     return <div>Loading...</div>;
   }
 
@@ -119,9 +99,9 @@ const MarketDetailPage = () => {
   // 이미지 이전 이미지로 이동
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
-      marketDetail &&
-      marketDetail.ud_images &&
-      prevIndex < marketDetail.ud_images.length - 1
+      marketDetailState &&
+      marketDetailState.ud_images &&
+      prevIndex < marketDetailState.ud_images.length - 1
         ? prevIndex + 1
         : prevIndex
     );
@@ -130,9 +110,9 @@ const MarketDetailPage = () => {
   // 인디케이터
   const renderIndicators = () => {
     return (
-      marketDetail &&
-      marketDetail.ud_images &&
-      marketDetail.ud_images.map((_, index) => (
+      marketDetailState &&
+      marketDetailState.ud_images &&
+      marketDetailState.ud_images.map((_, index) => (
         <span
           key={index}
           className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
@@ -162,6 +142,10 @@ const MarketDetailPage = () => {
     navigate('/market');
   };
 
+  const handleChattingClick = () => {
+    navigate('/chatting');
+  };
+
   return (
     <>
       <MarketHeader />
@@ -169,9 +153,9 @@ const MarketDetailPage = () => {
         <div id="market-detail-container" className="market-detail-container">
           <div id="market-detail-box" className="market-detail-box">
             <div className="img-container">
-              {marketDetail && marketDetail.ud_images && (
+              {marketDetailState && marketDetailState.ud_images && (
                 <img
-                  src={`http://localhost:8000/static/userImg/${marketDetail.ud_images[currentImageIndex]}`}
+                  src={`http://localhost:8000/static/userImg/${marketDetailState.ud_images[currentImageIndex]}`}
                   alt={`Image ${currentImageIndex}`}
                 />
               )}
@@ -204,24 +188,24 @@ const MarketDetailPage = () => {
                     {'\u00A0'}
                   </li>
                   <li className="detail-category2" aria-current="page">
-                    {marketDetail.ud_category}
+                    {marketDetailState.ud_category}
                   </li>
                 </ol>
               </nav>
-              <div className="detail-title">{marketDetail.ud_title}</div>
+              <div className="detail-title">{marketDetailState.ud_title}</div>
               <div className="detail-price">
-                {formatPrice(marketDetail.ud_price)} 원
+                {formatPrice(marketDetailState.ud_price)} 원
               </div>
               <div className="detail-ect">
                 <span>
                   <IoEyeSharp />
                   {'\u00A0'} {'\u00A0'}
-                  {marketDetail.viewcount}
+                  {marketDetailState.viewcount}
                 </span>
                 <span>
                   <MdOutlineAccessTimeFilled /> {'\u00A0'}
                   {'\u00A0'}
-                  {timeSince(marketDetail.ud_date)}
+                  {timeSince(marketDetailState.ud_date)}
                 </span>
               </div>
               <div>
@@ -231,7 +215,7 @@ const MarketDetailPage = () => {
                 {'\u00A0'}
                 {'\u00A0'}
                 {'\u00A0'}
-                {marketDetail.ud_region}
+                {marketDetailState.ud_region}
               </div>
               <div>
                 판매자{'\u00A0'}
@@ -240,7 +224,7 @@ const MarketDetailPage = () => {
                 {'\u00A0'}
                 {'\u00A0'}
                 {'\u00A0'}
-                {marketDetail.u_idx}
+                {marketDetailState.u_idx}
               </div>
 
               <div className="detail-button-user">
@@ -249,7 +233,10 @@ const MarketDetailPage = () => {
                   {'\u00A0'}
                   {'\u00A0'}찜 1
                 </button>
-                <button className="detailbutton chatting">
+                <button
+                  className="detailbutton chatting"
+                  onClick={handleChattingClick}
+                >
                   <PiChatTextBold />
                   {'\u00A0'}
                   {'\u00A0'}
@@ -257,23 +244,14 @@ const MarketDetailPage = () => {
                 </button>
               </div>
               <div className="detail-button-seller">
-                <button className="detailbutton product-change">
-                  상태 변경
-                </button>
-                <button className="detailbutton product-edit">상품 수정</button>
-                <button
-                  className="detailbutton product-delete"
-                  onClick={handleDelete}
-                >
-                  상품 삭제
-                </button>
+                <MarketDeleteModify ud_idx={marketDetailState.ud_idx} />
               </div>
             </div>
           </div>
           <div className="market-content-container">
             {' '}
             <div className="detail-info">상품 정보</div>
-            <div className="detail-content">{marketDetail.ud_content}</div>
+            <div className="detail-content">{marketDetailState.ud_content}</div>
           </div>
         </div>
       </div>

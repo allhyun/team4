@@ -14,6 +14,7 @@ import UserInfoPage from './pages/User/UserInfoPage';
 import UserFindPage from './pages/User/UserFindPage';
 import StudyModify from './components/Study/StudyModify';
 import StudySearchPage from './pages/Study/StudySearchPage';
+import MarketModify from './components/Market/MarketModify';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             path="/product/detail/:ud_idx"
             element={<MarketDetailPage />}
           />
+          <Route path="/product/modify" element={<MarketModify />} />
 
           {/* 스터디게시판 */}
           <Route path="/study" element={<StudyMainPage />}></Route>

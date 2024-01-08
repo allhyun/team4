@@ -1,39 +1,76 @@
-import React, { useState, ChangeEvent, FormEvent, useRef } from 'react';
-import '../../styles/style.scss';
-import { BsImage } from 'react-icons/bs'; // 이미지 아이콘
-import { MdCancel } from 'react-icons/md'; // 취소 아이콘
-import MarketCategory from './MarketCategory';
-import { useNavigate } from 'react-router-dom';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
 import axios from 'axios';
-import MarketRegion from './MarketRegion';
+import { useNavigate, useParams } from 'react-router-dom';
+import MarketHeader from './MarketHeader';
 // 리덕스 관련
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { setModifyPost } from '../../store/marketmodifyReducer';
+//
+import { MdCancel } from 'react-icons/md';
+import { BsImage } from 'react-icons/bs';
+import MarketCategory from './MarketCategory';
+import MarketRegion from './MarketRegion';
 import { ErrorMessages, DataType, CategoryMap } from '../Types/MarketType';
 
-const MarketEditor: React.FC = () => {
-  // Redux 스토어에서 사용자 정보 가져오기
-  // 'user'는 combineReducers에서 지정한 키!
-  const userInfo = useSelector((state: RootState) => state.user.user);
-  const { u_idx, nickname } = userInfo;
-
-  // 데이터 초기값
+const MarketModify: React.FC = () => {
   const [data, setData] = useState<DataType>({
-    ud_idx: 1,
-    u_idx: Number(u_idx) || null,
-    buy_idx: 1,
-    ud_price: null,
+    ud_idx: 0,
+    u_idx: 0,
+    buy_idx: 0,
+    ud_price: 0,
     ud_title: '',
-    ud_category: null,
+    ud_category: 0,
     ud_image: '',
     ud_content: '',
     ud_region: '',
     viewcount: 0,
     ud_date: '',
     nickname: '',
-    ud_images: [],
   });
+  // 리덕스에서 유저 정보 갖고오기!
+  const userInfo = useSelector((state: RootState) => state.user.user);
+  //   const { u_idx, nickname } = userInfo;
+  const dispatch = useDispatch();
+  const { ud_idx } = useParams(); // URL에서 게시글 ID를 가져오기!
 
+  //  리덕스에서 modifyPostdp 정보 갖고오기!
+  const editingPost = useSelector(
+    (state: any) => state.market.market.modifyPost
+  );
+  console.log('editingPost값 확인 :', editingPost);
+
+  // 수정 관련 ------------------------------------------------------------------------------------------
+  // 수정할 데이터를 로컬 상태로 설정
+  useEffect(() => {
+    if (editingPost) {
+      setData(editingPost);
+      console.log('현재 스토어의 상태:', editingPost);
+
+      // 이미지 URL 설정
+      if (editingPost.ud_image) {
+        try {
+          // JSON 문자열을 배열로 파싱
+          const imageUrls = JSON.parse(editingPost.ud_image);
+          setPreviewUrls(
+            imageUrls.map(
+              (ud_image: string) => `http://localhost:8000/${ud_image}`
+            )
+          ); // 혹은 적절한 기본 경로 추가
+        } catch (error) {
+          console.error('이미지 URL 파싱 오류:', error);
+          // JSON 파싱 실패 시, 단일 URL로 처리
+          setPreviewUrls([`http://localhost:8000/${editingPost.ud_image}`]);
+        }
+      }
+    }
+  }, [editingPost]);
   // 카테고리 문자열을 숫자 ID로 매핑
   const getCategoryID = (categoryName: string): number | null => {
     const categoryMap: CategoryMap = {
@@ -104,7 +141,7 @@ const MarketEditor: React.FC = () => {
 
       // 파일 크기 검사(5mb)
       const fileExceedsSize = newFiles.some(
-        (file) => file.size > 5 * 1024 * 1024
+        (file: File) => file.size > 5 * 1024 * 1024
       );
       if (fileExceedsSize) {
         setErrorMessages((prevErrors) => ({
@@ -131,7 +168,9 @@ const MarketEditor: React.FC = () => {
       setImageLength(totalFiles);
 
       // 미리보기 URL 생성
-      const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
+      const newPreviewUrls = newFiles.map((file: File) =>
+        URL.createObjectURL(file)
+      );
       setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
     }
   };
@@ -295,7 +334,7 @@ const MarketEditor: React.FC = () => {
   };
 
   // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
-  const handleSubmit = async (e: FormEvent) => {
+  const handleModify = async (e: FormEvent) => {
     e.preventDefault();
     // console.log('제출 전 데이터 상태:', data);
     if (!validateFields()) {
@@ -323,141 +362,154 @@ const MarketEditor: React.FC = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:8000/product/regist',
-        // `${process.env.REACT_APP_HOST}/product/regist`,
+        'http://localhost:8000/product/detail/${ud_idx}',
+        // 배포 axios
+        // `${process.env.REACT_APP_HOST}/detail/${ud_idx}`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
       // console.log('데이터 잘 보내지는지?:', res.data);
+      dispatch(setModifyPost(res.data)); // Redux에 상태 업데이트
       navigate('/market');
     } catch (error) {
-      // console.error('게시글 등록 에러:', error);
+      console.error('게시글 등록 에러:', error);
     }
     // console.log('FormData 객체의 상태 출력:', formData);
   };
 
   return (
-    <div id="marketeditor" className="market_editor">
-      <form onSubmit={handleSubmit}>
-        <section className="market-img">
-          상품이미지
-          <span style={{ color: '#fcbaba' }}>＊</span>
-          <div className="img_container">
-            <label htmlFor="market-img" ref={imageRef} tabIndex={0}>
-              <div className="market-img">
-                <BsImage />
-                <div>이미지등록 </div>
-                <div className="img-length">{imageLength}/5</div>
-              </div>
-            </label>
-            <input
-              type="file"
-              id="market-img"
-              name="ud_image"
-              accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
-              onChange={handleFileChange}
-            />
+    <>
+      <MarketHeader />
+      <div className="center">
+        <div id="marketcontainer" className="market_container">
+          <div id="marketeditor" className="market_editor">
+            <form onSubmit={handleModify}>
+              <section className="market-img">
+                상품이미지
+                <span style={{ color: '#fcbaba' }}>＊</span>
+                <div className="img_container">
+                  <label htmlFor="market-img" ref={imageRef} tabIndex={0}>
+                    <div className="market-img">
+                      <BsImage />
+                      <div>이미지등록 </div>
+                      <div className="img-length">{imageLength}/5</div>
+                    </div>
+                  </label>
+                  <input
+                    type="file"
+                    id="market-img"
+                    name="ud_image"
+                    accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
+                    onChange={handleFileChange}
+                  />
 
-            <ul className="image-previews-list">{renderImagePreviews()}</ul>
-          </div>
-          {errorMessages.ud_image && (
-            <p className="error-message">{errorMessages.ud_image}</p>
-          )}
-        </section>
-        <section className="market-title">
-          상품명<span style={{ color: '#fcbaba' }}>＊</span>
-          <div className="text_container">
-            <input
-              type="text"
-              id="market-title"
-              name="ud_title"
-              maxLength={40}
-              ref={titleRef}
-              value={data.ud_title}
-              onChange={handleInputChange}
-            />
-            <span className="title-length">{titleLength}/40</span>
-            {errorMessages.ud_title && (
-              <p className="error-message">{errorMessages.ud_title}</p>
-            )}
-          </div>
-        </section>
-        <section className="market-category">
-          <div
-            className="market-category"
-            ref={marketCategoryRef}
-            tabIndex={-1}
-          >
-            카테고리<span style={{ color: '#fcbaba' }}>＊</span>
-            <MarketCategory onSelectCategory={handleCategoryChange} />
-          </div>
-          {errorMessages.ud_category && (
-            <p className="error-message">{errorMessages.ud_category}</p>
-          )}
-        </section>
-        <section className="market-region">
-          거래지역<span style={{ color: '#fcbaba' }}>＊</span>
-          <div className="region_container">
-            <MarketRegion
-              value={data.ud_region}
-              onChange={handleRegionChange}
-            />
-            {errorMessages.ud_region && (
-              <p className="error-message">{errorMessages.ud_region}</p>
-            )}
-          </div>
-        </section>
-        <section className="market-price">
-          가격<span style={{ color: '#fcbaba' }}>＊</span>
-          <div className="price_container">
-            <label htmlFor="market-price">
-              <span>₩</span>
-              <input
-                type="text"
-                id="market-price"
-                name="ud_price"
-                ref={priceRef}
-                value={formattedPrice}
-                onChange={handleInputChange}
-              />
-            </label>
-            {errorMessages.ud_price && (
-              <p className="error-message">{errorMessages.ud_price}</p>
-            )}
-          </div>
-        </section>
-        <section className="market-textarea">
-          설명<span style={{ color: '#fcbaba' }}>＊</span>
-          <div className="textarea_container">
-            <textarea
-              id="market-textarea"
-              name="ud_content"
-              maxLength={1000}
-              ref={contentRef}
-              value={data.ud_content}
-              onChange={handleInputChange}
-            />
+                  <ul className="image-previews-list">
+                    {renderImagePreviews()}
+                  </ul>
+                </div>
+                {errorMessages.ud_image && (
+                  <p className="error-message">{errorMessages.ud_image}</p>
+                )}
+              </section>
+              <section className="market-title">
+                상품명<span style={{ color: '#fcbaba' }}>＊</span>
+                <div className="text_container">
+                  <input
+                    type="text"
+                    id="market-title"
+                    name="ud_title"
+                    maxLength={40}
+                    ref={titleRef}
+                    value={data.ud_title}
+                    onChange={handleInputChange}
+                  />
+                  <span className="title-length">{titleLength}/40</span>
+                  {errorMessages.ud_title && (
+                    <p className="error-message">{errorMessages.ud_title}</p>
+                  )}
+                </div>
+              </section>
+              <section className="market-category">
+                <div
+                  className="market-category"
+                  ref={marketCategoryRef}
+                  tabIndex={-1}
+                >
+                  카테고리<span style={{ color: '#fcbaba' }}>＊</span>
+                  <MarketCategory onSelectCategory={handleCategoryChange} />
+                </div>
+                {errorMessages.ud_category && (
+                  <p className="error-message">{errorMessages.ud_category}</p>
+                )}
+              </section>
+              <section className="market-region">
+                거래지역<span style={{ color: '#fcbaba' }}>＊</span>
+                <div className="region_container">
+                  <MarketRegion
+                    value={data.ud_region}
+                    onChange={handleRegionChange}
+                  />
+                  {errorMessages.ud_region && (
+                    <p className="error-message">{errorMessages.ud_region}</p>
+                  )}
+                </div>
+              </section>
+              <section className="market-price">
+                가격<span style={{ color: '#fcbaba' }}>＊</span>
+                <div className="price_container">
+                  <label htmlFor="market-price">
+                    <span>₩</span>
+                    <input
+                      type="text"
+                      id="market-price"
+                      name="ud_price"
+                      ref={priceRef}
+                      value={formattedPrice}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  {errorMessages.ud_price && (
+                    <p className="error-message">{errorMessages.ud_price}</p>
+                  )}
+                </div>
+              </section>
+              <section className="market-textarea">
+                설명<span style={{ color: '#fcbaba' }}>＊</span>
+                <div className="textarea_container">
+                  <textarea
+                    id="market-textarea"
+                    name="ud_content"
+                    maxLength={1000}
+                    ref={contentRef}
+                    value={data.ud_content}
+                    onChange={handleInputChange}
+                  />
 
-            <div className="textarea-length">
-              {errorMessages.ud_content && (
-                <p className="error-message">{errorMessages.ud_content}</p>
-              )}
-              {textareaLength}/1000
-            </div>
+                  <div className="textarea-length">
+                    {errorMessages.ud_content && (
+                      <p className="error-message">
+                        {errorMessages.ud_content}
+                      </p>
+                    )}
+                    {textareaLength}/1000
+                  </div>
+                </div>
+              </section>
+              <button
+                className="marketeditor-regi"
+                type="submit"
+                onClick={handleModify}
+              >
+                수정
+              </button>
+            </form>
           </div>
-        </section>
-        <button
-          className="marketeditor-regi"
-          type="submit"
-          onClick={handleSubmit}
-        >
-          등록
-        </button>
-      </form>
-    </div>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default MarketEditor;
+export default MarketModify;

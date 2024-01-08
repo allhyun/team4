@@ -1,9 +1,6 @@
 import React, { ChangeEvent } from 'react';
+import { MarketRegionProps } from '../Types/MarketType';
 
-interface MarketRegionProps {
-  value: string;
-  onChange: (value: string) => void;
-}
 // 지역 목록
 const regions = [
   '강원특별자치도 강릉시',

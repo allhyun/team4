@@ -7,6 +7,9 @@ import searchSlice from './searchReducer';
 import userSlice from './user.slice';
 import marketSlice from './marketmodifyReducer';
 
+// 리덕스 관련
+import { useSelector } from 'react-redux';
+
 // 한 번 묶어줘야 하는 걸로 보임 안 묶고 그냥 하려니까 안 됨
 const studyReducers = combineReducers({
   study: studySlice,
@@ -60,10 +63,10 @@ const rootReducer = combineReducers({
   user: userPersistedReducer,
   market: marketPersistedReducer,
 });
-export type RootState = ReturnType<typeof rootReducer>;
 
 const store = configureStore({
   reducer: rootReducer,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
 export default store;
