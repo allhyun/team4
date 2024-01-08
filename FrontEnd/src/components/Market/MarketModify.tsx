@@ -33,6 +33,7 @@ const MarketModify: React.FC = () => {
     viewcount: 0,
     ud_date: '',
     nickname: '',
+    c_idx: null,
   });
   // 리덕스에서 유저 정보 갖고오기!
   const userInfo = useSelector((state: RootState) => state.user.user);
@@ -83,6 +84,7 @@ const MarketModify: React.FC = () => {
     ud_region: '',
     ud_content: '',
     ud_image: '',
+    c_idx: null,
   });
 
   // 포커싱용 참조 생성

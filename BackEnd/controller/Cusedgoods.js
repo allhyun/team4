@@ -7,7 +7,6 @@ const path = require('path');
 exports.getUsedgoods = async (req, res) => {
   try {
     const usedgoods = await db.Useproduct.findAll({
-
       where: {
         ud_date: {
           [Op.lt]: new Date(),
@@ -48,7 +47,6 @@ exports.createusedGoods = async (req, res) => {
       // const ud_image = req.files[0].filename;
 
       const newProducts = await db.Useproduct.create({
-
         u_idx,
         buy_idx,
         ud_price,
@@ -64,7 +62,6 @@ exports.createusedGoods = async (req, res) => {
       // 조회수 증가
 
       await db.Useproduct.increment('viewcount', {
-
         by: 1,
         where: { ud_idx: newProducts.ud_idx },
       });
@@ -84,8 +81,6 @@ exports.detailusedGoods = async (req, res) => {
   const usedGoodsId = req.params.ud_idx;
   console.log(usedGoodsId);
   try {
-
-
     const product = await db.Useproduct.findByPk(usedGoodsId);
 
     if (!product) {
@@ -157,61 +152,58 @@ exports.deleteusedGoods = async (req, res) => {
   const usedproductId = req.params.ud_idx;
 
   try {
-
     const useproduct = await db.Usedproduct.findOne({
       where: { ud_idx: usedproductId },
     });
 
+    //   디벨롭 서버 코드기준(240108) -> 컴플릭트나서 저장해둠.
+    // await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
+    // res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
 
-//   디벨롭 서버 코드기준(240108)
-    await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
-    res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
+    // 240108 나영혜 코드 기준 -> 컴플릭트나서 저장해둠.
+    const usedproduct = await db.Usedproducts.findOne({
+      where: { ud_idx: usedproductId },
+    });
 
-// 240108 나영혜 코드 기준  -> 받고 
-//       const usedproduct = await db.Usedproducts.findOne({
-//       where: { ud_idx: usedproductId },
-//     });
+    if (!usedproduct) {
+      return res.status(404).send({ message: '물품을 찾을 수 없습니다.' });
+    }
 
-//     if (!usedproduct) {
-//       return res.status(404).send({ message: '물품을 찾을 수 없습니다.' });
-//     }
+    let imagePaths = [];
+    if (useproduct.ud_image && typeof useproduct.ud_image === 'string') {
+      // ud_image 필드가 JSON 배열인 경우
+      const images = JSON.parse(useproduct.ud_image);
+      imagePaths = images.map((image) =>
+        path.join(__dirname, '..', '..', 'static', 'userImg', image)
+      );
+    } else if (useproduct.ud_image) {
+      // ud_image 필드가 단일 이미지 이름인 경우
+      imagePaths.push(
+        path.join(
+          __dirname,
+          '..',
+          '..',
+          'static',
+          'userImg',
+          useproduct.ud_image
+        )
+      );
+    }
 
-//     let imagePaths = [];
-//     if (usedproduct.ud_image && typeof usedproduct.ud_image === 'string') {
-//       // ud_image 필드가 JSON 배열인 경우
-//       const images = JSON.parse(usedproduct.ud_image);
-//       imagePaths = images.map((image) =>
-//         path.join(__dirname, '..', '..', 'static', 'userImg', image)
-//       );
-//     } else if (usedproduct.ud_image) {
-//       // ud_image 필드가 단일 이미지 이름인 경우
-//       imagePaths.push(
-//         path.join(
-//           __dirname,
-//           '..',
-//           '..',
-//           'static',
-//           'userImg',
-//           usedproduct.ud_image
-//         )
-//       );
-//     }
+    // 이미지 파일 삭제
+    imagePaths.forEach((filePath) => {
+      if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error('이미지 파일 삭제 중 오류:', err);
+          }
+        });
+      }
+    });
 
-//     // 이미지 파일 삭제
-//     imagePaths.forEach((filePath) => {
-//       if (fs.existsSync(filePath)) {
-//         fs.unlink(filePath, (err) => {
-//           if (err) {
-//             console.error('이미지 파일 삭제 중 오류:', err);
-//           }
-//         });
-//       }
-//     });
-
-//     // 데이터베이스에서 게시글 삭제
-//     await usedproduct.destroy();
-//     res.sendStatus(200);
-    
+    // 데이터베이스에서 게시글 삭제
+    await useproduct.destroy();
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.status(500).send('서버 오류 발생');
@@ -224,9 +216,7 @@ exports.searchusedGoods = async (req, res) => {
   console.log('received keyword:', keyword);
 
   try {
-
     let result = await db.Useproduct.findAll({
-
       // 카테고리 검색은..?고민해보자..
       where: {
         [Op.or]: [

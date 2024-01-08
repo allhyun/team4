@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { ErrorMessages, DataType, CategoryMap } from '../Types/MarketType';
 
-
 const MarketEditor: React.FC = () => {
   // Redux 스토어에서 사용자 정보 가져오기
   // 'user'는 combineReducers에서 지정한 키!
@@ -33,6 +32,7 @@ const MarketEditor: React.FC = () => {
     ud_date: '',
     nickname: '',
     ud_images: [],
+    ud_category: null,
   });
 
   // 카테고리 문자열을 숫자 ID로 매핑
@@ -68,10 +68,11 @@ const MarketEditor: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
     ud_title: '',
     ud_price: '',
-    c_idx: '',
+    c_idx: null,
     ud_region: '',
     ud_content: '',
     ud_image: '',
+    ud_category: '',
   });
 
   // 포커싱용 참조 생성
@@ -224,14 +225,13 @@ const MarketEditor: React.FC = () => {
 
     // 카테고리 선택 시 관련 오류 메시지 제거
     if (errorMessages.c_idx) {
-      setErrorMessages({ ...errorMessages, c_idx: '' });
+      setErrorMessages({ ...errorMessages, c_idx: null });
     }
   };
 
   // 유효성 검사 함수 ------------------------------------------------------------------------------------------
   const validateFields = (): boolean => {
     let isValid = true;
-
 
     // 이미지 유효성 검사
     if (images.length === 0) {
@@ -300,8 +300,9 @@ const MarketEditor: React.FC = () => {
 
   // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
   const handleSubmit = async (e: FormEvent) => {
+    console.log('handleSubmit called');
     e.preventDefault();
-    // console.log('제출 전 데이터 상태:', data);
+    console.log('제출 전 데이터 상태:', data);
     if (!validateFields()) {
       return; // 유효성 검사 실패 시 제출 중단
     }
@@ -321,13 +322,13 @@ const MarketEditor: React.FC = () => {
     formData.append('viewcount', data.viewcount.toString());
     formData.append('ud_date', new Date().toISOString()); // 현재 시간 설정
     // FormData 로깅
-    // for (let key of formData.keys()) {
-    //   console.log(key, formData.get(key));
-    // }
+    for (let key of formData.keys()) {
+      console.log(key, formData.get(key));
+    }
 
     try {
       const res = await axios.post(
-         'http://localhost:8000/product/regist',
+        'http://localhost:8000/product/regist',
         // 배포용
         // `${process.env.REACT_APP_HOST}/product/regist`,
         formData,
