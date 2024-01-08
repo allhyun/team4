@@ -24,7 +24,13 @@ const FindId = () => {
       email: inputData.userEmail,
     };
 
-    const response = await axios.post('http://localhost:8000/user/findId', data);
+    // const response = await axios.post('http://localhost:8000/user/findId', data);
+    // if (!response) return;
+    // 베포용
+    const response = await axios.post(
+      `${process.env.REACT_APP_HOST}/user/findId'`,
+      data
+    );
     if (!response) return;
   };
 

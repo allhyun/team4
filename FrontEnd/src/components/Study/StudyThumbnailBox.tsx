@@ -36,7 +36,8 @@ const StudyThumbnailBox = (props: propsType) => {
 
   async function fetchData() {
     try {
-      const res = await axios.get('http://localhost:8000/study', {
+      // const res = await axios.get('http://localhost:8000/study'
+      const res = await axios.get(`${process.env.REACT_APP_HOST}/study`, {
         params: { page: data },
       });
       setStudyList(res.data.resultstudy);

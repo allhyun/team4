@@ -1,4 +1,4 @@
-function UsedProducts(Sequelize, DataTypes) {
+function Useproduct(Sequelize, DataTypes) {
   return Sequelize.define(
     'useproduct',
     {
@@ -24,7 +24,7 @@ function UsedProducts(Sequelize, DataTypes) {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      ud_category: {
+      c_idx: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -61,4 +61,4 @@ function UsedProducts(Sequelize, DataTypes) {
   );
 }
 
-module.exports = UsedProducts;
+module.exports = Useproduct;

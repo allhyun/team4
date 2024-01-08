@@ -11,15 +11,6 @@ module.exports = (db) => {
     foreignKey: 'U_IDX',
   });
 
-  // User : Usedgoods
-  db.User.hasMany(db.Usedgoods, {
-    foreignKey: 'u_idx',
-  });
-  db.Usedgoods.belongsTo(db.User, {
-    onDelete: 'cascade',
-    foreignKey: 'u_idx',
-  });
-
   // User : Study
   db.User.hasMany(db.Study, {
     foreignKey: 'u_idx',
@@ -89,4 +80,22 @@ db.Chattingroom.hasMany(db.Chatuser, {
 db.Chatuser.belongsTo(db.Chattingroom, {
   onDelete: 'cascade',
   foreignKey: 'r_idx',
+});
+
+// 상품 판매 부분 ...+=======================[====]
+// useproduct : user
+db.User.hasMany(db.Useproduct, {
+  foreignKey: 'u_idx',
+});
+db.Useproduct.belongsTo(db.User, {
+  foreignKey: 'u_idx',
+  onDelete: 'cascade',
+});
+// category : useproduct
+db.Category.hasMany(db.Useproduct, {
+  foreignKey: 'c_idx',
+});
+db.Useproduct.belongsTo(db.Category, {
+  foreignKey: 'c_idx',
+  onDelete: 'cascade',
 });

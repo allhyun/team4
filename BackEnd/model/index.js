@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
-const config = require('../config/config.json')['development'];
+// const config = require('../config/config.json')['development'];
+const config = require('../config/config.json')['production'];
 
 const db = {};
 const sequelize = new Sequelize(
@@ -27,27 +28,25 @@ db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 db.Volunteer = require('./Volunteer')(sequelize, Sequelize);
 db.Heart = require('./Heart')(sequelize, Sequelize);
 db.Chatuser = require('./Chatuser')(sequelize, Sequelize);
-db.Usedproducts = require('./Usedproducts')(sequelize, Sequelize);
+db.Useproduct = require('./Useproduct')(sequelize, Sequelize);
 db.Category = require('./Category')(sequelize, Sequelize);
 
-// db.Heart.belongsTo(db.Usedproducts,{
+// db.Heart.belongsTo(db.Useproduct,{
 //   foreignKey: 'ud_idx'
 // })
 
-// db.Usedproducts.hasOne(db.Heart,{
+// db.Useproduct.hasOne(db.Heart,{
 //   foreignKey:'ud_idx'
 // }
 // )
 
-
-db.Heart.belongsTo(db.Usedproducts, {
-  foreignKey: 'ud_idx'
-});
-
-db.Usedproducts.hasOne(db.Heart, {
-  foreignKey: 'ud_idx'
-});
-
+// db.Useproduct.hasOne(db.Heart, {
+//   foreignKey: 'ud_idx',
+// });
+// db.Heart.belongsTo(db.Useproduct, {
+//   foreignKey: 'ud_idx',
+//   onDelete: 'cascade',
+// });
 
 // Relations 파일
 // require('./Relations')(db);

@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 const StudySearchPage = () => {
   const navigate = useNavigate();
-  const searchData = useSelector((state: any) => state.search.search.searchDetail); //리덕스에서 검색어 가져오기(여유되면 타입 고치기)
+  const searchData = useSelector(
+    (state: any) => state.search.search.searchDetail
+  ); //리덕스에서 검색어 가져오기(여유되면 타입 고치기)
   const [searchList, setSearchList] = useState<StudyTable[]>([]);
   interface StudyTable {
     st_be: number;
@@ -24,9 +26,13 @@ const StudySearchPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:8000/study/search', {
-          params: { value: searchData },
-        });
+        // const res = await axios.get('http://localhost:8000/study/search'
+        const res = await axios.get(
+          `${process.env.REACT_APP_HOST}/study/search`,
+          {
+            params: { value: searchData },
+          }
+        );
         setSearchList(res.data);
         console.log(res.data);
       } catch (error) {
@@ -46,7 +52,11 @@ const StudySearchPage = () => {
       <div>
         {' '}
         {searchList.reverse().map((study) => (
-          <div key={study.st_idx} className="thum" onClick={() => goDetailPage(`${study.st_idx}`)}>
+          <div
+            key={study.st_idx}
+            className="thum"
+            onClick={() => goDetailPage(`${study.st_idx}`)}
+          >
             <h3>{study.st_title}</h3>
             <p>{study.st_limit}개월</p>
             <p>{study.st_intro}</p>
