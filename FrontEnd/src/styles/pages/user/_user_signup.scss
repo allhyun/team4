@@ -1,0 +1,111 @@
+.form-wrap {
+  @include flex-center;
+  height: 100%;
+
+  .signup-form {
+    @include container;
+    // transform: translateY(-5rem);
+    // flex-direction: column;
+    padding: 3em;
+    border: 0;
+    border: {
+      radius: 16px;
+      top: 0.5px solid var(--main-white);
+      left: 0.5px solid var(--main-white);
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 0;
+      margin-bottom: 1em;
+    }
+    .img-info-wrap {
+      display: flex;
+      // gap: 1em;
+      .input-wrap {
+        width: 100%;
+      }
+    }
+
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      label {
+        cursor: pointer;
+      }
+      .img-wrap {
+        input {
+          display: none;
+        }
+        .upload-img {
+          @include flex-center;
+          flex-direction: column;
+          border-radius: 10em;
+          border: solid 1px var(--main-white);
+          // padding: 1em;
+          width: 10em;
+          height: 10em;
+          svg {
+            width: 3em;
+            height: auto;
+          }
+        }
+        .uploaded-img {
+          width: 10em;
+          height: 10em;
+          object-fit: cover;
+          border-radius: 10em;
+          border: solid 1px var(--main-white);
+        }
+      }
+      input {
+        width: 100%;
+        border-radius: 10px;
+        padding: 0.5em;
+        padding-left: 1em;
+        font-size: 1.2em;
+        background-color: transparent;
+        border: 1px solid var(--main-white);
+      }
+      input::placeholder {
+        color: var(--main-white);
+      }
+      input:focus {
+        outline: 0;
+      }
+
+      .alert {
+        display: block;
+        height: 1.5em;
+        font-size: 14px;
+        color: var(--main-black);
+        text-align: center;
+        margin: 0;
+      }
+
+      button {
+        width: 100%;
+        border-radius: 10px;
+        padding: 0.5em;
+        padding-left: 1em;
+        font-size: 1.2em;
+        cursor: pointer;
+        background-color: var(--main-bgcolor);
+        color: var(--main-black);
+        border: 1px solid var(--main-white);
+        &:hover {
+          background-color: var(--main-button);
+          color: #000;
+        }
+      }
+    }
+    .user-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 1em;
+      gap: 2em;
+    }
+  }
+}

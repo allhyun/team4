@@ -38,7 +38,7 @@ const FindId = () => {
     };
 
     const response = await axios.post(
-      `${process.env.REACT_APP_HOST}/user/findId'`,
+      `${process.env.REACT_APP_HOST}/user/findId`,
       data
     );
     if (response.data.userid !== null) {

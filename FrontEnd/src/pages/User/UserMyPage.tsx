@@ -105,11 +105,11 @@ const UserMyPage = () => {
       console.log('useForm 성공', inputData);
 
       const formData = new FormData();
-      formData.append('userProfileImg', userProfileImg);
-      formData.append('userid', inputData.userId);
-      formData.append('password', inputData.userPw.toString());
-      formData.append('nickname', inputData.userNickname.toString());
-      formData.append('email', inputData.userEmail.toString());
+      // formData.append('userProfileImg', userProfileImg);
+      // formData.append('userid', inputData.userId);
+      // formData.append('password', inputData.userPw.toString());
+      // formData.append('nickname', inputData.userNickname.toString());
+      // formData.append('email', inputData.userEmail.toString());
       // FormData 로깅
       // for (let key of formData.keys()) {
       //   console.log(key, formData.get(key));
@@ -136,13 +136,19 @@ const UserMyPage = () => {
 
       // 결과값으로 바로 상태를 변경하고 이용하려고 했으나 서버보다 한 박자 느리게 상태가 바뀜
       if (checkedId !== true && checkedNickname !== true) {
-        // axios
-        //   .post('http://localhost:8000/user/signup', formData, {
-        //     headers: { 'Content-Type': 'multipart/form-data' },
-        //   })
-        //   .then((res) => {
-        //     if (res.data.result === true) navigate('/login');
-        //   });
+        const data = {
+          userId: inputData.userId,
+          userPw: inputData.userPw,
+          userNickname: inputData.userNickname,
+          userEmail: inputData.userEmail,
+        };
+        axios
+          .patch(`${process.env.REACT_APP_HOST}/user/updateUserInfo`, data, {
+            // headers: { 'Content-Type': 'multipart/form-data' },
+          })
+          .then((res) => {
+            // if (res.data.result === true)
+          });
       }
     } catch (error: any) {
       console.log('useForm error', error);
@@ -166,50 +172,54 @@ const UserMyPage = () => {
       <section>
         <div className="form-wrap">
           <form
-            className="login-form"
+            className="myPage-form"
             onSubmit={handleSubmit(onSubmit, onInvalid)}
           >
-            <h1>{userInfo.userid}</h1>
-            <div className="img-id-pw-wrap">
+            <div>
+              <h1>{userInfo.nickname} 님의 마이페이지</h1>
+            </div>
+            <div className="img-info-wrap">
               <div className="input-wrap">
                 <div className="img-wrap">
-                  <input
-                    ref={imgRef}
-                    type="file"
-                    id="upload-img"
-                    name="userProfileImg"
-                    accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
-                    // {...register('userProfileImg', {
-                    //   required: '이미지를 등록해주세요.',
-                    // })}
-                    onChange={onUserInfoHandler}
-                  />
-                  {userProfileImg?.length > 0 ? (
-                    <label htmlFor="upload-img">
+                  <label htmlFor="upload-img">
+                    <div className="upload-img">
                       <img
                         className="uploaded-img"
-                        src={imgFile ? imgFile : `/images/icon/user.png`}
-                        alt="user-profile"
+                        src={`${process.env.REACT_APP_HOST}/${userInfo.image}`}
+                        alt="유저 프로필 이미지"
                       />
-                    </label>
-                  ) : (
-                    <label htmlFor="upload-img">
-                      <div className="upload-img">
-                        <BsImage />
-                        <div>이미지 등록</div>
-                      </div>
-                    </label>
-                  )}
+                    </div>
+                  </label>
+
                   <p className="alert">{errors.userProfileImg?.message}</p>
                 </div>
               </div>
               <div className="input-wrap">
                 <input
                   type="text"
+                  placeholder="nickname"
+                  value={userNickname === '' ? userInfo.nickname : userNickname}
+                  {...register('userNickname', {
+                    // required: '닉네임을 입력해주세요.',
+                    // pattern: {
+                    //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                    //   message: '잘못된 형식입니다.',
+                    // },
+                  })}
+                  onChange={onUserInfoHandler}
+                  name="userNickname"
+                />
+                <p className="alert">
+                  {errors.userNickname?.message}
+                  {isNicknameDuplicated ? `중복된 nickname입니다.` : ''}
+                </p>
+
+                <input
+                  type="text"
                   placeholder="id"
-                  value={userId}
+                  value={userId === '' ? userInfo.userid : userId}
                   {...register('userId', {
-                    required: 'id를 입력해주세요.',
+                    // required: 'id를 입력해주세요.',
                     pattern: {
                       value: /^[a-zA-Z0-9-]+$/i,
                       message: '잘못된 형식입니다.',
@@ -227,82 +237,68 @@ const UserMyPage = () => {
                 </p>
 
                 <input
-                  type="password"
-                  placeholder="password"
-                  value={userPw}
-                  {...register('userPw', {
-                    required: 'password를 입력해주세요.',
+                  type="text"
+                  placeholder="e-mail"
+                  value={userEmail === '' ? userInfo.email : userEmail}
+                  {...register('userEmail', {
+                    // required: '이메일을 입력해주세요.',
                     // pattern: {
                     //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
                     //   message: '잘못된 형식입니다.',
                     // },
                   })}
-                  autoComplete="off"
-                  name="userPw"
                   onChange={onUserInfoHandler}
+                  name="userEmail"
                 />
-                <p className="alert">{errors.userPw?.message}</p>
 
-                <input
-                  type="password"
-                  placeholder="check password"
-                  value={samePwCheck}
-                  {...register('samePwCheck', {
-                    required: '같은 password를 입력해주세요.',
-                    // pattern: {
-                    //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                    //   message: '잘못된 형식입니다.',
-                    // },
-                  })}
-                  autoComplete="off"
-                  name="samePwCheck"
-                  onChange={onUserInfoHandler}
-                />
-                <p className="alert">{errors.userPw?.message}</p>
+                <p className="alert">{errors.userEmail?.message}</p>
               </div>
             </div>
+
             <div className="input-wrap">
               <input
-                type="text"
-                placeholder="nickname"
-                value={userNickname}
-                {...register('userNickname', {
-                  required: '닉네임을 입력해주세요.',
+                type="password"
+                placeholder="password"
+                value={userPw}
+                {...register('userPw', {
+                  required: 'password를 입력해주세요.',
                   // pattern: {
                   //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
                   //   message: '잘못된 형식입니다.',
                   // },
                 })}
+                autoComplete="off"
+                name="userPw"
                 onChange={onUserInfoHandler}
-                name="userNickname"
               />
-              <p className="alert">
-                {errors.userNickname?.message}
-                {isNicknameDuplicated ? `중복된 nickname입니다.` : ''}
-                {}
-              </p>
+              <p className="alert">{errors.userPw?.message}</p>
             </div>
             <div className="input-wrap">
               <input
-                type="text"
-                placeholder="e-mail"
-                value={userEmail}
-                {...register('userEmail', {
-                  required: '이메일을 입력해주세요.',
+                type="password"
+                placeholder="check password"
+                value={samePwCheck}
+                {...register('samePwCheck', {
+                  required: '같은 password를 입력해주세요.',
                   // pattern: {
                   //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
                   //   message: '잘못된 형식입니다.',
                   // },
                 })}
+                autoComplete="off"
+                name="samePwCheck"
                 onChange={onUserInfoHandler}
-                name="userEmail"
               />
-              <p className="alert">{errors.userEmail?.message}</p>
+              <p className="alert">{errors.userPw?.message}</p>
             </div>
             <div className="input-wrap">
               <button type="submit" disabled={isSubmitting}>
                 회원정보 수정하기
               </button>
+            </div>
+            <div className="bottom-wrap">
+              <div>비밀번호 변경</div>
+              <div className="delete-user">회원탈퇴</div>
             </div>
           </form>
         </div>

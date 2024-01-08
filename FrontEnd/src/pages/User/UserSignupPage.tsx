@@ -159,11 +159,11 @@ const UserSignupPage = () => {
     <section>
       <div className="form-wrap">
         <form
-          className="login-form"
+          className="signup-form"
           onSubmit={handleSubmit(onSubmit, onInvalid)}
         >
           <h1>Sign Up</h1>
-          <div className="img-id-pw-wrap">
+          <div className="img-info-wrap">
             <div className="input-wrap">
               <div className="img-wrap">
                 <input
@@ -298,7 +298,6 @@ const UserSignupPage = () => {
             </button>
           </div>
         </form>
-        :
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
-// const config = require('../config/config.json')['development'];
-const config = require('../config/config.json')['production'];
+const config = require('../config/config.json')['development'];
+// const config = require('../config/config.json')['production'];
 
 const db = {};
 const sequelize = new Sequelize(
@@ -31,7 +31,6 @@ db.Chatuser = require('./Chatuser')(sequelize, Sequelize);
 db.Useproduct = require('./Useproduct')(sequelize, Sequelize);
 db.Category = require('./Category')(sequelize, Sequelize);
 
-
 // db.Heart.belongsTo(db.Usedproducts, {
 //   foreignKey: 'ud_idx'
 // });
@@ -46,8 +45,6 @@ db.Category = require('./Category')(sequelize, Sequelize);
 //   foreignKey: 'ud_idx', // UsedProduct 모델이 참조하는 외래 키
 //   otherKey: 'c_idx', // Category 모델이 참조하는 외래 키
 // })
-
-
 
 // Relations 파일
 // require('./Relations')(db);
