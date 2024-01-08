@@ -5,19 +5,26 @@ exports.createChatRoom = async (req, res) => {
   try {
     const data = {
       // r_name이 axios 값으로 넘겨줘야한다.***************
-      u_idx: req.session.user.u_idx,
+      u_idx: req.body.u_idx,
       r_name: req.body.r_name,
     };
 
     console.log(data);
-    // 채팅방 생성
-    const newRoom = await Chattingroom.create(data);
-    const createdTime = newRoom.r_create;
-    await Chatuser.create({
-      u_idx: req.session.user.u_idx,
-      r_idx: newRoom.r_idx,
-    });
-    res.send({ result: true, msg: '채팅방 생성 성공!!' });
+
+    // 채팅방 이름 중복확인
+    const existingRoom = await Chattingroom.findOne({ r_name: data.r_name });
+    if (existingRoom) {
+      return res.send({ result: false, msg: '이미 존재하는 방이다.' });
+    } else {
+      // 채팅방 생성
+      const newRoom = await Chattingroom.create(data);
+      const createdTime = newRoom.r_create;
+      await Chatuser.create({
+        u_idx: data.u_idx,
+        r_idx: newRoom.r_idx,
+      });
+      res.send({ result: true, msg: '채팅방 생성 성공!!' });
+    }
   } catch (err) {
     console.error('Room 생성 Error 발생 ', err);
     res.send({ result: false, msg: '알수 없는 오류가 발생했습니다.' });

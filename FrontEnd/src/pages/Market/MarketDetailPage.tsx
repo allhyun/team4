@@ -13,9 +13,28 @@ import { PiHeartFill } from 'react-icons/pi'; // 좋아요 아이콘
 import { MdOutlineAccessTimeFilled } from 'react-icons/md'; // 시간 아이콘
 import { IoIosArrowDropleftCircle } from 'react-icons/io'; // 왼쪽 아이콘
 import { IoIosArrowDroprightCircle } from 'react-icons/io'; // 오른쪽 아이콘
+
 import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
 import MarketDeleteModify from '../../components/Market/MarketDeleteModify';
 import { DetailDataType } from '../../components/Types/MarketType';
+
+
+interface DetailDataType {
+  ud_idx: number; // 게시판 포린키
+  u_idx: number; // 유저 아이디
+  buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
+  ud_price: number | null; // 가격
+  ud_title: string; // 상품명
+  c_idx: number | null; // 카테고리
+  ud_image: string | null; // 상품사진
+  ud_content: string; // 상품설명
+  ud_region: string; // 거래지역
+  viewcount: number; // 조회수
+  ud_date: string; // 작성시간
+  nickname: string; // 사용자 닉네임
+  ud_images?: string[]; // 이미지 배열
+}
+
 
 const MarketDetailPage = () => {
   const navigate = useNavigate();
@@ -31,6 +50,8 @@ const MarketDetailPage = () => {
   useEffect(() => {
     axios
       .get(`http://localhost:8000/product/detail/${ud_idx}`)
+         // .get(`http://localhost:8000/product/detail/${ud_idx}`)
+      // 배포용
       .then((res) => {
         dispatch(setModifyPost(res.data)); // 상태 업데이트
       })
@@ -40,6 +61,8 @@ const MarketDetailPage = () => {
   useEffect(() => {
     axios
       .get(`http://localhost:8000/product/detail/${ud_idx}`)
+           // .get(`http://localhost:8000/product/detail/${ud_idx}`)
+      // 배포용
       .then((res) => {
         // console.log('서버 응답 데이터:', res.data);
         const productData = res.data;
@@ -240,12 +263,14 @@ const MarketDetailPage = () => {
                   <PiChatTextBold />
                   {'\u00A0'}
                   {'\u00A0'}
+
                   채팅
                 </button>
               </div>
               <div className="detail-button-seller">
                 <MarketDeleteModify ud_idx={marketDetailState.ud_idx} />
               </div>
+
             </div>
           </div>
           <div className="market-content-container">

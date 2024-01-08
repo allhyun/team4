@@ -34,7 +34,8 @@ const StudyToastEditor = () => {
       formData.append('image', blob);
       try {
         const response = await axios.post(
-          'http://localhost:8000/study/upload',
+          // 'http://localhost:8000/study/upload'
+          `${process.env.REACT_APP_HOST}/study/upload`,
           formData
         );
 
@@ -43,7 +44,8 @@ const StudyToastEditor = () => {
       } catch (error) {
         console.error('Error uploading image:', error);
       }
-      const url: string = 'http://localhost:8000/' + imageUrl;
+      //                    'http://localhost:8000/'
+      const url: string = `${process.env.REACT_APP_HOST}/` + imageUrl;
       //이런이미지로 이름이 정해짐
 
       callback(url, blob.name);
@@ -118,12 +120,13 @@ const StudyToastEditor = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/study/regist',
+        // 'http://localhost:8000/study/regist'
+        `${process.env.REACT_APP_HOST}/study/regist`,
         data
       );
       console.log('Server response:', response.data);
       //성공시 스터디메인페이지로 리다이렉트
-      navigate('/study');
+      navigate('/study', { state: { key: 'study-page' } });
     } catch (error) {
       console.error('Error submitting data:', error);
     }

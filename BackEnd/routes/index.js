@@ -4,7 +4,7 @@ const router = express.Router();
 // const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
-// const user = require('../controller/Cuser');
+const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
 // router.all('/*', function (req, res, next) {
@@ -32,6 +32,26 @@ router.post('/study/join/:st_idx', studyController.joinStudy);
 
 // 스터디 검색
 router.get('/study/search', studyController.searchStudy);
+//스터디 이미지
+router.post('/study/upload', async (req, res) => {
+  try {
+    // 이미지 업로드 미들웨어
+    upload.single('image')(req, res, (err) => {
+      if (err) {
+        // 업로드 실패
+        console.error(err);
+        res.status(500).json({ message: err.message });
+      } else {
+        // 업로드 성공 시 이미지 URL을 클라이언트에 응답
+        res.json({ imageUrl: req.file.path.replace(/\\/g, '/') });
+      }
+    });
+  } catch (error) {
+    // 기타 에러 처리
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // 중고물품 리스트
 router.get('/product', usedgoodsController.getUsedgoods);
@@ -51,11 +71,15 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
 // 로그인 페이지
-router.get('/signin', userController.signin);
+router.get('/user/signin', userController.signin);
 
-// 회원가입 페이지
+// 회원가입
 router.get('/user/signup', userController.signup);
-router.post('/user/signup', userController.postSignup);
+router.post(
+  '/user/signup',
+  upload.single('userProfileImg'),
+  userController.postSignup
+);
 
 // 아이디 중복확인
 router.post('/user/checkid', userController.checkId);
@@ -83,9 +107,12 @@ router.post('/user/changePassword', userController.updatePassword);
 router.get('/user/logout', userController.logout);
 
 // 마이페이지
-router.get('/user/mypage', userController.mypage);
+router.post('/user/mypage', userController.mypage);
 
-// 마이페이지 닉네임수정
+// 마이페이지 유저 정보 수정
+router.patch('/user/updateUserInfo', userController.updateUserInfo);
+
+// 마이페이지 닉네임 수정
 router.patch('/user/updateMypageNickname', userController.updateMypageNickname);
 
 // 마이페이지 비밀번호 수정

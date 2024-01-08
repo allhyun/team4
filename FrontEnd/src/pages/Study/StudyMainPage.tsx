@@ -7,6 +7,7 @@ import { Pagination } from '@mui/material';
 import '../../styles/style.scss';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { number } from 'yargs';
 const StudyMainPage = () => {
   const [page, setPage] = useState<number>(1);
   const [Apage, setApage] = useState<number>(0);
@@ -19,9 +20,11 @@ const StudyMainPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:8000/study');
+        // const res = await axios.get('http://localhost:8000/study');
+        // 배포용
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/study`);
         //전체 페이지 갯수
-        console.log(res.data.totalCount);
+
         setApage(Math.ceil((res.data.totalCount + 1) / 6));
       } catch (error) {
         console.log(error);

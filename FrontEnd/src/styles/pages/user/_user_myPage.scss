@@ -2,8 +2,10 @@
   @include flex-center;
   height: 100%;
 
-  .login-form {
+  .myPage-form {
     @include container;
+    // transform: translateY(-5rem);
+    // flex-direction: column;
     padding: 3em;
     border: 0;
     border: {
@@ -16,6 +18,13 @@
       font-size: 2em;
       margin: 0;
       margin-bottom: 1em;
+    }
+    .img-info-wrap {
+      display: flex;
+      // gap: 1em;
+      .input-wrap {
+        width: 100%;
+      }
     }
 
     .input-wrap {
@@ -65,14 +74,47 @@
       }
     }
 
-    a {
-      color: var(--main-white);
-    }
-    .user-wrap {
+    .input-wrap {
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      margin-top: 1em;
-      gap: 2em;
+      align-items: center;
+      label {
+        cursor: pointer;
+      }
+      .img-wrap {
+        input {
+          display: none;
+        }
+        .upload-img {
+          @include flex-center;
+          flex-direction: column;
+          border-radius: 10em;
+          border: solid 1px var(--main-white);
+          // padding: 1em;
+          width: 10em;
+          height: 10em;
+          svg {
+            width: 3em;
+            height: auto;
+          }
+        }
+        .uploaded-img {
+          width: 10em;
+          height: 10em;
+          object-fit: cover;
+          border-radius: 10em;
+          border: solid 1px var(--main-white);
+        }
+      }
+    }
+    .bottom-wrap {
+      @include flex-between;
+      margin: 1em 1em 0;
+      // gap: 2em;
+      .delete-user {
+        cursor: pointer;
+      }
     }
   }
 }

@@ -36,7 +36,7 @@ const fileFilter = (req, file, cb) => {
 
 // 프로필 이미지 파일 업로드를 처리할 Multer 인스턴스 생성
 const upload = multer({
-  dest:'uploads/',
+  dest: 'uploads/',
   storage: storage,
   fileFilter: fileFilter, // 파일 필터 적용
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
