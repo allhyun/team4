@@ -185,10 +185,42 @@ exports.updatePassword = async (req, res) => {
 
 // 마이페이지 랜더링
 exports.mypage = async (req, res) => {
-  if (req.sessionId) {
+  console.log('req.body', req.body);
+  console.log('req.sessionId', req.session.id);
+  if (req.session.id) {
     const u_idx = req.body.u_idx;
     const user = await User.findOne({ where: { u_idx: u_idx } });
     await res.send({ user });
+  }
+};
+
+// 유저정보 변경 컨트롤러
+exports.updateUserInfo = async (req, res) => {
+  const u_idx = req.session.user.u_idx;
+  // console.log(req.session);
+  const { nickname } = req.body;
+
+  const user = await User.findOne({ where: { u_idx: u_idx } });
+
+  if (user) {
+    user.nickname = nickname;
+    await user.save();
+
+    // 세션에 있는 사용자 정보도 업데이트
+    req.session.user = user;
+    req.session.save((err) => {
+      if (err) {
+        // 에러 처리
+        res.send({ result: false, message: '세션 업데이트에 실패하였습니다.' });
+      } else {
+        res.send({
+          result: true,
+          message: '닉네임이 성공적으로 수정되었습니다.',
+        });
+      }
+    });
+  } else {
+    res.send({ result: false, message: '유저를 찾을 수 없습니다.' });
   }
 };
 
@@ -196,7 +228,6 @@ exports.mypage = async (req, res) => {
 exports.updateMypageNickname = async (req, res) => {
   const u_idx = req.session.user.u_idx;
   // console.log(req.session);
-  // const u_idx = 8;
   const { nickname } = req.body;
 
   const user = await User.findOne({ where: { u_idx: u_idx } });
