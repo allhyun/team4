@@ -27,27 +27,25 @@ db.Chatmessage = require('./Chatmessage')(sequelize, Sequelize);
 db.Volunteer = require('./Volunteer')(sequelize, Sequelize);
 db.Heart = require('./Heart')(sequelize, Sequelize);
 db.Chatuser = require('./Chatuser')(sequelize, Sequelize);
-db.Usedproducts = require('./Usedproducts')(sequelize, Sequelize);
+db.Usedproduct = require('./Usedproduct')(sequelize, Sequelize);
 db.Category = require('./Category')(sequelize, Sequelize);
 
-// db.Heart.belongsTo(db.Usedproducts,{
+// db.Heart.belongsTo(db.Usedproduct,{
 //   foreignKey: 'ud_idx'
 // })
 
-// db.Usedproducts.hasOne(db.Heart,{
+// db.Usedproduct.hasOne(db.Heart,{
 //   foreignKey:'ud_idx'
 // }
 // )
 
-
-db.Heart.belongsTo(db.Usedproducts, {
-  foreignKey: 'ud_idx'
+db.Heart.belongsTo(db.Usedproduct, {
+  foreignKey: 'ud_idx',
 });
 
-db.Usedproducts.hasOne(db.Heart, {
-  foreignKey: 'ud_idx'
+db.Usedproduct.hasOne(db.Heart, {
+  foreignKey: 'ud_idx',
 });
-
 
 // Relations 파일
 // require('./Relations')(db);

@@ -1,4 +1,4 @@
-function UsedProducts(Sequelize, DataTypes) {
+function UsedProduct(Sequelize, DataTypes) {
   return Sequelize.define(
     'useproduct',
     {
@@ -61,4 +61,4 @@ function UsedProducts(Sequelize, DataTypes) {
   );
 }
 
-module.exports = UsedProducts;
+module.exports = UsedProduct;
