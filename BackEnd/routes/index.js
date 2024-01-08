@@ -4,7 +4,7 @@ const router = express.Router();
 // const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
-// const user = require('../controller/Cuser');
+const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
 // router.all('/*', function (req, res, next) {
@@ -71,7 +71,7 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
 // 로그인 페이지
-router.get('/signin', userController.signin);
+router.get('/user/signin', userController.signin);
 
 // 회원가입 페이지
 router.get('/user/signup', userController.signup);

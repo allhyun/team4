@@ -21,13 +21,9 @@ exports.postSignup = async (req, res) => {
     salt: salt, // 솔트 저장
     email: req.body.email,
     nickname: req.body.nickname,
-    image: req.file.path,
   };
-
   const createUser = await User.create(data);
-  // result 결과 필요해서 추가했습니
-  // createUser를 클라이언트에서 열어보면 암호화 안 된 비밀번호가 보입니다
-  res.send({ result: true });
+  res.send(createUser);
 };
 // 아이디 중복확인
 exports.checkId = (req, res) => {
@@ -64,11 +60,11 @@ exports.checkNickname = (req, res) => {
     }
   });
 };
-
 // 로그인 화면 랜더링
 exports.signin = (req, res) => {
   res.render('./user/signin');
 };
+
 // 로그인 화면 랜더링
 exports.postSignin = async (req, res) => {
   const user = await User.findOne({ where: { userid: req.body.userid } });
@@ -88,13 +84,7 @@ exports.postSignin = async (req, res) => {
     req.session.user = user; // 세션에 사용자 정보 저장
     req.session.isAuthenticated = true; // 로그인 상태를 true로 설정
     console.log('세션 생성:', req.session); // 세션 상태 출력
-
-    res.send({
-      result: true,
-      u_idx: user.u_idx,
-      nickname: user.nickname,
-      u_img: user.image,
-    });
+    res.send({ result: true, u_idx: user.u_idx });
   } else {
     res.send({ result: false });
   }
