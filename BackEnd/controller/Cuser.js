@@ -120,7 +120,7 @@ exports.logout = (req, res) => {
 exports.findId = (req, res) => {
   res.render('./user/findId');
 };
-//
+// 아이디 찾기 요청
 exports.postFindId = (req, res) => {
   User.findOne({
     where: {
