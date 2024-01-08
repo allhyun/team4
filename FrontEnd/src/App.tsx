@@ -48,6 +48,7 @@ function App() {
           <Route path="/study/modify" element={<StudyModify />}></Route>
           <Route path="/study/search" element={<StudySearchPage />}></Route>
           <Route path="/study/search" element={<StudySearchPage />}></Route>
+          {/* 채팅페이지 */}
           <Route path="/chatting" element={<ChatPage />}></Route>
         </Routes>
       </Main>
