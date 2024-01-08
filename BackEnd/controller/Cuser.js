@@ -21,9 +21,10 @@ exports.postSignup = async (req, res) => {
     salt: salt, // 솔트 저장
     email: req.body.email,
     nickname: req.body.nickname,
+    image: req.file.path,
   };
   const createUser = await User.create(data);
-  res.send(createUser);
+  res.send({ result: true });
 };
 // 아이디 중복확인
 exports.checkId = (req, res) => {
@@ -84,7 +85,12 @@ exports.postSignin = async (req, res) => {
     req.session.user = user; // 세션에 사용자 정보 저장
     req.session.isAuthenticated = true; // 로그인 상태를 true로 설정
     console.log('세션 생성:', req.session); // 세션 상태 출력
-    res.send({ result: true, u_idx: user.u_idx });
+    res.send({
+      result: true,
+      u_idx: user.u_idx,
+      nickname: user.nickname,
+      u_img: user.image,
+    });
   } else {
     res.send({ result: false });
   }
