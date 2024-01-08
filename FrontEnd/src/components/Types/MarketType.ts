@@ -13,6 +13,7 @@ export interface DataType {
   ud_date: string; // 작성시간
   nickname: string; // 사용자 닉네임
   ud_images?: string[]; // 이미지 배열
+  c_idx: number | null;
 }
 
 export interface DetailDataType {
@@ -29,6 +30,7 @@ export interface DetailDataType {
   ud_date: string; // 작성시간
   nickname: string; // 사용자 닉네임
   ud_images?: string[]; // 이미지 배열
+  c_idx: number | null;
 }
 
 // 에러 메시지 타입 정의
@@ -39,6 +41,7 @@ export interface ErrorMessages {
   ud_region: string;
   ud_content: string;
   ud_image: string;
+  c_idx: number | null;
 }
 
 // 카테고리 숫자 변환 함수 타입 정의

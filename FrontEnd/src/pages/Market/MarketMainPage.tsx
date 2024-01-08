@@ -21,9 +21,9 @@ export default function MarketMainPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // const res = await axios.get('http://localhost:8000/product');
+        const res = await axios.get('http://localhost:8000/product');
         // 배포용
-        const res = await axios.get(`${process.env.REACT_APP_HOST}/product`);
+        // const res = await axios.get(`${process.env.REACT_APP_HOST}/product`);
         //전체 페이지 갯수
         console.log(res.data.totalCount);
         setApage(Math.ceil((res.data.totalCount + 1) / 6));
