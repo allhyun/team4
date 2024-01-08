@@ -120,7 +120,7 @@ exports.logout = (req, res) => {
 exports.findId = (req, res) => {
   res.render('./user/findId');
 };
-//
+// 아이디 찾기 요청
 exports.postFindId = (req, res) => {
   User.findOne({
     where: {
@@ -185,10 +185,11 @@ exports.updatePassword = async (req, res) => {
 
 // 마이페이지 랜더링
 exports.mypage = async (req, res) => {
-  const u_idx = req.session.user;
-  const user = await User.findOne({ where: { u_idx: u_idx } });
-  console.log(user);
-  // res.render('./user/mypage', { data: user });
+  if (req.sessionId) {
+    const u_idx = req.body.u_idx;
+    const user = await User.findOne({ where: { u_idx: u_idx } });
+    await res.send({ user });
+  }
 };
 
 // 닉네임 변경 컨트롤러

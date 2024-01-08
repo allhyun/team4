@@ -10,7 +10,7 @@ import MarketEditPage from './pages/Market/MarketEditPage';
 import MarketDetailPage from './pages/Market/MarketDetailPage';
 import UserLoginPage from './pages/User/UserLoginPage';
 import UserSignupPage from './pages/User/UserSignupPage';
-import UserInfoPage from './pages/User/UserInfoPage';
+import UserMyPage from './pages/User/UserMyPage';
 import UserFindPage from './pages/User/UserFindPage';
 import StudyModify from './components/Study/StudyModify';
 import StudySearchPage from './pages/Study/StudySearchPage';
@@ -27,7 +27,7 @@ function App() {
           {/* 유저관련 페이지 */}
           <Route path="/login" element={<UserLoginPage />}></Route>
           <Route path="/signup" element={<UserSignupPage />}></Route>
-          <Route path="/user" element={<UserInfoPage />}></Route>
+          <Route path="/user" element={<UserMyPage />}></Route>
           <Route path="/find" element={<UserFindPage />}></Route>
 
           {/* 중고마켓 */}
