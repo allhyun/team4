@@ -14,6 +14,7 @@
     list-style: none;
     justify-content: space-between;
     padding: 0 40px 0 40px;
+    align-items: center;
     li {
       a {
         color: var(--main-color);
@@ -23,6 +24,24 @@
 
         &:hover {
           @include hover;
+        }
+      }
+      // 헤더의 로그인 유저 정보
+      .logined-user {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        cursor: pointer;
+        img {
+          width: 3em;
+          height: 3em;
+          border-radius: 3em;
+          border: 1px solid var(--main-color);
+          background-color: var(--main-black);
+          // transition: cubic-bezier();
+        }
+        img:hover {
+          opacity: 0.6;
         }
       }
     }

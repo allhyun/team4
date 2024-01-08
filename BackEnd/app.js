@@ -9,6 +9,17 @@ const session = require('express-session');
 const cors = require('cors');
 const axios = require('axios');
 
+const {
+  Board,
+  Chatmessage,
+  Chattingroom,
+  Chatuser,
+  Heart,
+  Study,
+  Usedproducts,
+  Volunteer,
+} = require('./model');
+
 app.use('/static', express.static('static'));
 
 app.use(express.json());
@@ -38,43 +49,51 @@ const io = require('socket.io')(server, {
 
 app.set('io', io);
 
-app.use('/', router);
-
 // 미들웨어를 사용하여 모든 뷰에 로그인 상태(세션)를 전달
-// app.use((req, res, next) => {
-//   res.locals.isAuthenticated = req.session.isAuthenticated;
-//   res.locals.user = req.session.user;
-//   console.log(res.locals.user);
-//   next();
-// });
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isAuthenticated;
+  res.locals.user = req.session.user;
+  console.log(res.locals.user);
+  next();
+});
+
+app.use('/', router);
 
 app.use(async (req, res, next) => {
   if (req.session.isAuthenticated) {
-    const userCount = await user.count({
+    const boardCount = await Board.count({
       where: { u_idx: req.session.user.u_idx },
     });
-    const boardCount = await board.count({
+    const chatmessageCount = await Chatmessage.count({
       where: { u_idx: req.session.user.u_idx },
     });
-    const chatmessageCount = await chatmessage.count({
+    const chattingroomCount = await Chattingroom.count({
       where: { u_idx: req.session.user.u_idx },
     });
-    const chattingroomCount = await chattingroom.count({
+    const chatuserCount = await Chatuser.count({
       where: { u_idx: req.session.user.u_idx },
     });
-    const usedgoodsCount = await usedgoods.count({
+    const heartCount = await Heart.count({
       where: { u_idx: req.session.user.u_idx },
     });
-    const studyCount = await study.count({
+    const studyCount = await Study.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const usedproductsCount = await Usedproducts.count({
+      where: { u_idx: req.session.user.u_idx },
+    });
+    const volunteerCount = await Volunteer.count({
       where: { u_idx: req.session.user.u_idx },
     });
 
-    res.locals.userCount = userCount;
     res.locals.boardCount = boardCount;
     res.locals.chatmessageCount = chatmessageCount;
     res.locals.chattingroomCount = chattingroomCount;
-    res.locals.usedgoodsCount = usedgoodsCount;
+    res.locals.chatuserCount = chatuserCount;
+    res.locals.heartCount = heartCount;
     res.locals.studyCount = studyCount;
+    res.locals.usedproductsCount = usedproductsCount;
+    res.locals.volunteerCount = volunteerCount;
   }
   next();
 });

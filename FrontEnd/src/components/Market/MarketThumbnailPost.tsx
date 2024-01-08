@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/style.scss';
 import { useNavigate } from 'react-router-dom';
+
 import { useDispatch } from 'react-redux';
 import { setModifyPost } from '../../store/marketmodifyReducer';
 import { DataType, propsType } from '../Types/MarketType';
+
 
 const MarketThumbnailPost = (props: propsType) => {
   const dispatch = useDispatch();
@@ -60,9 +62,12 @@ const MarketThumbnailPost = (props: propsType) => {
   useEffect(() => {
     async function fetchPosts() {
       try {
+
         const res = await axios.get('http://localhost:8000/product', {
-          // 배포 axios
+          // 배포용 axios
           // `${process.env.REACT_APP_HOST}/product/`,
+
+     
           params: { page: data },
         });
 

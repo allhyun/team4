@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { ErrorMessages, DataType, CategoryMap } from '../Types/MarketType';
 
+
 const MarketEditor: React.FC = () => {
   // Redux 스토어에서 사용자 정보 가져오기
   // 'user'는 combineReducers에서 지정한 키!
@@ -24,7 +25,7 @@ const MarketEditor: React.FC = () => {
     buy_idx: 1,
     ud_price: null,
     ud_title: '',
-    ud_category: null,
+    c_idx: null,
     ud_image: '',
     ud_content: '',
     ud_region: '',
@@ -67,7 +68,7 @@ const MarketEditor: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
     ud_title: '',
     ud_price: '',
-    ud_category: '',
+    c_idx: '',
     ud_region: '',
     ud_content: '',
     ud_image: '',
@@ -219,17 +220,18 @@ const MarketEditor: React.FC = () => {
   // 카테고리 제출 핸들러
   const handleCategoryChange = (categoryName: string) => {
     const categoryID = getCategoryID(categoryName);
-    setData({ ...data, ud_category: categoryID });
+    setData({ ...data, c_idx: categoryID });
 
     // 카테고리 선택 시 관련 오류 메시지 제거
-    if (errorMessages.ud_category) {
-      setErrorMessages({ ...errorMessages, ud_category: '' });
+    if (errorMessages.c_idx) {
+      setErrorMessages({ ...errorMessages, c_idx: '' });
     }
   };
 
   // 유효성 검사 함수 ------------------------------------------------------------------------------------------
   const validateFields = (): boolean => {
     let isValid = true;
+
 
     // 이미지 유효성 검사
     if (images.length === 0) {
@@ -248,6 +250,7 @@ const MarketEditor: React.FC = () => {
         ud_title: '상품명을 입력해주세요.',
       }));
       titleRef.current?.focus();
+
       return false;
     }
 
@@ -257,6 +260,7 @@ const MarketEditor: React.FC = () => {
         ...prev,
         ud_category: '카테고리를 선택해주세요.',
       }));
+
       marketCategoryRef.current?.focus();
       return false;
     }
@@ -310,7 +314,7 @@ const MarketEditor: React.FC = () => {
     formData.append('u_idx', data.u_idx?.toString() || '');
     formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
-    formData.append('ud_category', data.ud_category?.toString() ?? '');
+    formData.append('c_idx', data.c_idx?.toString() ?? '');
     formData.append('ud_region', data.ud_region);
     formData.append('ud_price', data.ud_price?.toString() ?? '');
     formData.append('ud_content', data.ud_content);
@@ -323,7 +327,8 @@ const MarketEditor: React.FC = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:8000/product/regist',
+         'http://localhost:8000/product/regist',
+        // 배포용
         // `${process.env.REACT_APP_HOST}/product/regist`,
         formData,
         {
@@ -393,8 +398,8 @@ const MarketEditor: React.FC = () => {
             카테고리<span style={{ color: '#fcbaba' }}>＊</span>
             <MarketCategory onSelectCategory={handleCategoryChange} />
           </div>
-          {errorMessages.ud_category && (
-            <p className="error-message">{errorMessages.ud_category}</p>
+          {errorMessages.c_idx && (
+            <p className="error-message">{errorMessages.c_idx}</p>
           )}
         </section>
         <section className="market-region">

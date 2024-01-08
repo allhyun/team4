@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Modal from './Modal';
+import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 interface FindIdForm {
   userEmail: string;
+  result: null | boolean;
+}
+
+interface FindId {
+  data: {
+    userid: string | null;
+  };
 }
 
 const FindId = () => {
   const [userEmail, setUserEmail] = useState<string>('');
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [findUserid, setFindUserid] = useState<string>('');
 
+  const ref: React.LegacyRef<HTMLDivElement | null | undefined> | any =
+    useRef();
   const {
     register,
     handleSubmit,
@@ -24,9 +37,21 @@ const FindId = () => {
       email: inputData.userEmail,
     };
 
-    const response = await axios.post('http://localhost:8000/user/findId', data);
-    if (!response) return;
+    const response = await axios.post(
+      `${process.env.REACT_APP_HOST}/user/findId'`,
+      data
+    );
+    if (response.data.userid !== null) {
+      await setFindUserid(`찾는 ID는 ${response.data.userid}입니다.`);
+      await setIsOpenModal(true);
+    } else {
+      setFindUserid('일치하는 ID가 없습니다');
+      setIsOpenModal(true);
+    }
+    // console.log('response', response.data.userid);
   };
+
+  useOnClickOutside(ref, () => setIsOpenModal(false));
 
   return (
     <>
@@ -54,6 +79,12 @@ const FindId = () => {
           </button>
         </div>
       </form>
+
+      {isOpenModal && (
+        <div ref={ref}>
+          <Modal text={findUserid} />
+        </div>
+      )}
     </>
   );
 };

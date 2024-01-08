@@ -1,0 +1,24 @@
+.chat-header-container {
+  @include container;
+  display: flex;
+  height: 88vh;
+}
+.caht-header {
+  width: 200px;
+  background-color: rgb(55, 51, 105);
+}
+.chat-contents-container {
+  display: flex;
+  flex-direction: column;
+  height: 88vh;
+  width: 100%;
+  .chat-con {
+    height: 100%;
+  }
+}
+.chat-input-container {
+  display: flex;
+  input {
+    width: 88%;
+  }
+}

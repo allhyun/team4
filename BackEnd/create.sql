@@ -99,14 +99,14 @@ CREATE TABLE useproduct (
     ud_price INT NOT NULL,
 
     ud_title VARCHAR(120) NOT NULL,
-    ud_category INT NOT NULL,
+    c_idx INT NOT NULL,
     ud_image VARCHAR(250) NOT NULL,
     ud_content TEXT NOT NULL,
     ud_region VARCHAR(20) NOT NULL,
     viewcount INT NOT NULL,
     ud_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
-    FOREIGN KEY (ud_category) REFERENCES category(c_idx) ON DELETE CASCADE
+    FOREIGN KEY (c_idx) REFERENCES category(c_idx) ON DELETE CASCADE
 );
 
 CREATE TABLE heart (

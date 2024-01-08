@@ -6,7 +6,7 @@
 import axios from 'axios';
 import { type } from 'os';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 //서버에서 넘어오는 데이터 타입
 interface StudyTable {
@@ -28,23 +28,34 @@ interface propsType {
 
 const StudyThumbnailBox = (props: propsType) => {
   const data = props.page;
-
   const navigate = useNavigate();
+  const location = useLocation();
   const [studyList, setStudyList] = useState<StudyTable[]>([]);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get('http://localhost:8000/study', {
-          params: { page: data },
-        });
-        setStudyList(res.data.resultstudy);
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
+  const key = location.state?.key;
+
+  async function fetchData() {
+    try {
+      // const res = await axios.get('http://localhost:8000/study'
+      const res = await axios.get(`${process.env.REACT_APP_HOST}/study`, {
+        params: { page: data },
+      });
+      setStudyList(res.data.resultstudy);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //작성페이지에서 넘어왔을때 렌터링
+  if (key === 'study-page') {
     fetchData();
-  }, [props]); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [props, location.pathname]); //props가 변할때,
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   function goDetailPage(index: string): void {
     navigate(`/study/detail/${index}`);

@@ -11,7 +11,7 @@
 @import 'layout/header';
 @import 'layout/sidebar';
 @import 'layout/seacrh';
-
+@import 'layout/chat';
 // pages
 @import 'pages/main';
 @import 'pages/market/market_main';
@@ -24,5 +24,7 @@
 @import 'pages/study/study_edit';
 @import 'pages/study/study_detail';
 @import 'pages/user/user_login';
+@import 'pages/user/user_menu';
+@import 'pages/user//user_modal';
 
 @import 'https://cdn.jsdelivr.net/gh/KunalTanwar/normalize/css/normalize.inter.min.css';
