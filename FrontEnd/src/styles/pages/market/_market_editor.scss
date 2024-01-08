@@ -107,6 +107,10 @@ div.img_container {
   margin: 0;
 }
 
+textarea {
+  overflow: auto !important;
+}
+
 // 이미지 미리보기 디자인
 ul.image-previews-list {
   display: flex;

@@ -46,31 +46,6 @@ const MarketModify: React.FC = () => {
   );
   console.log('editingPost값 확인 :', editingPost);
 
-  // 수정 관련 ------------------------------------------------------------------------------------------
-  // 수정할 데이터를 로컬 상태로 설정
-  useEffect(() => {
-    if (editingPost) {
-      setData(editingPost);
-      console.log('현재 스토어의 상태:', editingPost);
-
-      // 이미지 URL 설정
-      if (editingPost.ud_image) {
-        try {
-          // JSON 문자열을 배열로 파싱
-          const imageUrls = JSON.parse(editingPost.ud_image);
-          setPreviewUrls(
-            imageUrls.map(
-              (ud_image: string) => `http://localhost:8000/${ud_image}`
-            )
-          ); // 혹은 적절한 기본 경로 추가
-        } catch (error) {
-          console.error('이미지 URL 파싱 오류:', error);
-          // JSON 파싱 실패 시, 단일 URL로 처리
-          setPreviewUrls([`http://localhost:8000/${editingPost.ud_image}`]);
-        }
-      }
-    }
-  }, [editingPost]);
   // 카테고리 문자열을 숫자 ID로 매핑
   const getCategoryID = (categoryName: string): number | null => {
     const categoryMap: CategoryMap = {
@@ -124,6 +99,35 @@ const MarketModify: React.FC = () => {
   const handleRegionChange = (newRegion: string) => {
     setData({ ...data, ud_region: newRegion });
   };
+
+  // 수정 관련 ------------------------------------------------------------------------------------------
+  // 수정할 데이터를 로컬 상태로 설정
+  useEffect(() => {
+    if (editingPost) {
+      setData(editingPost);
+      console.log('현재 스토어의 상태:', editingPost);
+
+      // 이미지 URL 설정
+      if (editingPost.ud_image) {
+        try {
+          // JSON 문자열을 배열로 파싱
+          const imageUrls = JSON.parse(editingPost.ud_image);
+          setPreviewUrls(
+            imageUrls.map(
+              (ud_image: string) =>
+                `http://localhost:8000/${encodeURIComponent(ud_image)}`
+            )
+          );
+        } catch (error) {
+          console.error('이미지 URL 파싱 오류:', error);
+          // JSON 파싱 실패 시, 단일 URL로 처리
+          setPreviewUrls([
+            `http://localhost:8000/${encodeURIComponent(editingPost.ud_image)}`,
+          ]);
+        }
+      }
+    }
+  }, [editingPost]);
 
   // 이미지창 관련 ------------------------------------------------------------------------------------------
 
@@ -378,6 +382,10 @@ const MarketModify: React.FC = () => {
     }
     // console.log('FormData 객체의 상태 출력:', formData);
   };
+
+  useEffect(() => {
+    console.log('Image URLs:', previewUrls);
+  }, [previewUrls]);
 
   return (
     <>

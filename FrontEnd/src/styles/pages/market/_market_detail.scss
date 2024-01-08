@@ -132,6 +132,14 @@ nav[aria-label='detail-category'] {
     font-size: 25px;
   }
 }
+.detail-content {
+  position: relative;
+  white-space: break-word;
+
+  #text {
+    white-space: break-word;
+  }
+}
 
 @media (max-width: 720px) {
   .img-container {
