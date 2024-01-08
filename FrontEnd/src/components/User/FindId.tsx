@@ -46,6 +46,7 @@ const FindId = () => {
       await setIsOpenModal(true);
     } else {
       setFindUserid('일치하는 ID가 없습니다');
+      setIsOpenModal(true);
     }
     // console.log('response', response.data.userid);
   };
