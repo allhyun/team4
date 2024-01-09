@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../../styles/style.scss';
 import axios from 'axios';

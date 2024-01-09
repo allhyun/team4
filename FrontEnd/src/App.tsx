@@ -17,6 +17,7 @@ import StudyModify from './components/Study/StudyModify';
 import StudySearchPage from './pages/Study/StudySearchPage';
 import MarketModify from './components/Market/MarketModify';
 import ChatPage from './pages/Chat/ChatPage';
+import MarketSearchPage from './pages/Market/MarketSearchPage';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             element={<MarketDetailPage />}
           />
           <Route path="/product/modify" element={<MarketModify />} />
+          <Route path="/product/search" element={<MarketSearchPage />} />
 
           {/* 스터디게시판 */}
           <Route path="/study" element={<StudyMainPage />}></Route>

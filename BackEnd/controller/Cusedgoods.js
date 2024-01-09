@@ -119,25 +119,6 @@ exports.detailusedGoods = async (req, res) => {
   }
 };
 
-//     const product = await db.Useproduct.findByPk(usedGoodsId, {
-//       include: [
-//         {
-//           model: db.User, // User 모델을 포함
-//           attributes: ['nickname'], // User 모델에서 nickname 갖고오기!
-//         },
-//       ],
-//     });
-//     if (!product) {
-//       res.status(404).send('게시물을 찾을 수 없습니다.');
-//       return;
-//     }
-//     res.send(product);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('메인화면 에러 발생');
-//   }
-// };
-
 // 중고물품 수정
 exports.modifyusedGoods = async (req, res) => {
   const UseproductId = req.params.ud_idx;
@@ -163,27 +144,6 @@ exports.modifyusedGoods = async (req, res) => {
     res.status(500).send('서버 오류 발생');
   }
 };
-
-// 기존 코드
-
-// exports.modifyusedGoods = async (req, res) => {
-//   const usedproductId = req.params.ud_idx;
-//   console.log(usedproductId);
-//   try {
-//     const { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content } =
-//       req.body;
-
-//     const updatedusedGoods = await db.Useproduct.update(
-//       { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content },
-//       { where: { ud_idx: usedproductId } }
-//     );
-//     res.send({ updatedusedGoods, msg: '수정완료!' });
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('메인화면 에러 발생');
-//   }
-// };
 
 // 중고 물품 삭제
 exports.deleteusedGoods = async (req, res) => {
@@ -255,13 +215,13 @@ exports.searchusedGoods = async (req, res) => {
         [Op.or]: [
           { ud_title: { [Op.like]: `%${keyword}%` } },
           { ud_content: { [Op.like]: `%${keyword}%` } },
-          { c_idx: { [Op.like]: `%${keyword}%` } },
+          // { c_idx: { [Op.like]: `%${keyword}%` } },
         ],
       },
     });
     res.send(result);
   } catch (error) {
-    console.error(error);
+    console.error('백엔드 결과:', error);
     res.status(500).send('메인화면 에러 발생');
   }
 };

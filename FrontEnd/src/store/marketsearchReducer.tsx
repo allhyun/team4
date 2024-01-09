@@ -1,8 +1,7 @@
-// searchSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const marketSearchSlice = createSlice({
-  name: 'marketsearch',
+  name: 'marketSearch',
   initialState: {
     marketSearchDetail: null,
   },
