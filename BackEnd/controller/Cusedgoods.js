@@ -143,7 +143,7 @@ exports.modifyusedGoods = async (req, res) => {
 //   console.log(usedproductId);
 //   try {
 
-//     await db.Usedproduct.destroy({ where: { ud_idx: usedproductId } });
+//     await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
 //     res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
 //   } catch (error) {
 //     console.error(error);
@@ -155,16 +155,11 @@ exports.deleteusedGoods = async (req, res) => {
   const usedproductId = req.params.ud_idx;
 
   try {
-    const useproduct = await db.Usedproduct.findOne({
+    const useproduct = await db.Useproduct.findOne({
       where: { ud_idx: usedproductId },
     });
 
-    //   디벨롭 서버 코드기준(240108) -> 컴플릭트나서 저장해둠.
-    // await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
-    // res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
-
-    // 240108 나영혜 코드 기준 -> 컴플릭트나서 저장해둠.
-    const usedproduct = await db.Usedproducts.findOne({
+    const usedproduct = await db.Useproduct.findOne({
       where: { ud_idx: usedproductId },
     });
 

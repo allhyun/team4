@@ -9,9 +9,6 @@ const marketSlice = createSlice({
   name: 'market',
   initialState,
   reducers: {
-    // setMarketDetail: (state, action) => {
-    //   state.marketDetail = action.payload;
-    // },
     setModifyPost: (state, action) => {
       state.modifyPost = action.payload;
     },

@@ -221,6 +221,7 @@ const MarketModify: React.FC = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    setData((prevData) => ({ ...prevData, [name]: value }));
 
     // 상품명창 관련
     if (name === 'ud_title') {
@@ -365,20 +366,22 @@ const MarketModify: React.FC = () => {
     // }
 
     try {
-      const res = await axios.post(
-        'http://localhost:8000/product/detail/${ud_idx}',
+      const res = await axios.put(
+        // `http://localhost:8000/product/detail/:ud_idx, , updateData}`,
+        `http://localhost:8000/product/detail/${ud_idx}, , formData}`, // 수정할 상품의 ID를 URL에 포함
+
         // 배포 axios
-        // `${process.env.REACT_APP_HOST}/detail/${ud_idx}`,
+        // `${process.env.REACT_APP_HOST}/detail/${data.ud_idx}`,
         formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
+        { headers: { 'Content-Type': 'multipart/form-data' } }
       );
       // console.log('데이터 잘 보내지는지?:', res.data);
-      dispatch(setModifyPost(res.data)); // Redux에 상태 업데이트
+      dispatch(setModifyPost(res.data.updatedusedGoods[0])); // Redux에 상태 업데이트
       navigate('/market');
+      console.log('수정 서버 응답 확인:', res.data); // 서버 응답 확인
     } catch (error) {
-      console.error('게시글 등록 에러:', error);
+      console.error('수정 중 오류 발생:', error);
+      alert('수정 중 문제가 발생했습니다.');
     }
     // console.log('FormData 객체의 상태 출력:', formData);
   };
