@@ -105,7 +105,7 @@ const UserMyPage = () => {
     try {
       console.log('useForm 성공', inputData);
 
-      const formData = new FormData();
+      // const formData = new FormData();
       // formData.append('userProfileImg', userProfileImg);
       // formData.append('userid', inputData.userId);
       // formData.append('password', inputData.userPw.toString());
@@ -122,20 +122,24 @@ const UserMyPage = () => {
         nickname: inputData.userNickname,
       };
 
-      const checkedId = await checkDuplicated('checkid', {
-        userid: user.userid,
-      }).then((checked: boolean) => {
-        setIsUseridDuplicated(checked);
-        return checked;
-      });
-      const checkedNickname = await checkDuplicated('checknickname', {
-        nickname: user.nickname,
-      }).then((checked: boolean) => {
-        setIsNicknameDuplicated(checked);
-        return checked;
-      });
+      // 입력 데이터가 유저 아이디와 다를 때만 요청
+      let checkedId: null | boolean = null;
+      if (userInfo.userid !== user.userid) {
+        checkedId = await checkDuplicated('checkid', {
+          userid: user.userid,
+        }).then((checked: boolean) => {
+          return checked;
+        });
+      }
+      let checkedNickname: null | boolean = null;
+      if (userInfo.nickname !== user.nickname) {
+        checkedNickname = await checkDuplicated('checknickname', {
+          nickname: user.nickname,
+        }).then((checked: boolean) => {
+          return checked;
+        });
+      }
 
-      // 결과값으로 바로 상태를 변경하고 이용하려고 했으나 서버보다 한 박자 느리게 상태가 바뀜
       if (checkedId !== true && checkedNickname !== true) {
         const data = {
           userId: inputData.userId,
@@ -162,7 +166,7 @@ const UserMyPage = () => {
 
   const checkDuplicated = (checkUrl: string, data: {}): any => {
     return axios
-      .post(`http://localhost:8000/user/${checkUrl}`, data)
+      .post(`${process.env.REACT_APP_HOST}/${checkUrl}`, data)
       .then((res) => {
         return res.data.duplicate;
       });
@@ -191,11 +195,16 @@ const UserMyPage = () => {
                       />
                     </div>
                   </label>
-
                   <p className="alert">{errors.userProfileImg?.message}</p>
                 </div>
               </div>
               <div className="input-wrap">
+                <div>id: {userInfo.userid}</div>
+                {/* <p className="alert">
+                  {errors.userId?.message}
+                  {isUseridDuplicated ? `중복된 id입니다.` : ''}
+                </p> */}
+
                 <input
                   type="text"
                   placeholder="nickname"
@@ -213,28 +222,6 @@ const UserMyPage = () => {
                 <p className="alert">
                   {errors.userNickname?.message}
                   {isNicknameDuplicated ? `중복된 nickname입니다.` : ''}
-                </p>
-
-                <input
-                  type="text"
-                  placeholder="id"
-                  value={userId === '' ? userInfo.userid : userId}
-                  {...register('userId', {
-                    // required: 'id를 입력해주세요.',
-                    pattern: {
-                      value: /^[a-zA-Z0-9-]+$/i,
-                      message: '잘못된 형식입니다.',
-                    },
-                  })}
-                  // ref={inputRef}
-                  name="userId"
-                  onChange={onUserInfoHandler}
-                  // onBlur={onBlurHandler}
-                  // onBlur={checkDuplicate}
-                />
-                <p className="alert">
-                  {errors.userId?.message}
-                  {isUseridDuplicated ? `중복된 id입니다.` : ''}
                 </p>
 
                 <input

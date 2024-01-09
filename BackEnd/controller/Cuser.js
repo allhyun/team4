@@ -61,9 +61,10 @@ exports.checkNickname = (req, res) => {
     }
   });
 };
-// 로그인 화면 랜더링
-exports.signin = (req, res) => {
-  res.render('./user/signin');
+
+// 유저 관심 목록 조회
+exports.heartList = (req, res) => {
+  console.log('test');
 };
 
 // 로그인

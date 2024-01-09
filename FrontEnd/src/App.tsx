@@ -12,11 +12,11 @@ import UserLoginPage from './pages/User/UserLoginPage';
 import UserSignupPage from './pages/User/UserSignupPage';
 import UserMyPage from './pages/User/UserMyPage';
 import UserFindPage from './pages/User/UserFindPage';
+import UserHeartListPage from './pages/User/UserHeartListPage';
 import StudyModify from './components/Study/StudyModify';
 import StudySearchPage from './pages/Study/StudySearchPage';
 import MarketModify from './components/Market/MarketModify';
 import ChatPage from './pages/Chat/ChatPage';
-
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
           <Route path="/signup" element={<UserSignupPage />}></Route>
           <Route path="/user" element={<UserMyPage />}></Route>
           <Route path="/find" element={<UserFindPage />}></Route>
+          <Route path="/heart" element={<UserHeartListPage />}></Route>
 
           {/* 중고마켓 */}
           <Route path="/market" element={<MarketMainPage />} />
