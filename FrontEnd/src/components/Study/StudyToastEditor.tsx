@@ -8,6 +8,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { upload } from '@testing-library/user-event/dist/upload';
+import { useSelector } from 'react-redux';
 
 interface DataType {
   u_idx: number;
@@ -23,6 +24,7 @@ interface DataType {
 const StudyToastEditor = () => {
   const navigate = useNavigate();
   const editorRef = useRef<any>();
+  const userData = useSelector((state: any) => state.user.user);
   //이미지관련 훅 새로 생성
   type HookCallback = (url: string, text?: string) => void;
 
@@ -36,7 +38,10 @@ const StudyToastEditor = () => {
         const response = await axios.post(
           // 'http://localhost:8000/study/upload'
           `${process.env.REACT_APP_HOST}/study/upload`,
-          formData
+          formData,
+          {
+            withCredentials: true,
+          }
         );
 
         console.log(response.data.imageUrl);
@@ -54,7 +59,7 @@ const StudyToastEditor = () => {
   };
 
   const [data, setData] = useState<DataType>({
-    u_idx: 1,
+    u_idx: userData.u_idx,
     st_title: '',
     st_intro: '',
     st_now_mem: 0,
