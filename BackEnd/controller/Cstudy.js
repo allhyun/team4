@@ -57,7 +57,7 @@ exports.getStudiesPage = async (req, res) => {
 exports.createStudy = async (req, res) => {
   try {
     const {
-      // u_idx,
+      u_idx,
       st_title,
       st_intro,
       st_now_mem,
@@ -67,15 +67,9 @@ exports.createStudy = async (req, res) => {
       st_pub,
       st_full,
     } = req.body;
-    console.log("session!!!!!!!!!!!",req.session);
-
-    const sessionUIdx = req.session.user.u_idx;
-
-    console.log("Session u_idx:", sessionUIdx);
-    console.log("Request body:", req.body);
 
     const newStudy = await db.Study.create({
-      u_idx: sessionUIdx,
+      u_idx,
       st_title,
       st_intro,
       st_now_mem,
