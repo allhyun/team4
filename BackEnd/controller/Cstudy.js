@@ -1,22 +1,8 @@
 const db = require('../model');
 const { Op } = require('sequelize');
 
-// const passport = require('passport');
-
 // 스터디 리스트
-exports.getStudies = async (req, res) => {
-  try {
-    const studies = await db.Study.findAll();
-    console.log(studies);
-
-    res.send(studies);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('메인화면 에러 발생');
-  }
-};
-
-// 페이지네이션 값 받아오기..?
+// 첫 페이지는 5개 이후는 6개씩
 exports.getStudiesPage = async (req, res) => {
   try {
     const page = req.query.page || 1; // 현재 페이지
@@ -34,7 +20,7 @@ exports.getStudiesPage = async (req, res) => {
     } else {
       offset = (page - 1) * 6 - 1;
     }
-    // 항상 6으로 설정하여 두 번째 페이지부터는 6개씩 가져오도록 함
+    // 항상 5으로 설정하여 두 번째 페이지부터는 5개씩 가져오도록 함
     const totalCount = await db.Study.count();
     const resultstudy = await db.Study.findAll({
       attributes: [
@@ -66,11 +52,12 @@ exports.getStudiesPage = async (req, res) => {
     res.status(500).send('메인화면 에러 발생');
   }
 };
+
 // 스터디 등록
 exports.createStudy = async (req, res) => {
   try {
     const {
-      u_idx,
+      // u_idx,
       st_title,
       st_intro,
       st_now_mem,
@@ -80,9 +67,15 @@ exports.createStudy = async (req, res) => {
       st_pub,
       st_full,
     } = req.body;
-    console.log(req.body);
+    console.log("session!!!!!!!!!!!",req.session);
+
+    const sessionUIdx = req.session.user.u_idx;
+
+    console.log("Session u_idx:", sessionUIdx);
+    console.log("Request body:", req.body);
+
     const newStudy = await db.Study.create({
-      u_idx,
+      u_idx: sessionUIdx,
       st_title,
       st_intro,
       st_now_mem,
