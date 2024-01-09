@@ -64,6 +64,7 @@ const StudyChatContents = () => {
   const [chatList, setChatList] = useState<{ type: string; content: string }[]>(
     []
   );
+  const [Ridx, setRidx] = useState();
   const studyData = useSelector((state: any) => state.study.study.studyDetail);
   const userData = useSelector((state: any) => state.user.user);
   //소켓 관련
@@ -102,12 +103,16 @@ const StudyChatContents = () => {
       });
     };
   }, []);
-  let Ridx: number;
+
   const sendMsg = () => {
+    console.log('룸번호', Ridx);
     if (chatInput !== '') {
       socket.emit('sendMsg', { msg: chatInput, nickname: userData.nickname });
       setChatInput('');
-      axios.post(`${process.env.REACT_APP_HOST}/chatRoom/${Ridx}/chat`);
+      axios.post(`${process.env.REACT_APP_HOST}/chatRoom/${Ridx}/chat`, {
+        c_content: chatInput,
+        u_idx: userData.u_idx,
+      });
     }
   };
   const addChatList = useCallback(
@@ -143,8 +148,9 @@ const StudyChatContents = () => {
           r_name: 'study' + studyData.st_idx,
           u_idx: userData.u_idx,
         });
-        Ridx = res.data.r_idx;
-        console.log(res.data);
+        console.log(res.data.r_idx);
+        setRidx(res.data.r_idx);
+        console.log('내부', Ridx);
         socket.emit('joinRoom', {
           r_idx: res.data.r_idx,
           r_name: 'study' + studyData.st_idx,
