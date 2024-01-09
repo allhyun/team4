@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DetailDataType2 } from '../../components/Types/MarketType';
 import MarketHeader from '../../components/Market/MarketHeader';
-import { setMarketSearchDetail } from '../../store/marketsearchReducer';
+import { setMarketSearchDetail } from '../../store/marketSearchReducer';
 import '../../styles/style.scss';
 
 const MarketSearchPage = () => {
