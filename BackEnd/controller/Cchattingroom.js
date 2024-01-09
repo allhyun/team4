@@ -18,10 +18,14 @@ exports.createChatRoom = async (req, res) => {
 
     // 채팅방 이름 중복확인
     const existingRoom = await Chattingroom.findOne({
-      where: { r_name: data.r_name },
+      where: { r_name: data.r_name, u_idx: data.u_idx },
     });
     if (existingRoom) {
-      return res.send({ result: false, msg: '이미 존재하는 방이다.' });
+      return res.send({
+        result: false,
+        msg: '이미 존재하는 방이다.',
+        r_idx: existingRoom.r_idx,
+      });
     } else if (existingRoom !== data.r_name) {
       // 채팅방 생성
       const newRoom = await Chattingroom.create(data);
@@ -30,7 +34,11 @@ exports.createChatRoom = async (req, res) => {
         u_idx: data.u_idx,
         r_idx: newRoom.r_idx,
       });
-      res.send({ result: true, msg: '채팅방 생성 성공!!' });
+      res.send({
+        result: true,
+        msg: '채팅방 생성 성공!!',
+        r_idx: newRoom.r_idx,
+      });
     } else if (existingRoom != newRoom.r_name && addRoomData.r_name) {
       // 새로운 방만들기도 추가하기
       const addRoom = await Chattingroom.create(addRoomData);
@@ -39,7 +47,11 @@ exports.createChatRoom = async (req, res) => {
         u_idx: addRoomData.u_idx,
         r_idx: addRoom.r_idx,
       });
-      res.send({ result: true, msg: '채팅방 생성 성공제발..' });
+      res.send({
+        result: true,
+        msg: '채팅방 생성 성공제발..',
+        r_idx: newRoom.r_idx,
+      });
     }
   } catch (err) {
     console.error('Room 생성 Error 발생 ', err);
