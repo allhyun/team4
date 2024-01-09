@@ -34,8 +34,9 @@ const UserMyPage = () => {
   // 마운트 되면 유저 정보 요청해서 가져오기
   const getUserInfo = async () => {
     const response: any = await axios.post(
-      'http://localhost:8000/user/mypage',
-      data
+      `${process.env.REACT_APP_HOST}/user/mypage`,
+      data,
+      { withCredentials: true }
     );
     await console.log('response', response);
     if (response !== null) {
