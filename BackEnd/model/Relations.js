@@ -81,6 +81,13 @@ db.Chatuser.belongsTo(db.Chattingroom, {
   onDelete: 'cascade',
   foreignKey: 'r_idx',
 });
+db.Chatuser.hasMany(db.Chattingroom, {
+  foreignKey: 'r_idx',
+});
+db.Chattingroom.belongsTo(db.Chatuser, {
+  foreignKey: 'r_idx',
+  onDelete: 'cascade',
+});
 
 // 상품 판매 부분 ...+=======================[====]
 // useproduct : user
