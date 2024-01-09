@@ -12,9 +12,9 @@ exports.createChatRoom = async (req, res) => {
 
     // 채팅방 이름 중복확인
     const existingRoom = await Chattingroom.findOne({
-      where: { r_name: data.r_name },
+      where: { r_name: data.r_name, u_idx: data.u_idx },
     });
-    if (existingRoom) {
+if (existingRoom) {
       // 채팅방 이름이 이미 존재하는 경우
       if (existingRoom.u_idx === data.u_idx) {
         // 같은 유저의 채팅방일경우

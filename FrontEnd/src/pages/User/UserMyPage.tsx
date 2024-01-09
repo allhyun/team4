@@ -1,9 +1,17 @@
-import React, { ChangeEvent, useRef, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useRef,
+  useEffect,
+  useState,
+  MutableRefObject,
+} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { BsImage } from 'react-icons/bs';
+import Modal from '../../components/User/Modal';
+import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 interface SignupForm {
   userProfileImg: string;
@@ -16,9 +24,11 @@ interface SignupForm {
 
 const UserMyPage = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [msg, setMsg] = useState<string>('');
   const [userProfileImg, setUserProfileImg] = useState<any>();
   const [imgFile, setImgFile] = useState<any>('');
-  const imgRef = useRef<any>();
+  const imgRef: any = useRef();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
   const [samePwCheck, setSamePwCheck] = useState<string>('');
@@ -30,6 +40,8 @@ const UserMyPage = () => {
   const [userInfo, setUserInfo] = useState<any>({});
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
   const data: any = { u_idx };
+  const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
+  useOnClickOutside(ref, () => setIsModalOpen(false));
 
   // 마운트 되면 유저 정보 요청해서 가져오기
   const getUserInfo = async () => {
@@ -43,15 +55,11 @@ const UserMyPage = () => {
       setUserInfo(response.data.user);
     }
   };
-
+  // redux에 u_idx 없이 접근하면 로그인 화면으로 이동
   useEffect(() => {
-    getUserInfo();
+    if (u_idx === null) navigate('/login');
+    else getUserInfo();
   }, []);
-  useEffect(() => {
-    console.log('userInfo', userInfo);
-    // const usertrue = Object.keys(userInfo).includes('nickname');
-    // console.log('usertrue', usertrue);
-  }, [userInfo]);
 
   const {
     register,
@@ -60,10 +68,7 @@ const UserMyPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<SignupForm>({
     mode: 'onSubmit',
-    defaultValues: {
-      // userId: '',
-      // userPw: '',
-    },
+    defaultValues: {},
   });
 
   const onUserInfoHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,10 +106,10 @@ const UserMyPage = () => {
         break;
     }
   };
+
   const onSubmit: SubmitHandler<SignupForm> = async (inputData: SignupForm) => {
     try {
       console.log('useForm 성공', inputData);
-
       // const formData = new FormData();
       // formData.append('userProfileImg', userProfileImg);
       // formData.append('userid', inputData.userId);
@@ -116,47 +121,53 @@ const UserMyPage = () => {
       //   console.log(key, formData.get(key));
       // }
 
-      // 중복 체크를 위한 데이터
-      const user = {
-        userid: inputData.userId,
-        nickname: inputData.userNickname,
-      };
-
-      // 입력 데이터가 유저 아이디와 다를 때만 요청
-      let checkedId: null | boolean = null;
-      if (userInfo.userid !== user.userid) {
-        checkedId = await checkDuplicated('checkid', {
-          userid: user.userid,
+      // 중복 체크
+      let checkNickname: null | boolean = null;
+      // 입력 데이터가 리덕스의 유저 닉네임과 다를 때 중복 검사
+      // 같다면 checkNickame에 null로 요청 패스
+      if (userInfo.nickname !== inputData.userNickname) {
+        checkNickname = await checkDuplicated('checknickname', {
+          nickname: inputData.userNickname,
         }).then((checked: boolean) => {
-          return checked;
-        });
-      }
-      let checkedNickname: null | boolean = null;
-      if (userInfo.nickname !== user.nickname) {
-        checkedNickname = await checkDuplicated('checknickname', {
-          nickname: user.nickname,
-        }).then((checked: boolean) => {
+          setIsNicknameDuplicated(checked);
           return checked;
         });
       }
 
-      if (checkedId !== true && checkedNickname !== true) {
-        const data = {
-          userId: inputData.userId,
-          userPw: inputData.userPw,
-          userNickname: inputData.userNickname,
-          userEmail: inputData.userEmail,
+      // 중복 검사가 끝나거나 null이어야 데이터 담기
+      if (checkNickname !== true) {
+        let changeData = {
+          chageUserU_idx: u_idx,
+          changeNickname:
+            inputData.userNickname === ''
+              ? userInfo.nickname
+              : inputData.userNickname,
+          changeEmail:
+            inputData.userEmail === '' ? userInfo.email : inputData.userEmail,
+          changePassword: inputData.userPw,
         };
+
         axios
-          .patch(`${process.env.REACT_APP_HOST}/user/updateUserInfo`, data, {
-            // headers: { 'Content-Type': 'multipart/form-data' },
-          })
+          .patch(
+            `${process.env.REACT_APP_HOST}/user/updateUserInfo`,
+            changeData,
+            {
+              withCredentials: true,
+            }
+          )
           .then((res) => {
-            // if (res.data.result === true)
+            if (res.data.result) {
+              getUserInfo();
+              setIsModalOpen(true);
+              setMsg(res.data.msg);
+            } else {
+              setIsModalOpen(true);
+              setMsg(res.data.msg);
+            }
           });
       }
     } catch (error: any) {
-      console.log('useForm error', error);
+      console.log('onSubmit error', error);
     }
   };
 
@@ -166,7 +177,7 @@ const UserMyPage = () => {
 
   const checkDuplicated = (checkUrl: string, data: {}): any => {
     return axios
-      .post(`${process.env.REACT_APP_HOST}/${checkUrl}`, data)
+      .post(`${process.env.REACT_APP_HOST}/user/${checkUrl}`, data)
       .then((res) => {
         return res.data.duplicate;
       });
@@ -200,10 +211,6 @@ const UserMyPage = () => {
               </div>
               <div className="input-wrap">
                 <div>id: {userInfo.userid}</div>
-                {/* <p className="alert">
-                  {errors.userId?.message}
-                  {isUseridDuplicated ? `중복된 id입니다.` : ''}
-                </p> */}
 
                 <input
                   type="text"
@@ -278,6 +285,7 @@ const UserMyPage = () => {
                 onChange={onUserInfoHandler}
               />
               <p className="alert">{errors.userPw?.message}</p>
+              {/* {isNicknameDuplicated ? `비밀번호가 같지 않습니다.` : ''} */}
             </div>
             <div className="input-wrap">
               <button type="submit" disabled={isSubmitting}>
@@ -291,6 +299,7 @@ const UserMyPage = () => {
           </form>
         </div>
       </section>
+      <div ref={ref}>{isModalOpen && <Modal text={msg} />}</div>
     </>
   );
 };

@@ -193,15 +193,21 @@ exports.mypage = async (req, res) => {
   }
 };
 
-// 유저정보 변경 컨트롤러
+// 유저정보(닉네임, 이메일) 변경 컨트롤러
 exports.updateUserInfo = async (req, res) => {
   const u_idx = req.session.user.u_idx;
-  console.log(req.session);
-  const { nickname } = req.body;
+  const { chageUserU_idx, changeNickname, changeEmail, changePassword } =
+    req.body;
+
+  if (req.session.user.isAuthenticated && u_idx === chageUserU_idx) {
+    res.send({ result: false, msg: '잘못된 접근입니다.' });
+    return;
+  }
 
   const user = await User.findOne({ where: { u_idx: u_idx } });
 
-  const salt = crypto.randomBytes(16).toString('base64');
+  // 비밀번호 처리
+  const salt = user.salt;
   const iterations = 100;
   const keylen = 64;
   const digest = 'sha512';
@@ -209,31 +215,34 @@ exports.updateUserInfo = async (req, res) => {
     .pbkdf2Sync(changePassword, salt, iterations, keylen, digest)
     .toString('base64');
 
-  user.password = hashedPassword;
-  user.salt = salt;
-
-  if (user) {
-    user.nickname = nickname;
-
-    await user.save();
-
-    // 세션에 있는 사용자 정보도 업데이트
-    req.session.user = user;
-    req.session.save((err) => {
-      if (err) {
-        // 에러 처리
-        res.send({ result: false, message: '세션 업데이트에 실패하였습니다.' });
-      } else {
-        res.send({
-          result: true,
-          message: '닉네임이 성공적으로 수정되었습니다.',
-        });
-      }
-    });
-    console.log('req.session', req.session);
-  } else {
-    res.send({ result: false, message: '유저를 찾을 수 없습니다.' });
+  if (user.password !== hashedPassword) {
+    res.send({ result: false, msg: '비밀번호가 틀렸습니다.' });
+    return;
   }
+  if (user.nickname == changeNickname && user.email == changeEmail) {
+    res.send({ result: false, msg: '변경할 정보를 입력해주세요.' });
+    return;
+  }
+
+  if (user.nickname !== changeNickname) user.nickname = changeNickname;
+  if (user.email !== changeEmail) user.email = changeEmail;
+
+  await user.save();
+  // 세션에 있는 사용자 정보도 업데이트
+  req.session.user = user;
+
+  req.session.save((err) => {
+    if (err) {
+      // 에러 처리
+      res.send({ result: false, msg: '세션 업데이트에 실패하였습니다.' });
+    } else {
+      res.send({
+        result: true,
+        msg: '회원 정보가 수정되었습니다.',
+      });
+    }
+  });
+  console.log('req.session', req.session);
 };
 
 // 닉네임 변경 컨트롤러

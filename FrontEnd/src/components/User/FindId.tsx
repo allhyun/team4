@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  LegacyRef,
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -21,8 +28,7 @@ const FindId = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [findUserid, setFindUserid] = useState<string>('');
 
-  const ref: React.LegacyRef<HTMLDivElement | null | undefined> | any =
-    useRef();
+  const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const {
     register,
     handleSubmit,
