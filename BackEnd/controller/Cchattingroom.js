@@ -14,7 +14,7 @@ exports.createChatRoom = async (req, res) => {
     const existingRoom = await Chattingroom.findOne({
       where: { r_name: data.r_name, u_idx: data.u_idx },
     });
-if (existingRoom) {
+    if (existingRoom) {
       // 채팅방 이름이 이미 존재하는 경우
       if (existingRoom.u_idx === data.u_idx) {
         // 같은 유저의 채팅방일경우
@@ -47,12 +47,25 @@ if (existingRoom) {
 // 방목록 불러오기(리스트들)
 exports.renderRooms = async (req, res) => {
   try {
-    const rooms = await Chattingroom.findAll();
-    console.log(rooms);
-    if (rooms) {
-      res.status(200).json({ result: true, msg: '방로딩 성공', data: rooms });
+    const { u_idx } = req.body;
+    const joinData = await Chatuser.findAll({
+      where: { u_idx: u_idx },
+      includes: [
+        {
+          model: Chattingroom,
+          attributes: ['r_idx', 'r_name', 'r_create'],
+        },
+      ],
+    });
+
+    if (joinData.length > 0) {
+      res
+        .status(200)
+        .json({ result: true, msg: '방목록 불러오기 성공', data: joinData });
     } else {
-      res.status(404).json({ result: false, msg: '방이 존재하지 않습니다.' });
+      res
+        .status(404)
+        .json({ result: false, msg: '참가한 방인 존재하지 않습니다.' });
     }
   } catch (err) {
     console.error('방 목록 불러오기 실패', err);
