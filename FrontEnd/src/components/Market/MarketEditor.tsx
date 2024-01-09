@@ -32,7 +32,6 @@ const MarketEditor: React.FC = () => {
     ud_date: '',
     nickname: '',
     ud_images: [],
-    ud_category: null,
   });
 
   // 카테고리 문자열을 숫자 ID로 매핑
@@ -68,11 +67,10 @@ const MarketEditor: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
     ud_title: '',
     ud_price: '',
-    c_idx: null,
+    c_idx_error: null,
     ud_region: '',
     ud_content: '',
     ud_image: '',
-    ud_category: '',
   });
 
   // 포커싱용 참조 생성
@@ -224,8 +222,8 @@ const MarketEditor: React.FC = () => {
     setData({ ...data, c_idx: categoryID });
 
     // 카테고리 선택 시 관련 오류 메시지 제거
-    if (errorMessages.c_idx) {
-      setErrorMessages({ ...errorMessages, c_idx: null });
+    if (errorMessages.c_idx_error) {
+      setErrorMessages({ ...errorMessages, c_idx_error: null });
     }
   };
 
@@ -255,7 +253,7 @@ const MarketEditor: React.FC = () => {
     }
 
     // 카테고리 유효성 검사
-    if (!data.ud_category) {
+    if (!data.c_idx) {
       setErrorMessages((prev) => ({
         ...prev,
         ud_category: '카테고리를 선택해주세요.',
@@ -322,9 +320,10 @@ const MarketEditor: React.FC = () => {
     formData.append('viewcount', data.viewcount.toString());
     formData.append('ud_date', new Date().toISOString()); // 현재 시간 설정
     // FormData 로깅
-    for (let key of formData.keys()) {
-      console.log(key, formData.get(key));
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
     }
+    console.log('서버로 데이터 보내지는지 확인');
 
     try {
       const res = await axios.post(
@@ -336,12 +335,12 @@ const MarketEditor: React.FC = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      // console.log('데이터 잘 보내지는지?:', res.data);
+      console.log('데이터 잘 보내지는지?:', res.data);
       navigate('/market');
     } catch (error) {
       // console.error('게시글 등록 에러:', error);
     }
-    // console.log('FormData 객체의 상태 출력:', formData);
+    console.log('FormData 객체의 상태 출력:', formData);
   };
 
   return (
@@ -399,8 +398,8 @@ const MarketEditor: React.FC = () => {
             카테고리<span style={{ color: '#fcbaba' }}>＊</span>
             <MarketCategory onSelectCategory={handleCategoryChange} />
           </div>
-          {errorMessages.c_idx && (
-            <p className="error-message">{errorMessages.c_idx}</p>
+          {errorMessages.c_idx_error && (
+            <p className="error-message">{errorMessages.c_idx_error}</p>
           )}
         </section>
         <section className="market-region">

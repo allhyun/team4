@@ -21,12 +21,11 @@ import { ErrorMessages, DataType, CategoryMap } from '../Types/MarketType';
 
 const MarketModify: React.FC = () => {
   const [data, setData] = useState<DataType>({
-    ud_idx: 0,
+    ud_idx: 1,
     u_idx: 0,
     buy_idx: 0,
     ud_price: 0,
     ud_title: '',
-    ud_category: 0,
     ud_image: '',
     ud_content: '',
     ud_region: '',
@@ -40,12 +39,15 @@ const MarketModify: React.FC = () => {
   //   const { u_idx, nickname } = userInfo;
   const dispatch = useDispatch();
   const { ud_idx } = useParams(); // URL에서 게시글 ID를 가져오기!
+  console.log('ud_idx:', ud_idx);
+  const udIdxNumber = Number(ud_idx);
+  console.log('Converted to number:', udIdxNumber); // 변환된 숫자 확인
 
   //  리덕스에서 modifyPostdp 정보 갖고오기!
   const editingPost = useSelector(
     (state: any) => state.market.market.modifyPost
   );
-  console.log('editingPost값 확인 :', editingPost);
+  // console.log('editingPost값 확인 :', editingPost);
 
   // 카테고리 문자열을 숫자 ID로 매핑
   const getCategoryID = (categoryName: string): number | null => {
@@ -80,11 +82,10 @@ const MarketModify: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
     ud_title: '',
     ud_price: '',
-    ud_category: '',
     ud_region: '',
     ud_content: '',
     ud_image: '',
-    c_idx: null,
+    c_idx_error: null,
   });
 
   // 포커싱용 참조 생성
@@ -107,6 +108,19 @@ const MarketModify: React.FC = () => {
   useEffect(() => {
     if (editingPost) {
       setData(editingPost);
+      // 타이틀 길이를 이전 데이터의 길이로 설정합니다.
+      setTitleLength(editingPost.ud_title.length);
+      // 설명 길이를 이전 데이터의 길이로 설정합니다.
+      setTextareaLength(editingPost.ud_content.length);
+      // 미리보기 이미지 배열의 길이를 이전 데이터의 이미지 수로 설정합니다.
+      setImageLength(
+        editingPost.ud_image ? JSON.parse(editingPost.ud_image).length : 0
+      );
+      // 가격 값을 기반으로 포맷된 가격을 초기화합니다.
+      setFormattedPrice(
+        editingPost.ud_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      );
+
       console.log('현재 스토어의 상태:', editingPost);
 
       // 이미지 URL 설정
@@ -117,7 +131,11 @@ const MarketModify: React.FC = () => {
           setPreviewUrls(
             imageUrls.map(
               (ud_image: string) =>
-                `http://localhost:8000/${encodeURIComponent(ud_image)}`
+                `http://localhost:8000/static/userImg/${encodeURIComponent(
+                  ud_image
+                )}`
+              // 배포용
+              // `${process.env.REACT_APP_HOST}/static/userImg/${encodeURIComponent(ud_image)}`,
             )
           );
         } catch (error) {
@@ -125,6 +143,8 @@ const MarketModify: React.FC = () => {
           // JSON 파싱 실패 시, 단일 URL로 처리
           setPreviewUrls([
             `http://localhost:8000/${encodeURIComponent(editingPost.ud_image)}`,
+            // 배포용
+            // `${process.env.REACT_APP_HOST}/${encodeURIComponent(editingPost.ud_image)}
           ]);
         }
       }
@@ -182,6 +202,7 @@ const MarketModify: React.FC = () => {
   };
   // 이미지 미리보기 영역
   const renderImagePreviews = () => {
+    console.log('previewUrls:', previewUrls);
     return previewUrls.map((url, index) => (
       <div key={index} className="image-container">
         <li key={index} className="image-preview">
@@ -222,7 +243,8 @@ const MarketModify: React.FC = () => {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target as HTMLInputElement | HTMLTextAreaElement;
+    setData((prevData) => ({ ...prevData, [name]: value }));
 
     // 상품명창 관련
     if (name === 'ud_title') {
@@ -264,11 +286,11 @@ const MarketModify: React.FC = () => {
   // 카테고리 제출 핸들러
   const handleCategoryChange = (categoryName: string) => {
     const categoryID = getCategoryID(categoryName);
-    setData({ ...data, ud_category: categoryID });
+    setData({ ...data, c_idx: categoryID });
 
     // 카테고리 선택 시 관련 오류 메시지 제거
-    if (errorMessages.ud_category) {
-      setErrorMessages({ ...errorMessages, ud_category: '' });
+    if (errorMessages.c_idx_error) {
+      setErrorMessages({ ...errorMessages, c_idx_error: null });
     }
   };
 
@@ -297,10 +319,10 @@ const MarketModify: React.FC = () => {
     }
 
     // 카테고리 유효성 검사
-    if (!data.ud_category) {
+    if (!data.c_idx) {
       setErrorMessages((prev) => ({
         ...prev,
-        ud_category: '카테고리를 선택해주세요.',
+        c_idx_error: '카테고리를 선택해주세요.',
       }));
       marketCategoryRef.current?.focus();
       return false;
@@ -340,54 +362,43 @@ const MarketModify: React.FC = () => {
   };
 
   // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
-  const handleModify = async (e: FormEvent) => {
+  const handleModify = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('제출 전 데이터 상태:', data);
-    if (!validateFields()) {
-      return; // 유효성 검사 실패 시 제출 중단
-    }
-    // 데이터 서버에 전송
+    if (!validateFields()) return;
+    // ud_idx 값 로깅
+    console.log('ud_idx:', ud_idx);
+
     const formData = new FormData();
-
-    // 모든 이미지 파일을 'ud_image' 필드로 추가
     images.forEach((image) => formData.append('ud_image', image));
-
-    formData.append('u_idx', data.u_idx?.toString() || '');
-    formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
-    formData.append('ud_category', data.ud_category?.toString() ?? '');
+    formData.append('ud_category', data.c_idx?.toString() ?? '');
     formData.append('ud_region', data.ud_region);
     formData.append('ud_price', data.ud_price?.toString() ?? '');
     formData.append('ud_content', data.ud_content);
-    formData.append('viewcount', data.viewcount.toString());
-    formData.append('ud_date', new Date().toISOString()); // 현재 시간 설정
-    // FormData 로깅
-    // for (let key of formData.keys()) {
-    //   console.log(key, formData.get(key));
-    // }
 
     try {
-      const res = await axios.post(
-        'http://localhost:8000/product/detail/${ud_idx}',
-        // 배포 axios
-        // `${process.env.REACT_APP_HOST}/detail/${ud_idx}`,
+      const res = await axios.put(
+        `http://localhost:8000/product/detail/${udIdxNumber}}`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      // console.log('데이터 잘 보내지는지?:', res.data);
-      dispatch(setModifyPost(res.data)); // Redux에 상태 업데이트
-      navigate('/market');
-    } catch (error) {
-      console.error('게시글 등록 에러:', error);
-    }
-    // console.log('FormData 객체의 상태 출력:', formData);
-  };
+      console.log('수정 axios put서버 응답:', res.data);
 
-  useEffect(() => {
-    console.log('Image URLs:', previewUrls);
-  }, [previewUrls]);
+      // 여기서 res.data의 구조를 확인하고 Redux 스토어 업데이트
+      if (res.data.updatedusedGoods) {
+        dispatch(setModifyPost(res.data.updatedusedGoods[0]));
+        navigate('/market');
+      } else {
+        // 예상치 못한 응답 처리
+        console.error('예상치 못한 응답:', res.data);
+      }
+    } catch (error) {
+      console.error('수정 중 오류 발생:', error);
+      alert('수정 중 문제가 발생했습니다.');
+    }
+  };
 
   return (
     <>
@@ -450,8 +461,8 @@ const MarketModify: React.FC = () => {
                   카테고리<span style={{ color: '#fcbaba' }}>＊</span>
                   <MarketCategory onSelectCategory={handleCategoryChange} />
                 </div>
-                {errorMessages.ud_category && (
-                  <p className="error-message">{errorMessages.ud_category}</p>
+                {errorMessages.c_idx_error && (
+                  <p className="error-message">{errorMessages.c_idx_error}</p>
                 )}
               </section>
               <section className="market-region">
@@ -507,11 +518,7 @@ const MarketModify: React.FC = () => {
                   </div>
                 </div>
               </section>
-              <button
-                className="marketeditor-regi"
-                type="submit"
-                onClick={handleModify}
-              >
+              <button className="marketeditor-regi" type="submit">
                 수정
               </button>
             </form>
