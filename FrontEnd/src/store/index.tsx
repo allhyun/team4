@@ -6,10 +6,7 @@ import studySlice from './modifyReducer';
 import searchSlice from './searchReducer';
 import userSlice from './user.slice';
 import marketSlice from './marketmodifyReducer';
-import marketSearchSlice from './marketsearchReducer';
-
-// 리덕스 관련
-import { useSelector } from 'react-redux';
+import marketSearchSlice from './marketSearchReducer';
 
 // 한 번 묶어줘야 하는 걸로 보임 안 묶고 그냥 하려니까 안 됨
 const studyReducers = combineReducers({
@@ -59,12 +56,12 @@ const marketPersistedReducer = persistReducer(
 );
 
 const marketSearchReducer = combineReducers({
-  search: marketSearchSlice,
+  marketSearch: marketSearchSlice,
 });
 const marketSearchPersistConfig = {
-  key: 'marketsearch',
+  key: 'marketSearch',
   storage: storage,
-  whitelist: ['marketsearch'],
+  whitelist: ['marketSearch'],
 };
 const marketSearchPersistedReducer = persistReducer(
   marketSearchPersistConfig,

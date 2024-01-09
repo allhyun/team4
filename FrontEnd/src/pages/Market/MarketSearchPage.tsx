@@ -1,18 +1,17 @@
 import { useSelector } from 'react-redux';
-import StudyHeader from '../../components/Study/StudyHeader';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DetailDataType2 } from '../../components/Types/MarketType';
 import MarketHeader from '../../components/Market/MarketHeader';
-import { setMarketSearchDetail } from '../../store/marketsearchReducer';
+import { setMarketSearchDetail } from '../../store/marketSearchReducer';
 
 const MarketSearchPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchData = useSelector(
-    (state: any) => state.marketsearch.marketsearch.marketSearchDetail
+    (state: any) => state.marketSearch.marketSearch.marketSearchDetail
   );
   const [searchList, setSearchList] = useState<DetailDataType2[]>([]);
 
@@ -23,15 +22,6 @@ const MarketSearchPage = () => {
     }
     return title;
   };
-
-  // 상세 페이지 이동
-  function goDetailPage(ud_idx: string): void {
-    const post = searchList.find((post) => post.ud_idx === Number(ud_idx));
-    if (post) {
-      dispatch(setMarketSearchDetail(post));
-      navigate(`/product/detail/${ud_idx}`);
-    }
-  }
 
   // 가격 변환 함수
   const formatPrice = (price: number | null): string => {
@@ -66,7 +56,7 @@ const MarketSearchPage = () => {
       try {
         // const res = await axios.get('http://localhost:8000/study/search'
         const res = await axios.get(
-          `${process.env.REACT_APP_HOST}/market/search`,
+          `${process.env.REACT_APP_HOST}/product/search`,
           {
             params: { value: searchData },
           }
@@ -79,7 +69,20 @@ const MarketSearchPage = () => {
     }
 
     fetchData();
-  }, []); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
+  }, []);
+
+  // 상세 페이지 이동
+  // function goDetailPage(ud_idx: string): void {
+  //   const post = searchList.find((post) => post.ud_idx === Number(ud_idx));
+  //   if (post) {
+  //     dispatch(setMarketSearchDetail(post));
+  //     navigate(`/product/detail/${ud_idx}`);
+  //   }
+  // }
+
+  function goDetailPage(ud_idx: string): void {
+    navigate(`/product/detail/${ud_idx}`);
+  }
 
   return (
     <div>
@@ -103,7 +106,7 @@ const MarketSearchPage = () => {
                 </div>
                 <p className="title">{truncateTitle(data.ud_title, 14)}</p>
                 <p className="price">{formatPrice(data.ud_price)} 원</p>
-                <div className="redgion-date-container">
+                <div className="region-date-container">
                   <p>{data.ud_region}</p>
                   <p>{timeSince(data.ud_date)}</p>
                 </div>
