@@ -194,45 +194,47 @@ exports.mypage = async (req, res) => {
 
 // 유저정보 변경 컨트롤러
 exports.updateUserInfo = async (req, res) => {
+  console.log('req.body', req.body);
+  console.log('유저 정보 변경 컨트롤러');
   const u_idx = req.session.user.u_idx;
-  console.log(req.session);
-  const { nickname } = req.body;
+  // console.log(req.session);
+  // const { nickname } = req.body;
 
-  const user = await User.findOne({ where: { u_idx: u_idx } });
+  // const user = await User.findOne({ where: { u_idx: u_idx } });
+  // 비밀번호 처리
+  // const salt = crypto.randomBytes(16).toString('base64');
+  // const iterations = 100;
+  // const keylen = 64;
+  // const digest = 'sha512';
+  // const hashedPassword = crypto
+  //   .pbkdf2Sync(changePassword, salt, iterations, keylen, digest)
+  //   .toString('base64');
 
-  const salt = crypto.randomBytes(16).toString('base64');
-  const iterations = 100;
-  const keylen = 64;
-  const digest = 'sha512';
-  const hashedPassword = crypto
-    .pbkdf2Sync(changePassword, salt, iterations, keylen, digest)
-    .toString('base64');
+  // user.password = hashedPassword;
+  // user.salt = salt;
 
-  user.password = hashedPassword;
-  user.salt = salt;
+  // if (user) {
+  //   user.nickname = nickname;
 
-  if (user) {
-    user.nickname = nickname;
+  //   await user.save();
 
-    await user.save();
-
-    // 세션에 있는 사용자 정보도 업데이트
-    req.session.user = user;
-    req.session.save((err) => {
-      if (err) {
-        // 에러 처리
-        res.send({ result: false, message: '세션 업데이트에 실패하였습니다.' });
-      } else {
-        res.send({
-          result: true,
-          message: '닉네임이 성공적으로 수정되었습니다.',
-        });
-      }
-    });
-    console.log('req.session', req.session);
-  } else {
-    res.send({ result: false, message: '유저를 찾을 수 없습니다.' });
-  }
+  //   // 세션에 있는 사용자 정보도 업데이트
+  //   req.session.user = user;
+  //   req.session.save((err) => {
+  //     if (err) {
+  //       // 에러 처리
+  //       res.send({ result: false, message: '세션 업데이트에 실패하였습니다.' });
+  //     } else {
+  //       res.send({
+  //         result: true,
+  //         message: '닉네임이 성공적으로 수정되었습니다.',
+  //       });
+  //     }
+  //   });
+  //   console.log('req.session', req.session);
+  // } else {
+  //   res.send({ result: false, message: '유저를 찾을 수 없습니다.' });
+  // }
 };
 
 // 닉네임 변경 컨트롤러
