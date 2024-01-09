@@ -6,7 +6,7 @@ import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setMarketSearchDetail } from '../../store/marketSearchReducer';
+import { setMarketSearchDetail } from '../../store/marketsearchReducer';
 
 export default function MarketHeader() {
   // 햄버거 메뉴 클래스 변경

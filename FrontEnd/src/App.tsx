@@ -17,7 +17,7 @@ import StudyModify from './components/Study/StudyModify';
 import StudySearchPage from './pages/Study/StudySearchPage';
 import MarketModify from './components/Market/MarketModify';
 import ChatPage from './pages/Chat/ChatPage';
-import MarketSearchPage from './pages/Market/MarketSearchPage';
+import MarketSearchPage from './pages/Market/MarketsearchPage';
 
 function App() {
   return (
