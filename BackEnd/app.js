@@ -16,7 +16,7 @@ const {
   Chatuser,
   Heart,
   Study,
-  Usedproducts,
+  Useproduct,
   Volunteer,
 } = require('./model');
 
@@ -79,7 +79,7 @@ app.use(async (req, res, next) => {
     const studyCount = await Study.count({
       where: { u_idx: req.session.user.u_idx },
     });
-    const usedproductsCount = await Usedproducts.count({
+    const UseproductCount = await Useproduct.count({
       where: { u_idx: req.session.user.u_idx },
     });
     const volunteerCount = await Volunteer.count({
@@ -92,7 +92,7 @@ app.use(async (req, res, next) => {
     res.locals.chatuserCount = chatuserCount;
     res.locals.heartCount = heartCount;
     res.locals.studyCount = studyCount;
-    res.locals.usedproductsCount = usedproductsCount;
+    res.locals.UseproductCount = UseproductCount;
     res.locals.volunteerCount = volunteerCount;
   }
   next();

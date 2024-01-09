@@ -94,7 +94,7 @@ exports.detailusedGoods = async (req, res) => {
   }
 };
 
-//     const product = await db.Usedproduct.findByPk(usedGoodsId, {
+//     const product = await db.Useproduct.findByPk(usedGoodsId, {
 //       include: [
 //         {
 //           model: db.User, // User 모델을 포함
@@ -115,8 +115,8 @@ exports.detailusedGoods = async (req, res) => {
 
 // 중고물품 수정
 exports.modifyusedGoods = async (req, res) => {
-  const usedproductId = req.params.ud_idx;
-  console.log(usedproductId);
+  const UseproductId = req.params.ud_idx;
+  console.log(UseproductId);
   try {
     const { ud_price, ud_title, c_idx, ud_image, ud_content, ud_region } =
       req.body;
@@ -124,7 +124,7 @@ exports.modifyusedGoods = async (req, res) => {
     const updatedusedGoods = await db.Useproduct.update(
       { ud_price, ud_title, c_idx, ud_image, ud_content, ud_region },
 
-      { where: { ud_idx: usedproductId } }
+      { where: { ud_idx: UseproductId } }
     );
     res.send({ updatedusedGoods, msg: '수정완료!' });
   } catch (error) {
@@ -136,11 +136,11 @@ exports.modifyusedGoods = async (req, res) => {
 // 기존 코드
 // 중고물품 삭제
 // exports.deleteusedGoods = async (req, res) => {
-//   const usedproductId = req.params.ud_idx;
-//   console.log(usedproductId);
+//   const UseproductId = req.params.ud_idx;
+//   console.log(UseproductId);
 //   try {
 
-//     await db.Usedproduct.destroy({ where: { ud_idx: usedproductId } });
+//     await db.Useproduct.destroy({ where: { ud_idx: UseproductId } });
 //     res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
 //   } catch (error) {
 //     console.error(error);
@@ -149,23 +149,23 @@ exports.modifyusedGoods = async (req, res) => {
 // };
 
 exports.deleteusedGoods = async (req, res) => {
-  const usedproductId = req.params.ud_idx;
+  const UseproductId = req.params.ud_idx;
 
   try {
-    const useproduct = await db.Usedproduct.findOne({
-      where: { ud_idx: usedproductId },
+    const useproduct = await db.Useproduct.findOne({
+      where: { ud_idx: UseproductId },
     });
 
     //   디벨롭 서버 코드기준(240108) -> 컴플릭트나서 저장해둠.
-    // await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
+    // await db.Useproduct.destroy({ where: { ud_idx: UseproductId } });
     // res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
 
     // 240108 나영혜 코드 기준 -> 컴플릭트나서 저장해둠.
-    const usedproduct = await db.Usedproducts.findOne({
-      where: { ud_idx: usedproductId },
+    const Useproduct = await db.Useproduct.findOne({
+      where: { ud_idx: UseproductId },
     });
 
-    if (!usedproduct) {
+    if (!Useproduct) {
       return res.status(404).send({ message: '물품을 찾을 수 없습니다.' });
     }
 

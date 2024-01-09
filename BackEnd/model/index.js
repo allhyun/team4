@@ -32,18 +32,18 @@ db.Chatuser = require('./Chatuser')(sequelize, Sequelize);
 db.Useproduct = require('./Useproduct')(sequelize, Sequelize);
 db.Category = require('./Category')(sequelize, Sequelize);
 
-// db.Heart.belongsTo(db.Usedproducts, {
+// db.Heart.belongsTo(db.Useproduct, {
 //   foreignKey: 'ud_idx'
 // });
 
-// db.Usedproducts.hasMany(db.Heart, {
+// db.Useproduct.hasMany(db.Heart, {
 //   foreignKey: 'ud_idx'
 // });
 
 // // 카테고리와의 다대다 관계 설정
-// db.Usedproducts.belongsToMany(db.Category,{
-//   through: 'UsedProductCategory', // 중간 테이블 이름
-//   foreignKey: 'ud_idx', // UsedProduct 모델이 참조하는 외래 키
+// db.Useproduct.belongsToMany(db.Category,{
+//   through: 'UseproductCategory', // 중간 테이블 이름
+//   foreignKey: 'ud_idx', // Useproduct 모델이 참조하는 외래 키
 //   otherKey: 'c_idx', // Category 모델이 참조하는 외래 키
 // })
 
