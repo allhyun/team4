@@ -99,10 +99,10 @@ app.use(async (req, res, next) => {
 });
 
 // socket 파트
-let user = {};
 
 // 소켓 연결시
 io.on('connection', (socket) => {
+  let user = {};
   console.log('Socket connected:', socket.id);
 
   // 클라이언트가 소켓 룸 생성 요청
@@ -162,7 +162,7 @@ io.on('connection', (socket) => {
     io.emit('exit', {
       msg: `${user.nickname}님이 방을 떠났습니다.`,
     });
-    socket.leave(user.r_idx);
+    socket.leave(user.r_name);
   });
 });
 
