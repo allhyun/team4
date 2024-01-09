@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
 import Chat from './Chat';
 import axios from 'axios';
+import '../../styles/style.scss';
 
 // 서버에서 보내는 이벤트 및 클라이언트에서 보내는 이벤트의 타입을 정의
 type ServerToClientEvents = {
@@ -34,7 +35,7 @@ type ServerToClientEvents = {
 
 type ClientToServerEvents = {
   // 클라이언트에서 서버로 보내는 이벤트 타입 정의 (필요에 따라 수정)
-  sendMsg: (data: { msg: string }) => void;
+  sendMsg: (data: { msg: string; nickname: string }) => void;
   createroom: (data: {
     r_name: string;
     userid: string;
@@ -70,25 +71,25 @@ const StudyChatContents = () => {
     socket.connect();
     setSocketConnected(true);
 
-    // 방 생성 성공 시의 서버 응답 처리
-    socket.on('notice', (data) => {
-      console.log(data.msg);
-    });
+    // // 방 생성 성공 시의 서버 응답 처리
+    // socket.on('notice', (data) => {
+    //   console.log(data.msg);
+    // });
 
-    // 방 입장 성공 시의 서버 응답 처리
-    socket.on('enter', (data) => {
-      console.log(data.msg);
-    });
+    // // 방 입장 성공 시의 서버 응답 처리
+    // socket.on('enter', (data) => {
+    //   console.log(data.msg);
+    // });
 
-    // 채팅 메시지 수신 시의 서버 응답 처리
-    socket.on('chat', (data) => {
-      console.log(`${data.nickname}: ${data.msg}`);
-    });
+    // // 채팅 메시지 수신 시의 서버 응답 처리
+    // socket.on('chat', (data) => {
+    //   console.log(`${data.nickname}: ${data.msg}`);
+    // });
 
-    // 방 떠남 시의 서버 응답 처리
-    socket.on('exit', (data) => {
-      console.log(data.msg);
-    });
+    // // 방 떠남 시의 서버 응답 처리
+    // socket.on('exit', (data) => {
+    //   console.log(data.msg);
+    // });
 
     return () => {
       // 컴포넌트 언마운트 시 소켓 연결 해제
@@ -99,10 +100,12 @@ const StudyChatContents = () => {
       });
     };
   }, []);
+  let Ridx: number;
   const sendMsg = () => {
     if (chatInput !== '') {
-      socket.emit('sendMsg', { msg: chatInput });
+      socket.emit('sendMsg', { msg: chatInput, nickname: userData.nickname });
       setChatInput('');
+      axios.post(`${process.env.REACT_APP_HOST}/chatRoom/${Ridx}/chat`);
     }
   };
   const addChatList = useCallback(
@@ -138,6 +141,8 @@ const StudyChatContents = () => {
           r_name: 'study' + studyData.st_idx,
           u_idx: userData.u_idx,
         });
+        Ridx = res.data.r_idx;
+        console.log(res.data);
         socket.emit('joinRoom', {
           r_idx: res.data.r_idx,
           r_name: 'study' + studyData.st_idx,
@@ -145,12 +150,14 @@ const StudyChatContents = () => {
           userid: userData.userid,
           u_idx: userData.u_idx,
         });
-        addChatList({ nickname: userData.nickname, msg: chatInput });
+        sendMsg();
+        // addChatList({ nickname: userData.nickname, msg: chatInput });
         //배열안에 내용 집어넣기
       } else {
-        addChatList({ nickname: userData.nickname, msg: chatInput });
+        // addChatList({ nickname: userData.nickname, msg: chatInput });
+        sendMsg();
       }
-      console.log('채팅 메시지 전송:', chatInput);
+
       setChatInput('');
     } else {
       console.log('소켓이 아직 연결되지 않았습니다.');

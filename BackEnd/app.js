@@ -133,9 +133,9 @@ io.on('connection', (socket) => {
         userid: userid,
         u_idx: u_idx,
       };
-      socket.join(r_idx);
+      socket.join(r_name);
       console.log('조인할려는 룸', data);
-      io.to(r_idx).emit('enter', {
+      io.to(r_name).emit('enter', {
         // user닉네임으로 들어올지 아니면 userid로 들어올지
         msg: `${user.nickname} 님이 ${data.r_name} 방에 입장합니다`,
       });
@@ -149,7 +149,7 @@ io.on('connection', (socket) => {
   socket.on('sendMsg', (data) => {
     console.log('채팅메시지 보내기', data);
     io.to(user.r_name).emit('chat', {
-      nickname: user.nickname,
+      nickname: data.nickname,
       msg: data.msg,
     });
   });
