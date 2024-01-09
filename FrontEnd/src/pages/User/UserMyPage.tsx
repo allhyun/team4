@@ -1,9 +1,17 @@
-import React, { ChangeEvent, useRef, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useRef,
+  useEffect,
+  useState,
+  MutableRefObject,
+} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { BsImage } from 'react-icons/bs';
+import Modal from '../../components/User/Modal';
+import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 interface SignupForm {
   userProfileImg: string;
@@ -16,9 +24,11 @@ interface SignupForm {
 
 const UserMyPage = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [msg, setMsg] = useState<string>('');
   const [userProfileImg, setUserProfileImg] = useState<any>();
   const [imgFile, setImgFile] = useState<any>('');
-  const imgRef = useRef<any>();
+  const imgRef: any = useRef();
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
   const [samePwCheck, setSamePwCheck] = useState<string>('');
@@ -30,6 +40,8 @@ const UserMyPage = () => {
   const [userInfo, setUserInfo] = useState<any>({});
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
   const data: any = { u_idx };
+  const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
+  useOnClickOutside(ref, () => setIsModalOpen(false));
 
   // 마운트 되면 유저 정보 요청해서 가져오기
   const getUserInfo = async () => {
@@ -49,10 +61,6 @@ const UserMyPage = () => {
     else getUserInfo();
   }, []);
 
-  // useEffect(() => {
-  //   const isPwSame = samePwCheck === userPw;
-  // }, [samePwCheck]);
-
   const {
     register,
     handleSubmit,
@@ -60,10 +68,7 @@ const UserMyPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<SignupForm>({
     mode: 'onSubmit',
-    defaultValues: {
-      // userId: '',
-      // userPw: '',
-    },
+    defaultValues: {},
   });
 
   const onUserInfoHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,6 +106,7 @@ const UserMyPage = () => {
         break;
     }
   };
+
   const onSubmit: SubmitHandler<SignupForm> = async (inputData: SignupForm) => {
     try {
       console.log('useForm 성공', inputData);
@@ -131,11 +137,14 @@ const UserMyPage = () => {
       // 중복 검사가 끝나거나 null이어야 데이터 담기
       if (checkNickname !== true) {
         let changeData = {
-          u_idx,
-          userNickname: checkNickname === null ? null : inputData.userNickname,
-          userEmail:
+          chageUserU_idx: u_idx,
+          changeNickname:
+            inputData.userNickname === ''
+              ? userInfo.nickname
+              : inputData.userNickname,
+          changeEmail:
             inputData.userEmail === '' ? userInfo.email : inputData.userEmail,
-          userPw: inputData.userPw,
+          changePassword: inputData.userPw,
         };
 
         axios
@@ -147,7 +156,14 @@ const UserMyPage = () => {
             }
           )
           .then((res) => {
-            // if (res.data.result === true)
+            if (res.data.result) {
+              getUserInfo();
+              setIsModalOpen(true);
+              setMsg(res.data.msg);
+            } else {
+              setIsModalOpen(true);
+              setMsg(res.data.msg);
+            }
           });
       }
     } catch (error: any) {
@@ -283,6 +299,7 @@ const UserMyPage = () => {
           </form>
         </div>
       </section>
+      <div ref={ref}>{isModalOpen && <Modal text={msg} />}</div>
     </>
   );
 };
