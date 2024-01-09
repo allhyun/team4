@@ -116,3 +116,14 @@ CREATE TABLE heart (
 	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
 	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
 );
+
+CREATE TABLE buystate  (
+    buy_idx int NOT NULL PRIMARY KEY,
+
+  name varchar(20) NOT NULL
+);
+
+INSERT INTO buystate VALUES('1', '판매중' );
+INSERT INTO buystate VALUES('2', '예약중' );
+INSERT INTO buystate VALUES('3', '판매완료' );
+INSERT INTO buystate VALUES('4', '판매보류' );

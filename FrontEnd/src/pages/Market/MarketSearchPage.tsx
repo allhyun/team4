@@ -6,14 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import { DetailDataType2 } from '../../components/Types/MarketType';
 import MarketHeader from '../../components/Market/MarketHeader';
 import { setMarketSearchDetail } from '../../store/marketsearchReducer';
+import '../../styles/style.scss';
 
 const MarketSearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState<string | number>(''); // 검색어 상태(재검색)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchData = useSelector(
     (state: any) => state.marketSearch.marketSearch.marketSearchDetail
   );
   const [searchList, setSearchList] = useState<DetailDataType2[]>([]);
+
+  // 검색어가 변경될 때 실행되는 함수
+  const handleSearchTermChange = (newTerm: string | number) => {
+    setSearchTerm(newTerm);
+  };
 
   // 상품명 글자수 제한
   const truncateTitle = (title: string, maxLength: number): string => {
@@ -67,9 +74,10 @@ const MarketSearchPage = () => {
         console.log(error);
       }
     }
-
-    fetchData();
-  }, []);
+    if (searchData) {
+      fetchData();
+    }
+  }, [searchData]);
 
   // 상세 페이지 이동
   // function goDetailPage(ud_idx: string): void {

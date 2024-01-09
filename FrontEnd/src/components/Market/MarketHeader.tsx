@@ -28,7 +28,7 @@ export default function MarketHeader() {
   };
   const dispatch = useDispatch();
   // onSearch 함수의 구현
-  const onSearch = (searchTerm: string) => {
+  const onSearch = (searchTerm: string | number) => {
     console.log('market 검색어:', searchTerm); // 검색 처리 로직
     // searchTerm:검색단어
     //리덕스에 올리기

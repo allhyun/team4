@@ -218,6 +218,7 @@ exports.searchusedGoods = async (req, res) => {
           { c_idx: { [Op.like]: `%${keyword}%` } },
         ],
       },
+      order: [['ud_date', 'DESC']], // 가장 최근 글부터 정렬
     });
     // 이미지 URL 변환 로직 적용
     const resultWithImageUrl = result.map((product) => {
