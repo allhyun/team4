@@ -60,7 +60,7 @@ exports.createChatRoom = async (req, res) => {
 exports.renderRooms = async (req, res) => {
   try {
     const { u_idx } = req.body;
-    const joinData = await Chatuser.findAll({
+    const rooms = await Chatuser.findAll({
       where: { u_idx: u_idx },
       includes: [
         {
@@ -73,7 +73,7 @@ exports.renderRooms = async (req, res) => {
     if (joinData.length > 0) {
       res
         .status(200)
-        .json({ result: true, msg: '방목록 불러오기 성공', data: joinData });
+        .json({ result: true, msg: '방목록 불러오기 성공', rooms });
     } else {
       res
         .status(404)

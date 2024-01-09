@@ -52,7 +52,7 @@ type ClientToServerEvents = {
 };
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  'http://localhost:8000',
+  `${process.env.REACT_APP_HOST}`,
   {
     autoConnect: false,
   }
@@ -144,23 +144,25 @@ const StudyChatContents = () => {
         //   nickname: userData.nickname,
         // });
         console.log('u_idx값', userData.u_idx);
-        const res = await axios.post('http://localhost:8000/chatRoom', {
-          r_name: 'study' + studyData.st_idx,
-          u_idx: userData.u_idx,
-        });
-        console.log(res.data.r_idx);
-        setRidx(res.data.r_idx);
-        console.log('내부', Ridx);
-        socket.emit('joinRoom', {
-          r_idx: res.data.r_idx,
-          r_name: 'study' + studyData.st_idx,
-          nickname: userData.nickname,
-          userid: userData.userid,
-          u_idx: userData.u_idx,
-        });
-        sendMsg();
-        // addChatList({ nickname: userData.nickname, msg: chatInput });
-        //배열안에 내용 집어넣기
+        try {
+          const res = await axios.post('http://localhost:8000/chatRoom', {
+            r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+            u_idx: userData.u_idx,
+          });
+          console.log('res.data.r_idx', res.data.r_idx);
+          setRidx(res.data.r_idx);
+          console.log('내부', Ridx);
+          socket.emit('joinRoom', {
+            r_idx: res.data.r_idx,
+            r_name: 'study' + studyData.st_idx,
+            nickname: userData.nickname,
+            userid: userData.userid,
+            u_idx: userData.u_idx,
+          });
+          sendMsg();
+          // addChatList({ nickname: userData.nickname, msg: chatInput });
+          //배열안에 내용 집어넣기
+        } catch {}
       } else {
         // addChatList({ nickname: userData.nickname, msg: chatInput });
         sendMsg();
@@ -171,6 +173,10 @@ const StudyChatContents = () => {
       console.log('소켓이 아직 연결되지 않았습니다.');
     }
   };
+
+  useEffect(() => {
+    console.log('외부', Ridx);
+  }, [Ridx]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChatInput(e.target.value);
