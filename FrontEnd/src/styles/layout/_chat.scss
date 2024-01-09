@@ -23,5 +23,25 @@
   }
 }
 .listmy-chat {
-  color: red;
+  text-align: right;
+  .content {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    @include container;
+  }
+}
+.listother-chat {
+  text-align: left;
+
+  .content {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    @include container;
+  }
+}
+
+.chat-button {
+  @include main-button;
 }

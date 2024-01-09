@@ -197,7 +197,9 @@ const StudyChatContents = () => {
           value={chatInput}
           onChange={(e) => setChatInput(e.target.value)}
         />
-        <button onClick={handleSendMessage}>전송</button>
+        <button onClick={handleSendMessage} className="chat-button">
+          전송
+        </button>
       </div>
     </>
   );
