@@ -43,7 +43,7 @@ div#market-main-container {
       }
     }
 
-    div.redgion-date-container {
+    div.region-date-container {
       display: flex;
       justify-content: space-between;
       p {
@@ -52,6 +52,16 @@ div#market-main-container {
         color: rgba(255, 255, 255, 0.8);
       }
     }
+  }
+}
+
+.region-date-container {
+  display: flex;
+  justify-content: space-between;
+  p {
+    font-size: 14px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
   }
 }
 

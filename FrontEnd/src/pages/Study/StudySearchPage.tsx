@@ -39,9 +39,10 @@ const StudySearchPage = () => {
         console.log(error);
       }
     }
-
-    fetchData();
-  }, []); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
+    if (searchData) {
+      fetchData();
+    }
+  }, [searchData]); // useEffect를 이용해 컴포넌트가 마운트될 때 데이터를 불러옴
   function goDetailPage(index: string): void {
     navigate(`/study/detail/${index}`);
   }

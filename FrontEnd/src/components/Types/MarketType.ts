@@ -78,3 +78,15 @@ export interface MarketRegionProps {
 export interface MarketState {
   modifyPost: DataType | null;
 }
+
+// 찜하기 관련
+export interface Heart {
+  h_idx: number | null;
+  u_idx: number | null;
+  ud_idx: number;
+}
+
+export interface MarketHeartProps {
+  user: number | null;
+  product: number;
+}
