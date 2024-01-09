@@ -152,7 +152,7 @@ const chatRoom = require('../controller/Cchattingroom');
 router.post('/chatRoom', chatRoom.createChatRoom);
 // 방 목록 받아오기
 router.get('/chatRoom', chatRoom.renderRooms);
-router.get('/chatRoom/:r_idx', chatRoom.renderRoom);
+// router.get('/chatRoom/:r_idx', chatRoom.renderRoom);
 // 방에 입장하기
 router.post('/chatRoom/:r_idx', chatRoom.enterRoom);
 // 이 방나가기 삭제하기 고민좀...해야할듯?
