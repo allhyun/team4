@@ -57,19 +57,23 @@ exports.createChatRoom = async (req, res) => {
   }
 };
 // 방목록 불러오기(리스트들)
-exports.renderRooms = async (req, res) => {
+exports.getRooms = async (req, res) => {
   try {
-    const u_idx = req.query.u_idx;
-    const rooms = await Chatuser.findAll({
+    const u_idx = req.body.u_idx;
+    console.log('u_idx', u_idx);
+
+    const rooms = await Chattingroom.findAll({
       where: { u_idx: u_idx },
       includes: [
         {
-          model: Chattingroom,
+          model: Chatuser,
           attributes: ['r_idx', 'r_name', 'r_create'],
         },
       ],
     });
 
+    console.log('rooms', rooms);
+    // return;
     if (rooms.length > 0) {
       res
         .status(200)
