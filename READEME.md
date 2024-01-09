@@ -193,7 +193,7 @@
     
 
 ### Data Base
-<img src="./erd데이터베이스.png" />
+<img src="./BackEnd/public/image.png" />
 
 ## 프로젝트 디테일
 
