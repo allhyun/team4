@@ -124,12 +124,10 @@ exports.modifyusedGoods = async (req, res) => {
     const { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content } =
       req.body;
 
-
     // 데이터베이스 업데이트
     await db.Useproduct.update(
       { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content },
       { where: { ud_idx: usedproductId } }
-
     );
 
     // 수정된 데이터 다시 조회
@@ -171,14 +169,12 @@ exports.deleteusedGoods = async (req, res) => {
   const UseproductId = req.params.ud_idx;
 
   try {
-    const useproduct = await db.Useproduct.findOne({
-
-      where: { ud_idx: usedproductId },
+    const Useproduct = await db.Useproduct.findOne({
+      where: { ud_idx: UseproductId },
     });
 
     const usedproduct = await db.Useproduct.findOne({
-      where: { ud_idx: usedproductId },
-
+      where: { ud_idx: UseproductId },
     });
 
     if (!Useproduct) {
@@ -186,13 +182,13 @@ exports.deleteusedGoods = async (req, res) => {
     }
 
     let imagePaths = [];
-    if (useproduct.ud_image && typeof useproduct.ud_image === 'string') {
+    if (Useproduct.ud_image && typeof Useproduct.ud_image === 'string') {
       // ud_image 필드가 JSON 배열인 경우
-      const images = JSON.parse(useproduct.ud_image);
+      const images = JSON.parse(Useproduct.ud_image);
       imagePaths = images.map((image) =>
         path.join(__dirname, '..', '..', 'static', 'userImg', image)
       );
-    } else if (useproduct.ud_image) {
+    } else if (Useproduct.ud_image) {
       // ud_image 필드가 단일 이미지 이름인 경우
       imagePaths.push(
         path.join(
@@ -201,7 +197,7 @@ exports.deleteusedGoods = async (req, res) => {
           '..',
           'static',
           'userImg',
-          useproduct.ud_image
+          Useproduct.ud_image
         )
       );
     }
@@ -218,7 +214,7 @@ exports.deleteusedGoods = async (req, res) => {
     });
 
     // 데이터베이스에서 게시글 삭제
-    await useproduct.destroy();
+    await Useproduct.destroy();
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
