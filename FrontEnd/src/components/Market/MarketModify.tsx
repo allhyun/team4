@@ -44,7 +44,7 @@ const MarketModify: React.FC = () => {
   const editingPost = useSelector(
     (state: any) => state.market.market.modifyPost
   );
-  console.log('editingPost값 확인 :', editingPost);
+  // console.log('editingPost값 확인 :', editingPost);
 
   // 카테고리 문자열을 숫자 ID로 매핑
   const getCategoryID = (categoryName: string): number | null => {
@@ -220,7 +220,7 @@ const MarketModify: React.FC = () => {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target as HTMLInputElement | HTMLTextAreaElement;
     setData((prevData) => ({ ...prevData, [name]: value }));
 
     // 상품명창 관련
@@ -339,51 +339,42 @@ const MarketModify: React.FC = () => {
   };
 
   // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
-  const handleModify = async (e: FormEvent) => {
+  const handleModify = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('제출 전 데이터 상태:', data);
-    if (!validateFields()) {
-      return; // 유효성 검사 실패 시 제출 중단
-    }
-    // 데이터 서버에 전송
+    if (!validateFields()) return;
+    // ud_idx 값 로깅
+    console.log('ud_idx:', ud_idx);
+
     const formData = new FormData();
-
-    // 모든 이미지 파일을 'ud_image' 필드로 추가
     images.forEach((image) => formData.append('ud_image', image));
-
-    formData.append('u_idx', data.u_idx?.toString() || '');
-    formData.append('buy_idx', data.buy_idx.toString());
     formData.append('ud_title', data.ud_title);
     formData.append('ud_category', data.c_idx?.toString() ?? '');
     formData.append('ud_region', data.ud_region);
     formData.append('ud_price', data.ud_price?.toString() ?? '');
     formData.append('ud_content', data.ud_content);
-    formData.append('viewcount', data.viewcount.toString());
-    formData.append('ud_date', new Date().toISOString()); // 현재 시간 설정
-    // FormData 로깅
-    // for (let key of formData.keys()) {
-    //   console.log(key, formData.get(key));
-    // }
 
     try {
       const res = await axios.put(
-        // `http://localhost:8000/product/detail/:ud_idx, , updateData}`,
-        `http://localhost:8000/product/detail/${ud_idx}, , formData}`, // 수정할 상품의 ID를 URL에 포함
-
-        // 배포 axios
-        // `${process.env.REACT_APP_HOST}/detail/${data.ud_idx}`,
+        `http://localhost:8000/product/detail/${ud_idx}`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
       );
-      // console.log('데이터 잘 보내지는지?:', res.data);
-      dispatch(setModifyPost(res.data.updatedusedGoods[0])); // Redux에 상태 업데이트
-      navigate('/market');
-      console.log('수정 서버 응답 확인:', res.data); // 서버 응답 확인
+      console.log('수정 axios put서버 응답:', res.data);
+
+      // 여기서 res.data의 구조를 확인하고 Redux 스토어 업데이트
+      if (res.data.updatedusedGoods) {
+        dispatch(setModifyPost(res.data.updatedusedGoods[0]));
+        navigate('/market');
+      } else {
+        // 예상치 못한 응답 처리
+        console.error('예상치 못한 응답:', res.data);
+      }
     } catch (error) {
       console.error('수정 중 오류 발생:', error);
       alert('수정 중 문제가 발생했습니다.');
     }
-    // console.log('FormData 객체의 상태 출력:', formData);
   };
 
   useEffect(() => {
@@ -508,11 +499,7 @@ const MarketModify: React.FC = () => {
                   </div>
                 </div>
               </section>
-              <button
-                className="marketeditor-regi"
-                type="submit"
-                onClick={handleModify}
-              >
+              <button className="marketeditor-regi" type="submit">
                 수정
               </button>
             </form>

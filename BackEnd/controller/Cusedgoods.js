@@ -121,36 +121,48 @@ exports.modifyusedGoods = async (req, res) => {
   const usedproductId = req.params.ud_idx;
   console.log(usedproductId);
   try {
-    const { ud_price, ud_title, c_idx, ud_image, ud_content, ud_region } =
+    const { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content } =
       req.body;
 
-    const updatedusedGoods = await db.Useproduct.update(
-      { ud_price, ud_title, c_idx, ud_image, ud_content, ud_region },
-
+    // 데이터베이스 업데이트
+    await db.Useproduct.update(
+      { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content },
       { where: { ud_idx: usedproductId } }
     );
-    res.send({ updatedusedGoods, msg: '수정완료!' });
+
+    // 수정된 데이터 다시 조회
+    const updatedProduct = await db.Useproduct.findByPk(usedproductId);
+    if (updatedProduct) {
+      res.send({ updatedusedGoods: updatedProduct, msg: '수정완료!' });
+    } else {
+      res.status(404).send({ msg: '수정된 데이터를 찾을 수 없습니다.' });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).send('메인화면 에러 발생');
+    res.status(500).send('서버 오류 발생');
   }
 };
 
 // 기존 코드
-// 중고물품 삭제
-// exports.deleteusedGoods = async (req, res) => {
+// exports.modifyusedGoods = async (req, res) => {
 //   const usedproductId = req.params.ud_idx;
 //   console.log(usedproductId);
 //   try {
+//     const { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content } =
+//       req.body;
 
-//     await db.Useproduct.destroy({ where: { ud_idx: usedproductId } });
-//     res.send({ message: '물품이 성공적으로 삭제되었습니다.' });
+//     const updatedusedGoods = await db.Useproduct.update(
+//       { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content },
+//       { where: { ud_idx: usedproductId } }
+//     );
+//     res.send({ updatedusedGoods, msg: '수정완료!' });
 //   } catch (error) {
 //     console.error(error);
 //     res.status(500).send('메인화면 에러 발생');
 //   }
 // };
 
+// 중고 물품 삭제
 exports.deleteusedGoods = async (req, res) => {
   const usedproductId = req.params.ud_idx;
 
