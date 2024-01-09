@@ -21,7 +21,7 @@ import { ErrorMessages, DataType, CategoryMap } from '../Types/MarketType';
 
 const MarketModify: React.FC = () => {
   const [data, setData] = useState<DataType>({
-    ud_idx: 0,
+    ud_idx: 1,
     u_idx: 0,
     buy_idx: 0,
     ud_price: 0,
@@ -39,6 +39,9 @@ const MarketModify: React.FC = () => {
   //   const { u_idx, nickname } = userInfo;
   const dispatch = useDispatch();
   const { ud_idx } = useParams(); // URL에서 게시글 ID를 가져오기!
+  console.log('ud_idx:', ud_idx);
+  const udIdxNumber = Number(ud_idx);
+  console.log('Converted to number:', udIdxNumber); // 변환된 숫자 확인
 
   //  리덕스에서 modifyPostdp 정보 갖고오기!
   const editingPost = useSelector(
@@ -105,6 +108,19 @@ const MarketModify: React.FC = () => {
   useEffect(() => {
     if (editingPost) {
       setData(editingPost);
+      // 타이틀 길이를 이전 데이터의 길이로 설정합니다.
+      setTitleLength(editingPost.ud_title.length);
+      // 설명 길이를 이전 데이터의 길이로 설정합니다.
+      setTextareaLength(editingPost.ud_content.length);
+      // 미리보기 이미지 배열의 길이를 이전 데이터의 이미지 수로 설정합니다.
+      setImageLength(
+        editingPost.ud_image ? JSON.parse(editingPost.ud_image).length : 0
+      );
+      // 가격 값을 기반으로 포맷된 가격을 초기화합니다.
+      setFormattedPrice(
+        editingPost.ud_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      );
+
       console.log('현재 스토어의 상태:', editingPost);
 
       // 이미지 URL 설정
@@ -115,7 +131,11 @@ const MarketModify: React.FC = () => {
           setPreviewUrls(
             imageUrls.map(
               (ud_image: string) =>
-                `http://localhost:8000/${encodeURIComponent(ud_image)}`
+                `http://localhost:8000/static/userImg/${encodeURIComponent(
+                  ud_image
+                )}`
+              // 배포용
+              // `${process.env.REACT_APP_HOST}/static/userImg/${encodeURIComponent(ud_image)}`,
             )
           );
         } catch (error) {
@@ -123,6 +143,8 @@ const MarketModify: React.FC = () => {
           // JSON 파싱 실패 시, 단일 URL로 처리
           setPreviewUrls([
             `http://localhost:8000/${encodeURIComponent(editingPost.ud_image)}`,
+            // 배포용
+            // `${process.env.REACT_APP_HOST}/${encodeURIComponent(editingPost.ud_image)}
           ]);
         }
       }
@@ -180,6 +202,7 @@ const MarketModify: React.FC = () => {
   };
   // 이미지 미리보기 영역
   const renderImagePreviews = () => {
+    console.log('previewUrls:', previewUrls);
     return previewUrls.map((url, index) => (
       <div key={index} className="image-container">
         <li key={index} className="image-preview">
@@ -355,7 +378,7 @@ const MarketModify: React.FC = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:8000/product/detail/${ud_idx}`,
+        `http://localhost:8000/product/detail/${udIdxNumber}}`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -376,10 +399,6 @@ const MarketModify: React.FC = () => {
       alert('수정 중 문제가 발생했습니다.');
     }
   };
-
-  useEffect(() => {
-    console.log('Image URLs:', previewUrls);
-  }, [previewUrls]);
 
   return (
     <>

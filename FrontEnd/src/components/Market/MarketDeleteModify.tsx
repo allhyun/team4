@@ -51,9 +51,9 @@ const MarketDeleteModify = (props: marketudidx) => {
     }
   };
 
-  const joinStudy = async () => {
-    navigate('/study/join');
-  };
+  // const joinStudy = async () => {
+  //   navigate('/study/join');
+  // };
 
   return (
     <>
