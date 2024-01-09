@@ -48,6 +48,7 @@ type ClientToServerEvents = {
     userid: string;
     u_idx: string;
   }) => void; // 방 참여 이벤트
+  disconnect: () => void;
 };
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
@@ -95,6 +96,7 @@ const StudyChatContents = () => {
       // 컴포넌트 언마운트 시 소켓 연결 해제
       setSocketConnected(false);
       socket.disconnect();
+      // socket.emit('disconnect');
       socket.on('exit', (data) => {
         console.log(data.msg);
       });
