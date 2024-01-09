@@ -9,16 +9,20 @@ import { setModifyPost } from '../../store/marketmodifyReducer';
 //
 import '../../styles/style.scss';
 import { IoEyeSharp } from 'react-icons/io5'; // 조회수 아이콘
-import { PiHeartFill } from 'react-icons/pi'; // 좋아요 아이콘
+import { PiHeartFill } from 'react-icons/pi'; // 찜 아이콘
 import { MdOutlineAccessTimeFilled } from 'react-icons/md'; // 시간 아이콘
 import { IoIosArrowDropleftCircle } from 'react-icons/io'; // 왼쪽 아이콘
 import { IoIosArrowDroprightCircle } from 'react-icons/io'; // 오른쪽 아이콘
 
 import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
 import MarketDeleteModify from '../../components/Market/MarketDeleteModify';
-import { DetailDataType2 } from '../../components/Types/MarketType';
+import { DetailDataType2, Heart } from '../../components/Types/MarketType';
+import MarketHeart from '../../components/Market/MarketHeart';
+import { RootState } from '../../store';
 
 const MarketDetailPage = () => {
+  const userInfo = useSelector((state: RootState) => state.user.user);
+  const { u_idx, nickname } = userInfo;
   const navigate = useNavigate();
   const { ud_idx } = useParams();
   const [marketDetailState, setMarketDetailState] =
@@ -26,6 +30,12 @@ const MarketDetailPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const dispatch = useDispatch();
   const marketDetail = useSelector((state: any) => state.market.modifyPost);
+  const [heartButtonClicked, setHeartButtonClicked] = useState(false);
+  const [data, setData] = useState<Heart>({
+    ud_idx: 1,
+    u_idx: Number(u_idx) || null,
+    h_idx: null,
+  });
 
   // 수정 관련 :  Redux에 상태 업데이트
 
@@ -233,11 +243,8 @@ const MarketDetailPage = () => {
               </div>
 
               <div className="detail-button-user">
-                <button className="detailbutton heart">
-                  <PiHeartFill />
-                  {'\u00A0'}
-                  {'\u00A0'}찜 1
-                </button>
+                <MarketHeart user={data.u_idx} product={data.ud_idx} />
+
                 <button
                   className="detailbutton chatting"
                   onClick={handleChattingClick}

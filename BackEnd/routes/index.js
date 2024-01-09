@@ -70,7 +70,12 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
-// 유저 관심 목록 조회
+// 중고물품 찜 등록
+router.post('/product/heart', usedgoodsController.addHeart);
+// 중고물품 찜 삭제
+router.delete('/product/heart', usedgoodsController.removeHeart);
+
+// 중고물품 찜 목록 조회
 // router.get('/user/heart', userController.hearList);
 
 // 회원가입

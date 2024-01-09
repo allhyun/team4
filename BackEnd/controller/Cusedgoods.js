@@ -233,3 +233,34 @@ exports.searchusedGoods = async (req, res) => {
     res.status(500).send('메인화면 에러 발생');
   }
 };
+
+// 중고 물품 찜 등록
+exports.addHeart = async (req, res) => {
+  try {
+    const { u_idx, ud_idx } = req.body;
+    const newHeart = await db.Heart.create({
+      u_idx,
+      ud_idx,
+    });
+    res.status(200).send(newHeart);
+  } catch (error) {
+    console.error('하트 추가 에러:', error);
+    res.status(500).send('서버 오류 발생');
+  }
+};
+// 중고 물품 찜 삭제
+exports.removeHeart = async (req, res) => {
+  try {
+    const { u_idx, ud_idx } = req.query;
+    await db.Heart.destroy({
+      where: {
+        u_idx: u_idx,
+        ud_idx: ud_idx,
+      },
+    });
+    res.status(200).send('하트 삭제 성공');
+  } catch (error) {
+    console.error('하트 삭제 에러:', error);
+    res.status(500).send('서버 오류 발생');
+  }
+};
