@@ -79,8 +79,6 @@ const UserMainPage = () => {
       console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
       const response = await axios.post(
-        // 'http://localhost:8000/user/signin'
-        // 배포용
         `${process.env.REACT_APP_HOST}/user/signin`,
         user,
         {
@@ -91,6 +89,7 @@ const UserMainPage = () => {
         dispatch(
           setUserInfo({
             u_idx: response.data.u_idx,
+            userid: response.data.userid,
             nickname: response.data.nickname,
             u_img: response.data.u_img,
           })

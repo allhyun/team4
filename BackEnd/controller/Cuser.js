@@ -89,6 +89,7 @@ exports.postSignin = async (req, res) => {
     res.send({
       result: true,
       u_idx: user.u_idx,
+      userid: user.userid,
       nickname: user.nickname,
       u_img: user.image,
     });
