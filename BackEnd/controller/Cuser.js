@@ -61,12 +61,13 @@ exports.checkNickname = (req, res) => {
     }
   });
 };
-// 로그인 화면 랜더링
-exports.signin = (req, res) => {
-  res.render('./user/signin');
+
+// 유저 관심 목록 조회
+exports.heartList = (req, res) => {
+  console.log('test');
 };
 
-// 로그인 화면 랜더링
+// 로그인
 exports.postSignin = async (req, res) => {
   const user = await User.findOne({ where: { userid: req.body.userid } });
 
@@ -88,6 +89,7 @@ exports.postSignin = async (req, res) => {
     res.send({
       result: true,
       u_idx: user.u_idx,
+      userid: user.userid,
       nickname: user.nickname,
       u_img: user.image,
     });
@@ -181,9 +183,10 @@ exports.updatePassword = async (req, res) => {
 
 // 마이페이지 랜더링
 exports.mypage = async (req, res) => {
-  console.log('req.body', req.body);
-  console.log('req.sessionId', req.session.id);
-  if (req.session.id) {
+  if (
+    req.session.isAuthenticated &&
+    req.session.user.u_idx === req.body.u_idx
+  ) {
     const u_idx = req.body.u_idx;
     const user = await User.findOne({ where: { u_idx: u_idx } });
     await res.send({ user });
@@ -192,8 +195,8 @@ exports.mypage = async (req, res) => {
 
 // 유저정보 변경 컨트롤러
 exports.updateUserInfo = async (req, res) => {
-  // const u_idx = req.session.user.u_idx;
-  // console.log(req.session);
+  const u_idx = req.session.user.u_idx;
+  console.log(req.session);
   const { nickname } = req.body;
 
   const user = await User.findOne({ where: { u_idx: u_idx } });

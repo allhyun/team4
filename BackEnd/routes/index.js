@@ -70,8 +70,8 @@ router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
 
-// 로그인 페이지
-router.get('/user/signin', userController.signin);
+// 유저 관심 목록 조회
+// router.get('/user/heart', userController.hearList);
 
 // 회원가입
 router.get('/user/signup', userController.signup);
@@ -88,7 +88,7 @@ router.post('/user/checkid', userController.checkId);
 router.post('/user/checknickname', userController.checkNickname);
 
 // 로그인 페이지
-router.get('/user/signin', userController.signin);
+// router.get('/user/signin', userController.signin);
 router.post('/user/signin', userController.postSignin);
 
 // 아이디 찾기
@@ -152,6 +152,7 @@ router.delete('/deleteRoom', chatRoom.deleteChatRoom);
 
 // 채팅 파트
 // 채팅 전송
+// r_idx지우고 Room/chat
 router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
 // 채팅방 내용조회
 router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
