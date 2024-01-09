@@ -6,7 +6,7 @@ import studySlice from './modifyReducer';
 import searchSlice from './searchReducer';
 import userSlice from './user.slice';
 import marketSlice from './marketmodifyReducer';
-import marketSearchSlice from './marketSearchReducer';
+import marketSearchSlice from './marketsearchReducer';
 
 // 한 번 묶어줘야 하는 걸로 보임 안 묶고 그냥 하려니까 안 됨
 const studyReducers = combineReducers({
