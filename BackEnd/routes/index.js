@@ -4,6 +4,7 @@ const router = express.Router();
 // const boardController = require('../controller/Cboard');
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
+const heartController = require('../controller/Cheart')
 const user = require('../controller/Cuser');
 const { upload } = require('../multer/multerConfig');
 
@@ -15,8 +16,7 @@ const { upload } = require('../multer/multerConfig');
 //   next();
 // });
 
-// 스터디 리스트
-// router.get('/study', studyController.getStudies);
+
 // 스터디 리스트 페이지(6개씩)
 router.get('/study', studyController.getStudiesPage);
 // 스터디 등록
@@ -69,6 +69,18 @@ router.put('/product/detail/:ud_idx', usedgoodsController.modifyusedGoods);
 router.delete('/product/delete/:ud_idx', usedgoodsController.deleteusedGoods);
 // 중고물품 검색
 router.get('/product/search', usedgoodsController.searchusedGoods);
+// 찜하기
+router.post('/favorites',heartController.addHeart)
+
+// 찜목록리스트?
+router.get('/favorites/:u_idx',heartController.heartList)
+// 찜목록 삭제
+router.delete('/favorites/:u_idx',heartController.outHeart)
+
+
+
+
+
 
 // 유저 관심 목록 조회
 // router.get('/user/heart', userController.hearList);
