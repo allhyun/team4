@@ -30,9 +30,9 @@ const StudyThumbnailBox = (props: propsType) => {
   const data = props.page;
   const navigate = useNavigate();
   const location = useLocation();
-  const [studyList, setStudyList] = useState<StudyTable[]>([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  const key = location.state?.key;
+  const [studyList, setStudyList] = useState<StudyTable[]>([]);
 
   async function fetchData() {
     try {
@@ -41,13 +41,10 @@ const StudyThumbnailBox = (props: propsType) => {
         params: { page: data },
       });
       setStudyList(res.data.resultstudy);
+      setDataLoaded(true);
     } catch (error) {
       console.log(error);
     }
-  }
-  //작성페이지에서 넘어왔을때 렌터링
-  if (key === 'study-page') {
-    fetchData();
   }
 
   useEffect(() => {
