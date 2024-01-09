@@ -215,11 +215,18 @@ exports.searchusedGoods = async (req, res) => {
         [Op.or]: [
           { ud_title: { [Op.like]: `%${keyword}%` } },
           { ud_content: { [Op.like]: `%${keyword}%` } },
-          // { c_idx: { [Op.like]: `%${keyword}%` } },
+          { c_idx: { [Op.like]: `%${keyword}%` } },
         ],
       },
     });
-    res.send(result);
+    // 이미지 URL 변환 로직 적용
+    const resultWithImageUrl = result.map((product) => {
+      let images = JSON.parse(product.ud_image);
+      images = images.map((img) => `${img}`);
+      return { ...product.toJSON(), ud_image: images };
+    });
+
+    res.send(resultWithImageUrl);
   } catch (error) {
     console.error('백엔드 결과:', error);
     res.status(500).send('메인화면 에러 발생');
