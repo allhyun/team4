@@ -7,11 +7,25 @@ import { useDispatch } from 'react-redux';
 import { setModifyPost } from '../../store/marketmodifyReducer';
 import { DataType, propsType } from '../Types/MarketType';
 
+interface marketTable {
+  ud_idx: number;
+  u_idx: number;
+  buy_idx: number;
+  ud_price: number;
+  ud_title: string;
+  ud_image: string;
+  ud_content: string;
+  ud_region: string;
+  viewcount: number;
+  ud_date: string;
+  c_idx: number;
+}
 
 const MarketThumbnailPost = (props: propsType) => {
   const dispatch = useDispatch();
   const data = props.page;
   const navigate = useNavigate();
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [postList, setPostList] = useState<DataType[]>([]);
 
   // 날짜 변환 함수
@@ -59,15 +73,26 @@ const MarketThumbnailPost = (props: propsType) => {
     }
   }
 
+  async function fetchData() {
+    try {
+      // const res = await axios.get('http://localhost:8000/study'
+      const res = await axios.get(`${process.env.REACT_APP_HOST}/product`, {
+        params: { page: data },
+      });
+      setPostList(res.data.resultstudy);
+      setDataLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     async function fetchPosts() {
       try {
-
         const res = await axios.get('http://localhost:8000/product', {
           // 배포용 axios
           // `${process.env.REACT_APP_HOST}/product/`,
 
-     
           params: { page: data },
         });
 

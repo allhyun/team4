@@ -3,20 +3,42 @@ const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-//중고물품 리스트
+//  중고물품 리스트(페이지네이션)
 exports.getUsedgoods = async (req, res) => {
   try {
+    const page = req.query.page || 1;
+    const pageSize = 8; // 페이지당 8개의 항목
+    const offset = (page - 1) * pageSize; // 올바른 오프셋 계산
+
+    const totalCount = await db.Useproduct.count(); // 전체 항목 수
     const usedgoods = await db.Useproduct.findAll({
+      attributes: [
+        'ud_idx',
+        'u_idx',
+        'buy_idx',
+        'ud_price',
+        'ud_title',
+        'ud_image',
+        'ud_content',
+        'ud_region',
+        'viewcount',
+        'ud_date',
+        // 'nickname',
+        // 'ud_images',
+        'c_idx',
+      ],
       where: {
         ud_date: {
           [Op.lt]: new Date(),
         },
       },
       order: [['ud_date', 'DESC']],
+      limit: pageSize, // 페이지당 항목 수 제한
+      offset: offset, // 페이지 시작점
     });
     console.log(usedgoods);
 
-    res.send({ usedgoods: usedgoods });
+    res.send({ usedgoods: usedgoods, totalCount: totalCount });
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
