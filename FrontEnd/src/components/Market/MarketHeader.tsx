@@ -3,14 +3,17 @@ import '../../styles/style.scss';
 import { RxHamburgerMenu } from 'react-icons/rx'; // 햄버거 아이콘
 import { Icon } from '@iconify/react'; // 판매 아이콘
 import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setMarketSearchDetail } from '../../store/marketsearchReducer';
 
 export default function MarketHeader() {
   // 햄버거 메뉴 클래스 변경
   const [burger_class, setBurgerClass] = useState('burger-bar unclicked');
   const [menu_class, setMenuClass] = useState('menu-hidden');
   const [isMenuClicked, setMenuClicked] = useState(false);
+  const navigate = useNavigate();
 
   // 햄버거메뉴 참고 유튜브 : https://www.youtube.com/watch?v=gAGcjlJyKk0
 
@@ -23,12 +26,17 @@ export default function MarketHeader() {
       setBurgerClass('burger-bar unclicked');
     }
   };
-
+  const dispatch = useDispatch();
   // onSearch 함수의 구현
   const onSearch = (searchTerm: string) => {
     console.log('market 검색어:', searchTerm); // 검색 처리 로직
+    // searchTerm:검색단어
+    //리덕스에 올리기
+    dispatch(setMarketSearchDetail(searchTerm));
+    //검색페이지로 보내기
+    navigate('/product/search');
   };
-
+  //
   return (
     <>
       <div id="marketheader" className="market_header">

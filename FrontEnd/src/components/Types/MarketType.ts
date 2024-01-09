@@ -30,7 +30,22 @@ export interface DetailDataType {
   ud_images?: string[]; // 이미지 배열
   c_idx: number | null; // 카테고리
 }
-
+export interface DetailDataType2 {
+  ud_idx: number; // 게시판 포린키
+  u_idx: number; // 유저 아이디
+  buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류
+  ud_price: number | null; // 가격
+  ud_title: string; // 상품명
+  c_idx: number | null; // 카테고리
+  ud_image: string | null; // 상품사진
+  ud_content: string; // 상품설명
+  ud_region: string; // 거래지역
+  viewcount: number; // 조회수
+  ud_date: string; // 작성시간
+  nickname: string; // 사용자 닉네임
+  ud_images?: string[]; // 이미지 배열
+  ud_category: number | null;
+}
 // 에러 메시지 타입 정의
 export interface ErrorMessages {
   ud_title: string;

@@ -6,6 +6,7 @@ import studySlice from './modifyReducer';
 import searchSlice from './searchReducer';
 import userSlice from './user.slice';
 import marketSlice from './marketmodifyReducer';
+import marketSearchSlice from './marketsearchReducer';
 
 // 리덕스 관련
 import { useSelector } from 'react-redux';
@@ -57,11 +58,25 @@ const marketPersistedReducer = persistReducer(
   marketReducers
 );
 
+const marketSearchReducer = combineReducers({
+  search: marketSearchSlice,
+});
+const marketSearchPersistConfig = {
+  key: 'marketsearch',
+  storage: storage,
+  whitelist: ['marketsearch'],
+};
+const marketSearchPersistedReducer = persistReducer(
+  marketSearchPersistConfig,
+  marketSearchReducer
+);
+
 const rootReducer = combineReducers({
   study: studyPersistedReducer,
   search: searchPersistedReducer,
   user: userPersistedReducer,
   market: marketPersistedReducer,
+  marketSearch: marketSearchPersistedReducer,
 });
 
 const store = configureStore({
