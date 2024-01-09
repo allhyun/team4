@@ -8,54 +8,40 @@ exports.createChatRoom = async (req, res) => {
       u_idx: req.body.u_idx,
       r_name: req.body.r_name,
     };
-    // 추가하는 방
-    const addRoomData = {
-      u_idx: req.body.u_idx,
-      r_name: req.body.r_name,
-    };
-
     console.log(data);
 
     // 채팅방 이름 중복확인
     const existingRoom = await Chattingroom.findOne({
       where: { r_name: data.r_name, u_idx: data.u_idx },
     });
-    if (existingRoom) {
-      return res.send({
-        result: false,
-        msg: '이미 존재하는 방이다.',
-        r_idx: existingRoom.r_idx,
-      });
-    } else if (existingRoom !== data.r_name) {
-      // 채팅방 생성
+if (existingRoom) {
+      // 채팅방 이름이 이미 존재하는 경우
+      if (existingRoom.u_idx === data.u_idx) {
+        // 같은 유저의 채팅방일경우
+        return res.send({ result: false, msg: '이미 존재하는 방입니다.' });
+      } else {
+        // 다른 유정의 채팅방인 경우
+        const newRoom = await Chattingroom.create(data);
+        const createdTime = newRoom.r_create;
+        await Chatuser.create({
+          u_idx: data.u_idx,
+          r_idx: newRoom.r_idx,
+        });
+        return res.send({ result: true, msg: '채팅방 생성 성공' });
+      }
+    } else {
+      // 채팅방 이름이 중복되지 않은경우
       const newRoom = await Chattingroom.create(data);
       const createdTime = newRoom.r_create;
       await Chatuser.create({
         u_idx: data.u_idx,
         r_idx: newRoom.r_idx,
       });
-      res.send({
-        result: true,
-        msg: '채팅방 생성 성공!!',
-        r_idx: newRoom.r_idx,
-      });
-    } else if (existingRoom != newRoom.r_name && addRoomData.r_name) {
-      // 새로운 방만들기도 추가하기
-      const addRoom = await Chattingroom.create(addRoomData);
-      const addRoomCreatedTime = addRoom.r_create;
-      await Chatuser.create({
-        u_idx: addRoomData.u_idx,
-        r_idx: addRoom.r_idx,
-      });
-      res.send({
-        result: true,
-        msg: '채팅방 생성 성공제발..',
-        r_idx: newRoom.r_idx,
-      });
+      return res.send({ result: true, msg: '채팅방 생성 성공' });
     }
   } catch (err) {
     console.error('Room 생성 Error 발생 ', err);
-    res.send({ result: false, msg: '알수 없는 오류가 발생했습니다.' });
+    return res.send({ result: false, msg: '알수 없는 오류가 발생했습니다.' });
   }
 };
 // 방목록 불러오기(리스트들)
