@@ -49,24 +49,26 @@ const StudySearchPage = () => {
   return (
     <>
       <StudyHeader />
-      <div>
-        {' '}
-        {searchList.reverse().map((study) => (
-          <div
-            key={study.st_idx}
-            className="thum"
-            onClick={() => goDetailPage(`${study.st_idx}`)}
-          >
-            <h3>{study.st_title}</h3>
-            <p>{study.st_limit}개월</p>
-            <p>{study.st_intro}</p>
-            <p>
-              p:{study.st_pub}
-              F:{study.st_fe}
-              B:{study.st_be}
-            </p>
-          </div>
-        ))}
+      <div className="center">
+        <div className="st-main-container">
+          {' '}
+          {searchList.reverse().map((study) => (
+            <div
+              key={study.st_idx}
+              className="thum"
+              onClick={() => goDetailPage(`${study.st_idx}`)}
+            >
+              <h3>{study.st_title}</h3>
+              <p>{study.st_limit}개월</p>
+              <p>{study.st_intro}</p>
+              <p>
+                p:{study.st_pub}
+                F:{study.st_fe}
+                B:{study.st_be}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
