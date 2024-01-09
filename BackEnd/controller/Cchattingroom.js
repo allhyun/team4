@@ -59,7 +59,7 @@ exports.createChatRoom = async (req, res) => {
 // 방목록 불러오기(리스트들)
 exports.renderRooms = async (req, res) => {
   try {
-    const { u_idx } = req.body;
+    const u_idx = req.query.u_idx;
     const rooms = await Chatuser.findAll({
       where: { u_idx: u_idx },
       includes: [
@@ -70,7 +70,7 @@ exports.renderRooms = async (req, res) => {
       ],
     });
 
-    if (joinData.length > 0) {
+    if (rooms.length > 0) {
       res
         .status(200)
         .json({ result: true, msg: '방목록 불러오기 성공', rooms });

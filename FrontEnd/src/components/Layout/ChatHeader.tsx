@@ -1,12 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ChatHeader = () => {
   const [chatRoomsList, setChatRoomsList] = useState([]);
+  const u_idx = useSelector((state: any) => state.user.user.u_idx);
 
   const getRoomsList = () => {
     const response = axios
-      .get(`${process.env.REACT_APP_HOST}/chatRoom`)
+      .get(`${process.env.REACT_APP_HOST}/chatRoom`, {
+        params: { u_idx },
+      })
       .then((res) => {
         setChatRoomsList(res.data.rooms);
       });
