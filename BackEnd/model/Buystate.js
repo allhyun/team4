@@ -19,4 +19,4 @@ function Category(Sequelize, DataTypes) {
   );
 }
 
-module.exports = buystate;
+module.exports = Buystate;
