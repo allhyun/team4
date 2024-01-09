@@ -104,17 +104,36 @@ const StudyChatContents = () => {
     };
   }, []);
 
-  const sendMsg = () => {
+  const sendMsg = async () => {
     console.log('룸번호', Ridx);
-    if (chatInput !== '') {
-      socket.emit('sendMsg', { msg: chatInput, nickname: userData.nickname });
-      setChatInput('');
-      axios.post(`${process.env.REACT_APP_HOST}/chatRoom/${Ridx}/chat`, {
-        c_content: chatInput,
-        u_idx: userData.u_idx,
-      });
+    if (Ridx) {
+      if (chatInput !== '') {
+        try {
+          // axios로 메시지를 서버에 전송
+          await axios.post(
+            `${process.env.REACT_APP_HOST}/chatRoom/${Ridx}/chat`,
+            {
+              c_content: chatInput,
+              u_idx: userData.u_idx,
+            }
+          );
+
+          // axios 호출이 완료된 후에 socket.emit 호출
+          socket.emit('sendMsg', {
+            msg: chatInput,
+            nickname: userData.nickname,
+          });
+
+          // 추가로 처리해야 할 로직이 있다면 여기에 추가
+
+          setChatInput(''); // 입력창 비우기
+        } catch (error) {
+          console.error('axios error:', error);
+        }
+      }
     }
   };
+
   const addChatList = useCallback(
     (res: { nickname: string; msg: string }) => {
       const type = res.nickname === userData.nickname ? 'my' : 'other';
@@ -145,10 +164,13 @@ const StudyChatContents = () => {
         // });
         console.log('u_idx값', userData.u_idx);
         try {
-          const res = await axios.post('http://localhost:8000/chatRoom', {
-            r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
-            u_idx: userData.u_idx,
-          });
+          const res = await axios.post(
+            `${process.env.REACT_APP_HOST}/chatRoom`,
+            {
+              r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+              u_idx: userData.u_idx,
+            }
+          );
           console.log('res.data.r_idx', res.data.r_idx);
           setRidx(res.data.r_idx);
           console.log('내부', Ridx);
@@ -175,7 +197,7 @@ const StudyChatContents = () => {
   };
 
   useEffect(() => {
-    console.log('외부', Ridx);
+    sendMsg();
   }, [Ridx]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
