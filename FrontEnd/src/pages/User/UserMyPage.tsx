@@ -35,7 +35,8 @@ const UserMyPage = () => {
   const getUserInfo = async () => {
     const response: any = await axios.post(
       `${process.env.REACT_APP_HOST}/user/mypage`,
-      data
+      data,
+      { withCredentials: true }
     );
     await console.log('response', response);
     if (response !== null) {
