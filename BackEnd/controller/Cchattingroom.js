@@ -62,7 +62,7 @@ exports.renderRooms = async (req, res) => {
     const rooms = await Chattingroom.findAll();
     console.log(rooms);
     if (rooms) {
-      res.status(200).json({ result: true, msg: '방로딩 성공', data: rooms });
+      res.status(200).json({ result: true, msg: '방로딩 성공', rooms });
     } else {
       res.status(404).json({ result: false, msg: '방이 존재하지 않습니다.' });
     }
