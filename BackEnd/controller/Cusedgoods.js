@@ -3,20 +3,42 @@ const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-//중고물품 리스트
+//  중고물품 리스트(페이지네이션)
 exports.getUsedgoods = async (req, res) => {
   try {
+    const page = req.query.page || 1;
+    const pageSize = 8; // 페이지당 8개의 항목
+    const offset = (page - 1) * pageSize; // 올바른 오프셋 계산
+
+    const totalCount = await db.Useproduct.count(); // 전체 항목 수
     const usedgoods = await db.Useproduct.findAll({
+      attributes: [
+        'ud_idx',
+        'u_idx',
+        'buy_idx',
+        'ud_price',
+        'ud_title',
+        'ud_image',
+        'ud_content',
+        'ud_region',
+        'viewcount',
+        'ud_date',
+        // 'nickname',
+        // 'ud_images',
+        'c_idx',
+      ],
       where: {
         ud_date: {
           [Op.lt]: new Date(),
         },
       },
       order: [['ud_date', 'DESC']],
+      limit: pageSize, // 페이지당 항목 수 제한
+      offset: offset, // 페이지 시작점
     });
     console.log(usedgoods);
 
-    res.send({ usedgoods: usedgoods });
+    res.send({ usedgoods: usedgoods, totalCount: totalCount });
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
@@ -121,19 +143,16 @@ exports.modifyusedGoods = async (req, res) => {
   const UseproductId = req.params.ud_idx;
   console.log(UseproductId);
   try {
-    const { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content } =
-      req.body;
-
-
+    const { ud_title, c_idx, ud_region, ud_price, ud_content } = req.body;
+    console.log('req.body:', req.body);
     // 데이터베이스 업데이트
     await db.Useproduct.update(
-      { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content },
-      { where: { ud_idx: usedproductId } }
-
+      { ud_title, c_idx, ud_region, ud_price, ud_content },
+      { where: { ud_idx: UseproductId } }
     );
 
     // 수정된 데이터 다시 조회
-    const updatedProduct = await db.Useproduct.findByPk(usedproductId);
+    const updatedProduct = await db.Useproduct.findByPk(UseproductId);
     if (updatedProduct) {
       res.send({ updatedusedGoods: updatedProduct, msg: '수정완료!' });
     } else {
@@ -171,14 +190,12 @@ exports.deleteusedGoods = async (req, res) => {
   const UseproductId = req.params.ud_idx;
 
   try {
-    const useproduct = await db.Useproduct.findOne({
-
-      where: { ud_idx: usedproductId },
+    const Useproduct = await db.Useproduct.findOne({
+      where: { ud_idx: UseproductId },
     });
 
     const usedproduct = await db.Useproduct.findOne({
-      where: { ud_idx: usedproductId },
-
+      where: { ud_idx: UseproductId },
     });
 
     if (!Useproduct) {
@@ -186,13 +203,13 @@ exports.deleteusedGoods = async (req, res) => {
     }
 
     let imagePaths = [];
-    if (useproduct.ud_image && typeof useproduct.ud_image === 'string') {
+    if (Useproduct.ud_image && typeof Useproduct.ud_image === 'string') {
       // ud_image 필드가 JSON 배열인 경우
-      const images = JSON.parse(useproduct.ud_image);
+      const images = JSON.parse(Useproduct.ud_image);
       imagePaths = images.map((image) =>
         path.join(__dirname, '..', '..', 'static', 'userImg', image)
       );
-    } else if (useproduct.ud_image) {
+    } else if (Useproduct.ud_image) {
       // ud_image 필드가 단일 이미지 이름인 경우
       imagePaths.push(
         path.join(
@@ -201,7 +218,7 @@ exports.deleteusedGoods = async (req, res) => {
           '..',
           'static',
           'userImg',
-          useproduct.ud_image
+          Useproduct.ud_image
         )
       );
     }
@@ -218,7 +235,7 @@ exports.deleteusedGoods = async (req, res) => {
     });
 
     // 데이터베이스에서 게시글 삭제
-    await useproduct.destroy();
+    await Useproduct.destroy();
     res.sendStatus(200);
   } catch (error) {
     console.error(error);

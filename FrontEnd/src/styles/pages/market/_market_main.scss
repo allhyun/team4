@@ -54,3 +54,14 @@ div#market-main-container {
     }
   }
 }
+
+.market-main-page-container {
+  ul {
+    justify-content: center;
+    li {
+      :first-child {
+        color: $main-white;
+      }
+    }
+  }
+}

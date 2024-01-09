@@ -34,20 +34,26 @@ const MarketModify: React.FC = () => {
     nickname: '',
     c_idx: null,
   });
+
+  const params = useParams();
+
   // 리덕스에서 유저 정보 갖고오기!
-  const userInfo = useSelector((state: RootState) => state.user.user);
+  const userInfo = useSelector((state: any) => state.user.user);
   //   const { u_idx, nickname } = userInfo;
   const dispatch = useDispatch();
-  const { ud_idx } = useParams(); // URL에서 게시글 ID를 가져오기!
-  console.log('ud_idx:', ud_idx);
-  const udIdxNumber = Number(ud_idx);
-  console.log('Converted to number:', udIdxNumber); // 변환된 숫자 확인
+  // const { ud_idx } = useParams(); // URL에서 게시글 ID를 가져오기!
+
+  // console.log('Converted to number:', udIdxNumber); // 변환된 숫자 확인
 
   //  리덕스에서 modifyPostdp 정보 갖고오기!
-  const editingPost = useSelector(
+  const modifyPost = useSelector(
     (state: any) => state.market.market.modifyPost
   );
-  // console.log('editingPost값 확인 :', editingPost);
+  console.log('modifyPost.ud_idx:', modifyPost.ud_idx);
+  // console.log('modifyPost값 확인 :', modifyPost);
+
+  // const ud_idx = modifyPost ? modifyPost.ud_idx : null;
+  // const ud_idx = params.ud_idx; // URL에서 게시글 ID를 가져오기!
 
   // 카테고리 문자열을 숫자 ID로 매핑
   const getCategoryID = (categoryName: string): number | null => {
@@ -106,50 +112,52 @@ const MarketModify: React.FC = () => {
   // 수정 관련 ------------------------------------------------------------------------------------------
   // 수정할 데이터를 로컬 상태로 설정
   useEffect(() => {
-    if (editingPost) {
-      setData(editingPost);
+    if (modifyPost) {
+      setData(modifyPost);
       // 타이틀 길이를 이전 데이터의 길이로 설정합니다.
-      setTitleLength(editingPost.ud_title.length);
+      setTitleLength(modifyPost.ud_title.length);
       // 설명 길이를 이전 데이터의 길이로 설정합니다.
-      setTextareaLength(editingPost.ud_content.length);
+      setTextareaLength(modifyPost.ud_content.length);
       // 미리보기 이미지 배열의 길이를 이전 데이터의 이미지 수로 설정합니다.
       setImageLength(
-        editingPost.ud_image ? JSON.parse(editingPost.ud_image).length : 0
+        modifyPost.ud_image ? JSON.parse(modifyPost.ud_image).length : 0
       );
       // 가격 값을 기반으로 포맷된 가격을 초기화합니다.
       setFormattedPrice(
-        editingPost.ud_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        modifyPost.ud_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       );
 
-      console.log('현재 스토어의 상태:', editingPost);
+      console.log('현재 스토어의 상태:', modifyPost);
 
       // 이미지 URL 설정
-      if (editingPost.ud_image) {
+      if (modifyPost.ud_image) {
         try {
           // JSON 문자열을 배열로 파싱
-          const imageUrls = JSON.parse(editingPost.ud_image);
+          const imageUrls = JSON.parse(modifyPost.ud_image);
           setPreviewUrls(
             imageUrls.map(
               (ud_image: string) =>
-                `http://localhost:8000/static/userImg/${encodeURIComponent(
-                  ud_image
-                )}`
-              // 배포용
-              // `${process.env.REACT_APP_HOST}/static/userImg/${encodeURIComponent(ud_image)}`,
+                // `http://localhost:8000/static/userImg/${encodeURIComponent(ud_image)}`
+                // 배포용
+                `${
+                  process.env.REACT_APP_HOST
+                }/static/userImg/${encodeURIComponent(ud_image)}`
             )
           );
         } catch (error) {
           console.error('이미지 URL 파싱 오류:', error);
           // JSON 파싱 실패 시, 단일 URL로 처리
           setPreviewUrls([
-            `http://localhost:8000/${encodeURIComponent(editingPost.ud_image)}`,
+            // `http://localhost:8000/${encodeURIComponent(editingPost.ud_image)}`,
             // 배포용
-            // `${process.env.REACT_APP_HOST}/${encodeURIComponent(editingPost.ud_image)}
+            `${process.env.REACT_APP_HOST}/${encodeURIComponent(
+              modifyPost.ud_image
+            )}`,
           ]);
         }
       }
     }
-  }, [editingPost]);
+  }, [modifyPost]);
 
   // 이미지창 관련 ------------------------------------------------------------------------------------------
 
@@ -200,16 +208,18 @@ const MarketModify: React.FC = () => {
       setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
     }
   };
+
   // 이미지 미리보기 영역
   const renderImagePreviews = () => {
-    console.log('previewUrls:', previewUrls);
+    if (previewUrls.length === 0) {
+      return null; // 이미지가 없을 경우 아무것도 렌더링하지 않음
+    }
+
     return previewUrls.map((url, index) => (
       <div key={index} className="image-container">
         <li key={index} className="image-preview">
           {/* 첫 번째 이미지에만 '대표사진' 표시 */}
-          {index === 0 && (
-            <div className="primary-photo-label">대표사진</div>
-          )}{' '}
+          {index === 0 && <div className="primary-photo-label">대표사진</div>}
           <img src={url} alt={`preview-${index}`} />
           <button onClick={() => removeImage(index)}>
             <MdCancel />
@@ -306,6 +316,11 @@ const MarketModify: React.FC = () => {
       }));
       imageRef.current?.focus();
       return false;
+    } else {
+      setErrorMessages((prev) => ({
+        ...prev,
+        ud_image: '', // 이미지가 있을 경우 메시지를 초기화
+      }));
     }
 
     // 상품명 유효성 검사
@@ -366,8 +381,9 @@ const MarketModify: React.FC = () => {
     e.preventDefault();
     if (!validateFields()) return;
     // ud_idx 값 로깅
-    console.log('ud_idx:', ud_idx);
+    console.log('ud_idx:', modifyPost.ud_idx);
 
+    console.log('data:', data);
     const formData = new FormData();
     images.forEach((image) => formData.append('ud_image', image));
     formData.append('ud_title', data.ud_title);
@@ -378,27 +394,52 @@ const MarketModify: React.FC = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:8000/product/detail/${udIdxNumber}}`,
+        // `http://localhost:8000/product/detail/${udIdxNumber}}`,
+        // 배포용
+        `${process.env.REACT_APP_HOST}/product/detail/${modifyPost.ud_idx}`,
         formData,
         {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: { 'Content-Type': 'application/json' },
         }
       );
-      console.log('수정 axios put서버 응답:', res.data);
-
-      // 여기서 res.data의 구조를 확인하고 Redux 스토어 업데이트
-      if (res.data.updatedusedGoods) {
-        dispatch(setModifyPost(res.data.updatedusedGoods[0]));
-        navigate('/market');
-      } else {
-        // 예상치 못한 응답 처리
-        console.error('예상치 못한 응답:', res.data);
-      }
+      navigate('/market');
     } catch (error) {
-      console.error('수정 중 오류 발생:', error);
-      alert('수정 중 문제가 발생했습니다.');
+      console.error('Error submitting data:', error);
     }
   };
+
+  // 원본
+  // try {
+  //   const res = await axios.put(
+  //     // `http://localhost:8000/product/detail/${udIdxNumber}}`,
+  //     // 배포용
+  //     `${process.env.REACT_APP_HOST}/product/detail/${modifyPost.ud_idx}`,
+  //     formData,
+  //     {
+  //       headers: { 'Content-Type': 'application/json' },
+  //     }
+  //   );
+
+  //   console.log('수정 axios put서버 응답:', res.data);
+
+  //   // 여기서 res.data의 구조를 확인하고 Redux 스토어 업데이트
+  //   console.log('여기서 res.data 확인:', res.data);
+  //   if (res.data.updatedusedGoods) {
+  //     console.log(
+  //       '수정 성공 데이터res.data.updatedusedGoods[0]:',
+  //       res.data.updatedusedGoods[0]
+  //     );
+  //     dispatch(setModifyPost(res.data.updatedusedGoods[0]));
+  //     navigate('/market');
+  //   } else {
+  //     // 예상치 못한 응답 처리
+  //     console.error('예상치 못한 응답:', res.data);
+  //   }
+  // } catch (error) {
+  //   console.error('수정 중 오류 발생:', error);
+  //   alert('수정 중 문제가 발생했습니다.');
+  // }
+  // };
 
   return (
     <>
