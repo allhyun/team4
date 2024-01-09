@@ -14,11 +14,15 @@ exports.createChatRoom = async (req, res) => {
     const existingRoom = await Chattingroom.findOne({
       where: { r_name: data.r_name, u_idx: data.u_idx },
     });
-if (existingRoom) {
+    if (existingRoom) {
       // 채팅방 이름이 이미 존재하는 경우
       if (existingRoom.u_idx === data.u_idx) {
         // 같은 유저의 채팅방일경우
-        return res.send({ result: false, msg: '이미 존재하는 방입니다.' });
+        return res.send({
+          result: false,
+          msg: '이미 존재하는 방입니다.',
+          r_idx: existingRoom.r_idx,
+        });
       } else {
         // 다른 유정의 채팅방인 경우
         const newRoom = await Chattingroom.create(data);
@@ -27,7 +31,11 @@ if (existingRoom) {
           u_idx: data.u_idx,
           r_idx: newRoom.r_idx,
         });
-        return res.send({ result: true, msg: '채팅방 생성 성공' });
+        return res.send({
+          result: true,
+          msg: '채팅방 생성 성공',
+          r_idx: newRoom.r_idx,
+        });
       }
     } else {
       // 채팅방 이름이 중복되지 않은경우
@@ -37,7 +45,11 @@ if (existingRoom) {
         u_idx: data.u_idx,
         r_idx: newRoom.r_idx,
       });
-      return res.send({ result: true, msg: '채팅방 생성 성공' });
+      return res.send({
+        result: true,
+        msg: '채팅방 생성 성공',
+        r_idx: newRoom.r_idx,
+      });
     }
   } catch (err) {
     console.error('Room 생성 Error 발생 ', err);
@@ -141,13 +153,9 @@ exports.deleteChatRoom = async (req, res) => {
 // 채팅메시지 생성하기
 exports.createChat = async (req, res) => {
   try {
-    const userIdx = req.session.user.u_idx;
-    const room = await Chattingroom.findOne({
-      where: { r_idx: req.params.r_idx },
-    });
     const data = {
-      u_idx: userIdx,
-      r_idx: room.r_idx,
+      u_idx: req.body.u_idx,
+      r_idx: req.params.r_idx,
       c_content: req.body.c_content,
     };
     const newChat = await Chatmessage.create(data);
