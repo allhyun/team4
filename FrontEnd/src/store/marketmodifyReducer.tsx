@@ -7,7 +7,7 @@ const initialState: MarketState = {
 
 const marketSlice = createSlice({
   name: 'market',
-  initialState,
+  initialState, // 초기 상태를 여기서 설정
   reducers: {
     setModifyPost: (state, action) => {
       state.modifyPost = action.payload;

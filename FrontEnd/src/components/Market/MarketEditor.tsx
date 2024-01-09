@@ -298,9 +298,9 @@ const MarketEditor: React.FC = () => {
 
   // 데이터 서버에 전송 ------------------------------------------------------------------------------------------
   const handleSubmit = async (e: FormEvent) => {
-    console.log('handleSubmit called');
+    // console.log('handleSubmit called');
     e.preventDefault();
-    console.log('제출 전 데이터 상태:', data);
+    // console.log('제출 전 데이터 상태:', data);
     if (!validateFields()) {
       return; // 유효성 검사 실패 시 제출 중단
     }
@@ -327,15 +327,17 @@ const MarketEditor: React.FC = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:8000/product/regist',
+        // 'http://localhost:8000/product/regist',
         // 배포용
-        // `${process.env.REACT_APP_HOST}/product/regist`,
+        `${process.env.REACT_APP_HOST}/product/regist`,
         formData,
         {
+          // headers: { 'Content-Type': 'multipart/form-data' },
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
       console.log('데이터 잘 보내지는지?:', res.data);
+      // dispatch(updateMarketData(res.data));
       navigate('/market');
     } catch (error) {
       // console.error('게시글 등록 에러:', error);
@@ -466,3 +468,10 @@ const MarketEditor: React.FC = () => {
 };
 
 export default MarketEditor;
+function dispatch(arg0: any) {
+  throw new Error('Function not implemented.');
+}
+
+function updateMarketData(data: any): any {
+  throw new Error('Function not implemented.');
+}

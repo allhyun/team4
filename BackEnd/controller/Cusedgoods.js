@@ -121,17 +121,16 @@ exports.modifyusedGoods = async (req, res) => {
   const UseproductId = req.params.ud_idx;
   console.log(UseproductId);
   try {
-    const { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content } =
-      req.body;
-
+    const { ud_title, c_idx, ud_region, ud_price, ud_content } = req.body;
+    console.log('req.body:', req.body);
     // 데이터베이스 업데이트
     await db.Useproduct.update(
-      { ud_image, ud_title, c_idx, ud_region, ud_price, ud_content },
-      { where: { ud_idx: usedproductId } }
+      { ud_title, c_idx, ud_region, ud_price, ud_content },
+      { where: { ud_idx: UseproductId } }
     );
 
     // 수정된 데이터 다시 조회
-    const updatedProduct = await db.Useproduct.findByPk(usedproductId);
+    const updatedProduct = await db.Useproduct.findByPk(UseproductId);
     if (updatedProduct) {
       res.send({ updatedusedGoods: updatedProduct, msg: '수정완료!' });
     } else {

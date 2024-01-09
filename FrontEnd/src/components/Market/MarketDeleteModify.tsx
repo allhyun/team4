@@ -40,7 +40,9 @@ const MarketDeleteModify = (props: marketudidx) => {
     try {
       // 삭제 요청 보내기
       await axios.delete(
-        `http://localhost:8000/product/delete/${props.ud_idx}`
+        `${process.env.REACT_APP_HOST}/product/delete/${props.ud_idx}`
+
+        // `http://localhost:8000/product/delete/${props.ud_idx}`
         // 배포 axios
         // `${process.env.REACT_APP_HOST}/product/delete/${props.ud_idx}`,
       );
