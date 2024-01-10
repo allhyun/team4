@@ -1,10 +1,18 @@
+//리덕스에서 가져온 Study내용의 제목이 바뀌면
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setStudyDetail } from '../../store/modifyReducer';
 
 const ChatHeader = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [chatRoomsList, setChatRoomsList] = useState([]);
+
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
+  const studyData = useSelector((state: any) => state.study.study.studyDetail);
   const data = { u_idx: u_idx };
 
   const getRoomsList = () => {
@@ -20,15 +28,23 @@ const ChatHeader = () => {
     // 룸 목록 불러오기
     getRoomsList();
   }, []);
-
+  const changeRoomname = (rName: string) => {
+    //리덕스값 변경후 chatting창으로 리다이렉트
+    dispatch(setStudyDetail({ st_title: rName, st_idx: studyData.st_idx }));
+    navigate('/chatting', { state: { key: 'study-page' } });
+  };
   return (
     <>
-      <div className="caht-header">
+      <div className="chat-header">
         채팅방
         {chatRoomsList.length > 0 && (
           <div className="chat-room">
             {chatRoomsList.map((room: any) => (
-              <div key={room.r_idx} className="room-idx">
+              <div
+                key={room.r_idx}
+                className="room-idx"
+                onClick={() => changeRoomname(room.r_name)}
+              >
                 {room.r_name}
               </div>
             ))}
