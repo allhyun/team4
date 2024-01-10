@@ -4,6 +4,7 @@ import axios from 'axios';
 import StudyDeleteModify from '../../components/Study/StudyDeleteModify';
 //리덕스 관련
 import { setStudyDetail } from '../../store/modifyReducer';
+import { setchatDetail } from '../../store/chatReducer';
 import { useDispatch } from 'react-redux';
 //
 import '../../styles/style.scss';
@@ -29,6 +30,7 @@ const StudyDetailPage = () => {
         );
         setStudy(res.data);
         dispatch(setStudyDetail(res.data));
+        dispatch(setchatDetail(res.data));
         //리덕스에 상세페이지 api를 실행했을때 가져온 정보 저장
       } catch (error) {
         console.error(error);

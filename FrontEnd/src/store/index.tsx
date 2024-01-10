@@ -7,6 +7,7 @@ import searchSlice from './searchReducer';
 import userSlice from './user.slice';
 import marketSlice from './marketmodifyReducer';
 import marketSearchSlice from './marketSearchReducer';
+import chatSlice from './chatReducer';
 
 // 한 번 묶어줘야 하는 걸로 보임 안 묶고 그냥 하려니까 안 됨
 const studyReducers = combineReducers({
@@ -31,7 +32,15 @@ const searchPersistedReducer = persistReducer(
   searchPersistConfig,
   searchReducers
 );
-
+const chatReducers = combineReducers({
+  chat: chatSlice,
+});
+const chatPersistConfig = {
+  key: 'chat',
+  storage: storage,
+  whitelist: ['chat'],
+};
+const chatPersistedReducer = persistReducer(chatPersistConfig, chatReducers);
 const userReducers = combineReducers({
   user: userSlice,
 });
@@ -74,6 +83,7 @@ const rootReducer = combineReducers({
   user: userPersistedReducer,
   market: marketPersistedReducer,
   marketSearch: marketSearchPersistedReducer,
+  chat: chatPersistedReducer,
 });
 
 const store = configureStore({
