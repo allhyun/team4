@@ -1,5 +1,5 @@
 // const db = require('../model');
-// // const Useproduct = require('../model/Useproduct');
+// const Useproduct = require('../model/Useproduct');
 
 // // 찜하기
 // exports.addHeart = async (req, res) => {
@@ -24,12 +24,13 @@
 //   }
 // };
 
-// // 찜목록 조회
+// 찜목록 조회
 // exports.heartList = async (req, res) => {
 //   try {
-//     const { u_idx } = req.query;
+//     console.log('req.query', req.query);
+//     const u_idx = req.query;
 //     const heartList = await db.Heart.findAll({
-//       where: { u_idx },
+//       where: { u_idx: u_idx },
 //       include: [
 //         {
 //           model: db.Useproduct,

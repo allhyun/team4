@@ -5,6 +5,7 @@ const router = express.Router();
 const studyController = require('../controller/Cstudy');
 const usedgoodsController = require('../controller/Cusedgoods');
 const user = require('../controller/Cuser');
+const heartController = require('../controller/Cheart');
 const { upload } = require('../multer/multerConfig');
 
 // router.all('/*', function (req, res, next) {
@@ -76,7 +77,7 @@ router.post('/product/heart', usedgoodsController.addHeart);
 router.delete('/product/heart', usedgoodsController.removeHeart);
 
 // 중고물품 찜 목록 조회
-// router.get('/user/heart', userController.hearList);
+router.get('/user/heart', usedgoodsController.heartList);
 
 // 회원가입
 router.get('/user/signup', userController.signup);

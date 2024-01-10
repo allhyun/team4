@@ -63,9 +63,9 @@ exports.checkNickname = (req, res) => {
 };
 
 // 유저 관심 목록 조회
-exports.heartList = (req, res) => {
-  console.log('test');
-};
+// exports.heartList = (req, res) => {
+//   console.log('test');
+// };
 
 // 로그인
 exports.postSignin = async (req, res) => {

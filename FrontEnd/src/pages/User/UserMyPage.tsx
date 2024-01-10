@@ -165,6 +165,7 @@ const UserMyPage = () => {
           .then((res) => {
             if (res.data.result) {
               getUserInfo();
+              setIsModalOpen(true);
               setMsg(res.data.msg);
             } else {
               setIsModalOpen(true);

@@ -272,3 +272,24 @@ exports.removeHeart = async (req, res) => {
     res.status(500).send('서버 오류 발생');
   }
 };
+
+// 찜 목록 조회
+exports.heartList = async (req, res) => {
+  try {
+    const u_idx = req.query;
+    const heartList = await db.Heart.findAll({
+      where: { u_idx: u_idx },
+      includes: [
+        {
+          model: db.Useproduct,
+          attributes: ['ud_idx', 'ud_title', 'ud_image'],
+        },
+      ],
+    });
+    console.log('heartList', heartList);
+    res.send({ success: true, data: heartList });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('메인화면 에러 발생');
+  }
+};
