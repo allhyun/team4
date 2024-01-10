@@ -1,10 +1,14 @@
 .modal-wrap {
   @include position-center;
   @include container;
-  background-color: var(--main-bgcolor);
   padding: 1em;
   .modal {
     @include flex-center;
-    flex-direction: column;
+    gap: 1em;
+
+    svg {
+      width: 2em;
+      height: auto;
+    }
   }
 }
