@@ -108,7 +108,7 @@ const MarketSearchPage = () => {
                   <div className="img-container">
                     {data.ud_image && data.ud_image.length > 0 && (
                       <img
-                        src={`http://localhost:8000/static/userImg/${data.ud_image[0]}`}
+                        src={`${process.env.REACT_APP_HOST}/static/userImg/${data.ud_image[0]}`}
                         alt={`preview-${data.ud_idx}`}
                       />
                     )}

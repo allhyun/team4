@@ -89,10 +89,9 @@ const MarketThumbnailPost = (props: propsType) => {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await axios.get('http://localhost:8000/product', {
-          // 배포용 axios
-          // `${process.env.REACT_APP_HOST}/product/`,
-
+        // const res = await axios.get('http://localhost:8000/product', {
+        // 배포용 axios
+        const res = await axios.get(`${process.env.REACT_APP_HOST}/product/`, {
           params: { page: data },
         });
 
@@ -133,7 +132,8 @@ const MarketThumbnailPost = (props: propsType) => {
               <div className="img-container">
                 {data.ud_image && data.ud_image.length > 0 && (
                   <img
-                    src={`http://localhost:8000/static/userImg/${data.ud_image[0]}`}
+                    // src={`http://localhost:8000/static/userImg/${data.ud_image[0]}`}
+                    src={`${process.env.REACT_APP_HOST}/static/userImg/${data.ud_image[0]}`}
                     alt={`preview-${data.ud_idx}`}
                   />
                 )}

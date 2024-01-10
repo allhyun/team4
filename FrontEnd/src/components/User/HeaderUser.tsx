@@ -20,7 +20,10 @@ const HeaderUser = () => {
       ) : (
         <div className="logined-user" onClick={userMenuHandler}>
           <div>{`${loginUser.nickname}`}</div>
-          <img src={`http://localhost:8000/${loginUser.u_img}`} alt="" />
+          <img
+            src={`${process.env.REACT_APP_HOST}/${loginUser.u_img}`}
+            alt=""
+          />
         </div>
       )}
       {userMenuClicked && loginUser.u_idx !== null && (

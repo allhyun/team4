@@ -41,9 +41,11 @@ const MarketDetailPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/product/detail/${ud_idx}`)
       // .get(`http://localhost:8000/product/detail/${ud_idx}`)
       // 배포용
+      .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
+
+      // .get(`http://localhost:8000/product/detail/${ud_idx}`)
       .then((res) => {
         dispatch(setModifyPost(res.data)); // 상태 업데이트
       })
@@ -52,9 +54,10 @@ const MarketDetailPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/product/detail/${ud_idx}`)
       // .get(`http://localhost:8000/product/detail/${ud_idx}`)
       // 배포용
+      .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
+
       .then((res) => {
         // console.log('서버 응답 데이터:', res.data);
         const productData = res.data;
@@ -144,7 +147,11 @@ const MarketDetailPage = () => {
     // if (!confirmDelete) return;
     try {
       // 삭제 요청 보내기
-      await axios.delete(`http://localhost:8000/product/delete/${ud_idx}`);
+      //await axios.delete(`http://localhost:8000/product/delete/${ud_idx}`);
+      // 배포용
+      await axios.delete(
+        `${process.env.REACT_APP_HOST}/product/delete/${ud_idx}`
+      );
       navigate('/market'); // 삭제 후 마켓 페이지로 리다이렉트
     } catch (error) {
       console.error('삭제 중 오류 발생:', error);
@@ -170,7 +177,7 @@ const MarketDetailPage = () => {
             <div className="img-container">
               {marketDetailState && marketDetailState.ud_images && (
                 <img
-                  src={`http://localhost:8000/static/userImg/${marketDetailState.ud_images[currentImageIndex]}`}
+                  src={`${process.env.REACT_APP_HOST}/static/userImg/${marketDetailState.ud_images[currentImageIndex]}`}
                   alt={`Image ${currentImageIndex}`}
                 />
               )}

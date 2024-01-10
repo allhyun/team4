@@ -13,7 +13,8 @@ const MarketDeleteModify = (props: marketudidx) => {
   const fetchProductData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/product/detail/${props.ud_idx}`
+        // `http://localhost:8000/product/detail/${props.ud_idx}`
+        `${process.env.REACT_APP_HOST}/product/detail/${props.ud_idx}`
       );
       return response.data; // 서버로부터 받은 데이터 반환
     } catch (error) {
