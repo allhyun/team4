@@ -32,7 +32,7 @@ const StudyDeleteModify = (props: PropsType) => {
 
   return (
     <>
-      {userData.u_idx === studyData.u_idx && (
+      {studyData && userData.u_idx === studyData.u_idx && (
         <>
           <button onClick={modifyStudy} className="study-button">
             수정
