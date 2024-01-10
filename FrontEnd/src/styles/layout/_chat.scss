@@ -1,34 +1,81 @@
 .chat-header-container {
-  @include container;
+  // @include container;
   display: flex;
   height: 88vh;
+  width: 70%;
+  @include position-center;
 }
+
 .chat-header {
-  width: 200px;
-  background-color: rgb(55, 51, 105);
+  width: 400px;
+  @include container;
+  overflow-y: auto;
+  margin-right: 1px;
+
+  .chat-header-top {
+    height: 90px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.493);
+    padding: 11px;
+  }
+  .room-idx {
+    font-size: large;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    height: 80px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.493);
+    background-color: none;
+    margin: 1px 4px 5px 5px;
+    padding: 11px;
+    &:hover {
+      background-color: var(--main-bgcolor);
+      border-radius: 5px;
+    }
+  }
 }
 .chat-contents-container {
+  @include container;
   display: flex;
   flex-direction: column;
   height: 88vh;
   width: 100%;
+  border-left: none;
   .chat-con {
+    //채팅 많이 치면 스크롤 생기게 만들기
+    overflow-y: auto;
     height: 100%;
   }
 }
 .chat-input-container {
   display: flex;
   input {
-    width: 88%;
+    width: 99%;
+    height: 46px;
+    font-size: large;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+  }
+  .chat-button {
+    width: 10%;
+    display: inline-block;
+    @include main-button;
   }
 }
+//-------------동일하게 적어야함
 .listmy-chat {
   text-align: right;
   .content {
     display: inline-block;
+    max-width: 600px;
     margin: 5px;
-    padding: 5px;
+    padding: 5px 7px 5px 8px;
     @include container;
+    background-color: rgba(161, 125, 228, 0.253);
+    border: none;
   }
 }
 .listother-chat {
@@ -36,16 +83,38 @@
 
   .content {
     display: inline-block;
+    max-width: 600px;
     margin: 5px;
-    padding: 5px;
+    padding: 5px 7px 5px 5px;
     @include container;
+    border: none;
   }
 }
-
-.chat-button {
-  @include main-button;
-}
-.room-idx {
-  cursor: pointer;
+//------------------------
+.chat-name-con {
+  // margin: 1px 0px 1px 0px;
   @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 10px 3px 10px;
+  border: none;
+
+  height: 100px;
+  .exit-chat-button {
+    display: block;
+    width: 130px;
+    height: 45px;
+    // @include main-button;
+    border: 1px solid var(--main-white);
+    background-color: rgba(250, 235, 215, 0);
+    color: var(--main-white);
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .chat-name {
+    font-size: xx-large;
+    display: inline-block;
+  }
 }
