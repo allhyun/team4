@@ -139,7 +139,7 @@ exports.getRooms = async (req, res) => {
 exports.deleteChatRoom = async (req, res) => {
   try {
     await Chattingroom.destroy({
-      where: { r_name: req.body.r_name },
+      where: { r_name: req.body.r_name, u_idx: req.body.u_idx },
     });
     res.send({ result: true, msg: '채팅방이 삭제되었습니다.' });
   } catch (err) {

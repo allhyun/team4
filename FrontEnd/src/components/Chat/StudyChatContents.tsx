@@ -15,6 +15,7 @@ import { io, Socket } from 'socket.io-client';
 import Chat from './Chat';
 import axios from 'axios';
 import '../../styles/style.scss';
+import { useNavigate } from 'react-router-dom';
 
 // 서버에서 보내는 이벤트 및 클라이언트에서 보내는 이벤트의 타입을 정의
 type ServerToClientEvents = {
@@ -56,6 +57,7 @@ interface ChatMessage {
   content: string;
 }
 const StudyChatContents = () => {
+  const navigate = useNavigate();
   const [chatInput, setChatInput] = useState('');
   const [socketConnected, setSocketConnected] = useState(false);
   const [chatList, setChatList] = useState<{ type: string; content: string }[]>(
@@ -144,7 +146,7 @@ const StudyChatContents = () => {
     console.log('내부', Ridx);
     socket.emit('joinRoom', {
       r_idx: res.data.r_idx,
-      r_name: 'study' + studyData.st_idx,
+      r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
       nickname: userData.nickname,
       userid: userData.userid,
       u_idx: userData.u_idx,
@@ -186,9 +188,22 @@ const StudyChatContents = () => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChatInput(e.target.value);
   };
-
+  const destroyRoom = () => {
+    // 룸 삭제 후 메인으로 리다이렉트
+    axios
+      .delete(`${process.env.REACT_APP_HOST}/deleteRoom`, {
+        data: {
+          r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+          u_idx: userData.u_idx,
+        },
+      })
+      .then(() => {
+        navigate('/');
+      });
+  };
   return (
     <>
+      <button onClick={destroyRoom}>채팅방 나가기</button>
       <div className="chat-con">
         스터디 관련 채팅 내용
         {chatList.map((chat, i) => {
