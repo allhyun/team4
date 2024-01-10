@@ -32,13 +32,13 @@ const UserMyPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [userPw, setUserPw] = useState<string>('');
   const [samePwCheck, setSamePwCheck] = useState<string>('');
+  const [userInfo, setUserInfo] = useState<any>({});
   const [userNickname, setUserNickname] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
   const [isNicknameDuplicated, setIsNicknameDuplicated] =
     useState<Boolean>(false);
 
-  const [userInfo, setUserInfo] = useState<any>({});
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
   const data: any = { u_idx };
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -57,10 +57,15 @@ const UserMyPage = () => {
       setUserInfo(response.data.user);
     }
   };
+
   // redux에 u_idx 없이 접근하면 로그인 화면으로 이동
   useEffect(() => {
     if (u_idx === null) navigate('/login');
-    else getUserInfo();
+    else {
+      getUserInfo();
+      setUserNickname(`${userInfo.nickname}`);
+      setUserEmail(`${userInfo.email}`);
+    }
   }, []);
 
   const {
@@ -193,7 +198,7 @@ const UserMyPage = () => {
             onSubmit={handleSubmit(onSubmit, onInvalid)}
           >
             <div>
-              <h1>{userInfo.nickname} 님의 마이페이지</h1>
+              <h1>{userInfo.userid}의 마이페이지</h1>
             </div>
             <div className="img-info-wrap">
               <div className="input-wrap">
@@ -211,12 +216,15 @@ const UserMyPage = () => {
                 </div>
               </div>
               <div className="input-wrap">
-                <div>id: {userInfo.userid}</div>
-
                 <input
                   type="text"
                   placeholder="nickname"
-                  value={userNickname === '' ? userInfo.nickname : userNickname}
+                  value={
+                    userNickname === 'undefined'
+                      ? userInfo.nickname
+                      : userNickname
+                  }
+                  // value={userNickname === '' ? userInfo.nickname : userNickname}
                   {...register('userNickname', {
                     // required: '닉네임을 입력해주세요.',
                     // pattern: {
@@ -235,18 +243,17 @@ const UserMyPage = () => {
                 <input
                   type="text"
                   placeholder="e-mail"
-                  value={userEmail === '' ? userInfo.email : userEmail}
+                  value={userEmail === 'undefined' ? userInfo.email : userEmail}
                   {...register('userEmail', {
                     // required: '이메일을 입력해주세요.',
-                    // pattern: {
-                    //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                    //   message: '잘못된 형식입니다.',
-                    // },
+                    pattern: {
+                      value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                      message: '잘못된 형식입니다.',
+                    },
                   })}
                   onChange={onUserInfoHandler}
                   name="userEmail"
                 />
-
                 <p className="alert">{errors.userEmail?.message}</p>
               </div>
             </div>
