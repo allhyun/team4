@@ -365,6 +365,7 @@ const MarketEditor: React.FC = () => {
               name="ud_image"
               accept="image/tiff, image/png, image/jpg, image/jpeg, image/png, image/gif"
               onChange={handleFileChange}
+              multiple
             />
 
             <ul className="image-previews-list">{renderImagePreviews()}</ul>

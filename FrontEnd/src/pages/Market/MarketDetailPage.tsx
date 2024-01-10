@@ -17,59 +17,48 @@ import { IoIosArrowDroprightCircle } from 'react-icons/io'; // 오른쪽 아이�
 
 import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
 import MarketDeleteModify from '../../components/Market/MarketDeleteModify';
-import { DetailDataType2, Heart } from '../../components/Types/MarketType';
+import {
+  DetailDataType2,
+  Heart,
+  CategoryMapping,
+} from '../../components/Types/MarketType';
 import MarketHeart from '../../components/Market/MarketHeart';
 import { RootState } from '../../store';
 
 const MarketDetailPage = () => {
   const userInfo = useSelector((state: RootState) => state.user.user);
-  const { u_idx, nickname } = userInfo;
+  const { u_idx } = userInfo;
   const navigate = useNavigate();
   const { ud_idx } = useParams();
   const [marketDetailState, setMarketDetailState] =
     useState<DetailDataType2 | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const modifyPost = useSelector(
+    (state: any) => state.market.market.modifyPost
+  );
   const dispatch = useDispatch();
-  const marketDetail = useSelector((state: any) => state.market.modifyPost);
-  const [heartButtonClicked, setHeartButtonClicked] = useState(false);
+  // const marketDetail = useSelector((state: any) => sate.market.modifyPost);
   const [data, setData] = useState<Heart>({
     ud_idx: 1,
     u_idx: Number(u_idx) || null,
     h_idx: null,
   });
 
+  const categoryMapping: CategoryMapping = {
+    1: '도서',
+    2: '전자기기',
+    3: '문구',
+    4: '티켓/쿠폰',
+    5: '생활',
+    6: '취미',
+    7: '무료나눔',
+    8: '기타',
+  };
   // 수정 관련 :  Redux에 상태 업데이트
-
   useEffect(() => {
     axios
-      // .get(`http://localhost:8000/product/detail/${ud_idx}`)
-      // 배포용
       .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
-
-      // .get(`http://localhost:8000/product/detail/${ud_idx}`)
       .then((res) => {
-        dispatch(setModifyPost(res.data));
-        const { ud_title: st_title, ...rest } = res.data;
-
-        const modifiedData = {
-          ...rest,
-          st_title,
-        };
-
-        dispatch(setchatDetail(modifiedData));
-        // 상태 업데이트
-      })
-      .catch((error) => console.error(error));
-  }, [ud_idx, dispatch]);
-
-  useEffect(() => {
-    axios
-      // .get(`http://localhost:8000/product/detail/${ud_idx}`)
-      // 배포용
-      .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
-
-      .then((res) => {
-        // console.log('서버 응답 데이터:', res.data);
         const productData = res.data;
 
         // ud_image 필드가 JSON 문자열인 경우 배열로 변환
@@ -79,10 +68,64 @@ const MarketDetailPage = () => {
           productData.ud_images = []; // 또는 기본값 설정
         }
 
-        setMarketDetailState(res.data);
+        // Redux 상태 업데이트
+        dispatch(setModifyPost(productData));
+
+        // chatDetail 상태 업데이트 준비
+        const { ud_title: st_title, ...rest } = productData;
+        const modifiedData = { ...rest, st_title };
+        dispatch(setchatDetail(modifiedData));
+
+        // 로컬 상태 업데이트
+        setMarketDetailState(productData);
       })
       .catch((error) => console.error(error));
-  }, [ud_idx]);
+  }, [ud_idx, dispatch]); // 의존성 배열에 ud_idx와 dispatch를 포함
+
+  // useEffect 스파게티 코드 위 코드로 대체해서 최적화함!
+  // useEffect(() => {
+  //   axios
+  //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
+  //     // 배포용
+  //     .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
+
+  //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
+  //     .then((res) => {
+  //       dispatch(setModifyPost(res.data));
+  //       const { ud_title: st_title, ...rest } = res.data;
+
+  //       const modifiedData = {
+  //         ...rest,
+  //         st_title,
+  //       };
+
+  //       dispatch(setchatDetail(modifiedData));
+  //       // 상태 업데이트
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, [ud_idx, dispatch]);
+
+  // useEffect(() => {
+  //   axios
+  //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
+  //     // 배포용
+  //     .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
+
+  //     .then((res) => {
+  //       // console.log('서버 응답 데이터:', res.data);
+  //       const productData = res.data;
+
+  //       // ud_image 필드가 JSON 문자열인 경우 배열로 변환
+  //       if (productData.ud_image && typeof productData.ud_image === 'string') {
+  //         productData.ud_images = JSON.parse(productData.ud_image);
+  //       } else {
+  //         productData.ud_images = []; // 또는 기본값 설정
+  //       }
+
+  //       setMarketDetailState(res.data);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, [ud_idx]);
 
   // 가격 변환 함수
   const formatPrice = (price: number | null): string => {
@@ -191,13 +234,19 @@ const MarketDetailPage = () => {
                   alt={`Image ${currentImageIndex}`}
                 />
               )}
-              <div className="indicators">{renderIndicators()}</div>
-              <button className="left" onClick={handlePrevImage}>
-                <IoIosArrowDropleftCircle />
-              </button>
-              <button className="right" onClick={handleNextImage}>
-                <IoIosArrowDroprightCircle />
-              </button>
+              {marketDetailState &&
+                marketDetailState.ud_images &&
+                marketDetailState.ud_images.length > 1 && (
+                  <>
+                    <div className="indicators">{renderIndicators()}</div>
+                    <button className="left" onClick={handlePrevImage}>
+                      <IoIosArrowDropleftCircle />
+                    </button>
+                    <button className="right" onClick={handleNextImage}>
+                      <IoIosArrowDroprightCircle />
+                    </button>
+                  </>
+                )}
             </div>
             <div className="market-info-box">
               <nav aria-label="detail-category">
@@ -220,7 +269,9 @@ const MarketDetailPage = () => {
                     {'\u00A0'}
                   </li>
                   <li className="detail-category2" aria-current="page">
-                    {marketDetailState.ud_category}
+                    {marketDetailState.c_idx
+                      ? categoryMapping[marketDetailState.c_idx]
+                      : ''}
                   </li>
                 </ol>
               </nav>
@@ -256,7 +307,7 @@ const MarketDetailPage = () => {
                 {'\u00A0'}
                 {'\u00A0'}
                 {'\u00A0'}
-                {marketDetailState.u_idx}
+                {marketDetailState.nickname}
               </div>
 
               <div className="detail-button-user">

@@ -87,10 +87,10 @@ exports.createusedGoods = async (req, res) => {
 
       // 조회수 증가
 
-      await db.Useproduct.increment('viewcount', {
-        by: 1,
-        where: { ud_idx: newProducts.ud_idx },
-      });
+      // await db.Useproduct.increment('viewcount', {
+      //   by: 1,
+      //   where: { ud_idx: newProducts.ud_idx },
+      // });
       res.send(newProducts);
     } else {
       // 이미지 파일이 업로드되지 않은 경우 에러 메시지를 반환
@@ -113,6 +113,11 @@ exports.detailusedGoods = async (req, res) => {
       res.status(404).send('게시물을 찾을 수 없습니다.');
       return;
     }
+    // 조회수 증가
+    await db.Useproduct.increment('viewcount', {
+      where: { ud_idx: usedGoodsId },
+    });
+
     res.send(product);
   } catch (error) {
     console.error(error);

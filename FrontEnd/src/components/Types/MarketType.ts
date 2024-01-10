@@ -90,3 +90,7 @@ export interface MarketHeartProps {
   user: number | null;
   product: number;
 }
+
+export interface CategoryMapping {
+  [key: number]: string;
+}
