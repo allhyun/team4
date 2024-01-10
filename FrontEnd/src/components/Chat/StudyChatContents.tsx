@@ -9,6 +9,7 @@ import React, {
   FormEvent,
   useEffect,
   useCallback,
+  useRef,
 } from 'react';
 import { useSelector } from 'react-redux';
 import { io, Socket } from 'socket.io-client';
@@ -64,6 +65,7 @@ const StudyChatContents = () => {
     []
   );
   const [Ridx, setRidx] = useState();
+  const chatCon = useRef<HTMLDivElement | null>(null);
   const chatData = useSelector((state: any) => state.chat.chat.chatDetail);
   const userData = useSelector((state: any) => state.user.user);
   //소켓 관련
@@ -182,7 +184,12 @@ const StudyChatContents = () => {
   useEffect(() => {
     socket.on('chat', addChatList);
   }, [addChatList]);
-
+  useEffect(() => {
+    //ref건드려서 스크롤 맨 아래로 내리기
+    if (chatCon.current) {
+      chatCon.current.scrollTop = chatCon.current.scrollHeight;
+    }
+  }, [chatList]);
   const handleSendMessage = async () => {
     // 채팅 메시지 전송
 
@@ -218,9 +225,14 @@ const StudyChatContents = () => {
   };
   return (
     <>
-      <button onClick={destroyRoom}>채팅방 나가기</button>
-      <div className="chat-con">
-        {chatData.st_title}
+      <div className="chat-name-con">
+        <div className="chat-name">{chatData.st_title}</div>
+        <button onClick={destroyRoom} className="exit-chat-button">
+          채팅방 나가기
+        </button>
+      </div>
+
+      <div className="chat-con" ref={chatCon}>
         {chatList.map((chat, i) => {
           // if (chat.type === 'notice') return <Notice key={i} chat={chat} />;
           return <Chat key={i} chat={chat} />;

@@ -40,7 +40,7 @@ const ChatHeader = () => {
   return (
     <>
       <div className="chat-header">
-        채팅방
+        <div className="chat-header-top"></div>
         {chatRoomsList.length > 0 && (
           <div className="chat-room">
             {chatRoomsList.map((room: any) => (
