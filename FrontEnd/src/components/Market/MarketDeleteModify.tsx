@@ -61,7 +61,7 @@ const MarketDeleteModify = (props: marketudidx) => {
   return (
     <>
       {/* 작성자만 수정/삭제할 수 있도록 기능 추가 필요 */}
-      <button className="detailbutton product-change">상태 변경</button>
+      {/* <button className="detailbutton product-change">상태 변경</button> */}
       <button className="detailbutton product-edit" onClick={modifyProduct}>
         상품 수정
       </button>
