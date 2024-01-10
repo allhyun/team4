@@ -242,7 +242,7 @@ exports.updateUserInfo = async (req, res) => {
       });
     }
   });
-  console.log('req.session', req.session);
+  console.log('수정된 req.session:', req.session);
 };
 
 // 닉네임 변경 컨트롤러
