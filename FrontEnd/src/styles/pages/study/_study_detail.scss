@@ -12,4 +12,5 @@
 
 .study-button {
   @include main-button;
+  @include button-size;
 }
