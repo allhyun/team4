@@ -309,19 +309,19 @@ const MarketModify: React.FC = () => {
     let isValid = true;
 
     // 이미지 유효성 검사
-    if (images.length === 0) {
-      setErrorMessages((prev) => ({
-        ...prev,
-        ud_image: '이미지를 넣어주세요.',
-      }));
-      imageRef.current?.focus();
-      return false;
-    } else {
-      setErrorMessages((prev) => ({
-        ...prev,
-        ud_image: '', // 이미지가 있을 경우 메시지를 초기화
-      }));
-    }
+    // if (images.length === 0) {
+    //   setErrorMessages((prev) => ({
+    //     ...prev,
+    //     ud_image: '이미지를 넣어주세요.',
+    //   }));
+    //   imageRef.current?.focus();
+    //   return false;
+    // } else {
+    //   setErrorMessages((prev) => ({
+    //     ...prev,
+    //     ud_image: '', // 이미지가 있을 경우 메시지를 초기화
+    //   }));
+    // }
 
     // 상품명 유효성 검사
     if (!data.ud_title) {
