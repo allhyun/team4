@@ -1,14 +1,8 @@
-//채팅을 표시할 배열만들기
-//어떤 채팅방에 어떤입장으로 입장했다는 알림, 퇴장 알림(db삭제했을경우)
-//한번 채팅 쓰면 db에 올리기
-//엔터 누르면 입력버튼 눌리게
 //방 나가는 기능
-//특정 주소로 이동
-// 채팅하나 보낼때마다 api요청
-
-//-----------------배열만들기 마운트시에 axios로 채팅방 내용 가져와서 배열에 차곡차곡 담기
-//전송버튼 배열안의 개수가 0이면 룸만들고 룸정보 db에 넣기
-//전송버튼 누르면
+// 참여 방식을 바꿔야 할 것 같음 (후순위)
+//마운트 되면 유저랑 채팅방 비교해서 불러오기
+//프롭스로 채팅방 이름 넘기기
+//왼쪽 헤더 누르면 리덕스안의 Rname값 바뀌게
 import React, {
   useState,
   ChangeEvent,
@@ -57,7 +51,10 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     autoConnect: false,
   }
 );
-
+interface ChatMessage {
+  type: string;
+  content: string;
+}
 const StudyChatContents = () => {
   const [chatInput, setChatInput] = useState('');
   const [socketConnected, setSocketConnected] = useState(false);
@@ -72,27 +69,8 @@ const StudyChatContents = () => {
   useEffect(() => {
     socket.connect();
     setSocketConnected(true);
-
-    // // 방 생성 성공 시의 서버 응답 처리
-    // socket.on('notice', (data) => {
-    //   console.log(data.msg);
-    // });
-
-    // // 방 입장 성공 시의 서버 응답 처리
-    // socket.on('enter', (data) => {
-    //   console.log(data.msg);
-    // });
-
-    // // 채팅 메시지 수신 시의 서버 응답 처리
-    // socket.on('chat', (data) => {
-    //   console.log(`${data.nickname}: ${data.msg}`);
-    // });
-
-    // // 방 떠남 시의 서버 응답 처리
-    // socket.on('exit', (data) => {
-    //   console.log(data.msg);
-    // });
-
+    makeRoom();
+    getMsg();
     return () => {
       // 컴포넌트 언마운트 시 소켓 연결 해제
       setSocketConnected(false);
@@ -103,6 +81,29 @@ const StudyChatContents = () => {
       });
     };
   }, []);
+  const getMsg = async () => {
+    console.log('채팅방 내용 가져오기');
+    //api요청 배열로 만들어서 addChatList안에 넣기.. 아마도
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_HOST}/chatRoom/${
+          'study' + studyData.st_idx + '_' + studyData.st_title
+        }/chat`
+      );
+      console.log('채팅방 내용', res.data.data);
+      const modifiedData: ChatMessage[] = res.data.data.map(
+        ({ c_content, nickname }: { c_content: string; nickname: string }) => ({
+          type: nickname === userData.nickname ? 'my' : 'other',
+          content: `${nickname}: ${c_content}`,
+        })
+      );
+
+      // chatList 갱신
+      setChatList((prevChatList) => [...prevChatList, ...modifiedData]);
+    } catch (error) {
+      console.error('axios error:', error);
+    }
+  };
 
   const sendMsg = async () => {
     console.log('룸번호', Ridx);
@@ -133,7 +134,22 @@ const StudyChatContents = () => {
       }
     }
   };
-
+  async function makeRoom() {
+    const res = await axios.post(`${process.env.REACT_APP_HOST}/chatRoom`, {
+      r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+      u_idx: userData.u_idx,
+    });
+    console.log('res.data.r_idx', res.data.r_idx);
+    setRidx(res.data.r_idx);
+    console.log('내부', Ridx);
+    socket.emit('joinRoom', {
+      r_idx: res.data.r_idx,
+      r_name: 'study' + studyData.st_idx,
+      nickname: userData.nickname,
+      userid: userData.userid,
+      u_idx: userData.u_idx,
+    });
+  }
   const addChatList = useCallback(
     (res: { nickname: string; msg: string }) => {
       const type = res.nickname === userData.nickname ? 'my' : 'other';
@@ -156,40 +172,7 @@ const StudyChatContents = () => {
     if (socketConnected) {
       // 만약 소켓이 연결되어 있다면 채팅 메시지 전송
       // socket.emit('sendMsg', { msg: chatInput });
-      if (chatList.length === 0) {
-        // socket.emit('createroom', {
-        //   r_name: 'study' + studyData.st_idx,
-        //   userid: userData.u_idx,
-        //   nickname: userData.nickname,
-        // });
-        console.log('u_idx값', userData.u_idx);
-        try {
-          const res = await axios.post(
-            `${process.env.REACT_APP_HOST}/chatRoom`,
-            {
-              r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
-              u_idx: userData.u_idx,
-            }
-          );
-          console.log('res.data.r_idx', res.data.r_idx);
-          setRidx(res.data.r_idx);
-          console.log('내부', Ridx);
-          socket.emit('joinRoom', {
-            r_idx: res.data.r_idx,
-            r_name: 'study' + studyData.st_idx,
-            nickname: userData.nickname,
-            userid: userData.userid,
-            u_idx: userData.u_idx,
-          });
-          sendMsg();
-          // addChatList({ nickname: userData.nickname, msg: chatInput });
-          //배열안에 내용 집어넣기
-        } catch {}
-      } else {
-        // addChatList({ nickname: userData.nickname, msg: chatInput });
-        sendMsg();
-      }
-
+      sendMsg();
       setChatInput('');
     } else {
       console.log('소켓이 아직 연결되지 않았습니다.');

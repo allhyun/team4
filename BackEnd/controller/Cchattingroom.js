@@ -169,20 +169,42 @@ exports.createChat = async (req, res) => {
 // 채팅메시지 조회 + 채팅 메시지 검색
 exports.getAllMsg = async (req, res) => {
   try {
-    const chatRoom = await Chattingroom.findOne({
+    const chatRooms = await Chattingroom.findAll({
       //  body로 방이름 받을건지 아니면 params로 번호를 받아올지
-      where: { r_idx: req.params.r_idx },
+      where: { r_name: req.params.r_name },
     });
 
-    let where = { r_idx: chatRoom.r_idx };
+    if (!chatRooms || chatRooms.length === 0) {
+      return res.send({ result: false, msg: '채팅방을 찾을 수 없습니다.' });
+    }
+    const chatRoomIds = chatRooms.map((room) => room.r_idx);
+    const where = { r_idx: { [Op.in]: chatRoomIds } };
     const keyword = req.query.keyword;
     if (keyword) where.c_content = { [Op.like]: `%${keyword}%` };
 
-    const dm = await Chatmessage.findAll({
+    const chatMessages = await Chatmessage.findAll({
       where: where,
       attributes: ['c_date', 'c_content', 'u_idx'],
+      order: [['c_date', 'ASC']],
     });
-    res.send({ result: true, msg: '채팅한 내용 불러오기 성공.', data: dm });
+
+    const chatMessagesWithNickname = await Promise.all(
+      chatMessages.map(async (message) => {
+        const user = await User.findOne({ where: { u_idx: message.u_idx } });
+        const nickname = user ? user.nickname : 'Unknown'; // 존재하지 않는 경우에 대한 기본값 설정
+        return {
+          c_date: message.c_date,
+          c_content: message.c_content,
+          nickname,
+        };
+      })
+    );
+
+    res.send({
+      result: true,
+      msg: '채팅한 내용 불러오기 성공.',
+      data: chatMessagesWithNickname,
+    });
   } catch (err) {
     console.error(err);
     res.send({ result: false });

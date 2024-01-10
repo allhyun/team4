@@ -159,6 +159,6 @@ router.post('/getRooms', chatRoom.getRooms);
 // r_idx지우고 Room/chat
 router.post('/chatRoom/:r_idx/chat', chatRoom.createChat);
 // 채팅방 내용조회
-router.get('/chatRoom/:r_idx/chat', chatRoom.getAllMsg);
+router.get('/chatRoom/:r_name/chat', chatRoom.getAllMsg);
 
 module.exports = router;
