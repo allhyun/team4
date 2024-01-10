@@ -152,7 +152,7 @@ router.post('/getRooms', chatRoom.getRooms);
 // 방 나가기
 // router.delete('/chatRoom/:r_idx', chatRoom.outRoom);
 // 방 삭제하기
-// router.delete('/deleteRoom', chatRoom.deleteChatRoom);
+router.delete('/deleteRoom', chatRoom.deleteChatRoom);
 
 // 채팅 파트
 // 채팅 전송
