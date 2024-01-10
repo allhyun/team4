@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModifyPost } from '../../store/marketmodifyReducer';
 import { DataType, propsType } from '../Types/MarketType';
-import { FaRegHeart } from 'react-icons/fa';
-import { FaHeart } from 'react-icons/fa';
+import Heart from './Heart';
 
 interface marketTable {
   ud_idx: number;
@@ -31,11 +30,6 @@ const UserHeartPost = (props: propsType) => {
   const [postList, setPostList] = useState<DataType[]>([]);
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
 
-  const [changeHeart, setChangeHeart] = useState<boolean>(true);
-
-  const heartHandler = () => {
-    setChangeHeart(!changeHeart);
-  };
   // 날짜 변환 함수
   const timeSince = (dateString: string) => {
     const now = new Date();
@@ -104,6 +98,7 @@ const UserHeartPost = (props: propsType) => {
             params: { u_idx: u_idx },
           }
         );
+        console.log('res.data', res.data);
 
         if (res.data.usedgoods) {
           const modifiedData = res.data.usedgoods.map((item: DataType) => {
@@ -149,9 +144,9 @@ const UserHeartPost = (props: propsType) => {
                 <p className="title">{truncateTitle(data.ud_title, 14)}</p>
                 <p className="price">{formatPrice(data.ud_price)} 원</p>
               </div>
-              <div className="heart" onClick={heartHandler}>
-                {changeHeart ? <FaHeart /> : <FaRegHeart />}
-              </div>
+
+              <Heart />
+
               <div className="region-date-container">
                 <p>{data.ud_region}</p>
                 <p>{timeSince(data.ud_date)}</p>

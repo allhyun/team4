@@ -274,20 +274,73 @@ exports.removeHeart = async (req, res) => {
 };
 
 // 찜 목록 조회
+// exports.heartList = async (req, res) => {
+//   try {
+//     const u_idx = req.query;
+//     const heartList = await db.Heart.findAll({
+//       where: { u_idx: u_idx },
+//       includes: [
+//         {
+//           model: db.Useproduct,
+//           attributes: ['ud_idx', 'ud_title', 'ud_image'],
+//         },
+//       ],
+//     });
+//     console.log('heartList', heartList);
+//     res.send({ success: true, data: heartList });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('메인화면 에러 발생');
+//   }
+// };
+
+// 찜 목록 조회 2
 exports.heartList = async (req, res) => {
   try {
-    const u_idx = req.query;
-    const heartList = await db.Heart.findAll({
-      where: { u_idx: u_idx },
+    const u_idx = req.body.query;
+    const page = req.query.page || 1;
+    const pageSize = 8; // 페이지당 8개의 항목
+    const offset = (page - 1) * pageSize; // 올바른 오프셋 계산
+
+    const totalCount = await db.Useproduct.count(); // 전체 항목 수
+    const usedgoods = await db.Useproduct.findAll({
+      attributes: [
+        'ud_idx',
+        'u_idx',
+        'buy_idx',
+        'ud_price',
+        'ud_title',
+        'ud_image',
+        'ud_content',
+        'ud_region',
+        'viewcount',
+        'ud_date',
+        // 'nickname',
+        // 'ud_images',
+        'c_idx',
+      ],
+      where: {
+        ud_date: {
+          [Op.lt]: new Date(),
+        },
+      },
       includes: [
         {
-          model: db.Useproduct,
-          attributes: ['ud_idx', 'ud_title', 'ud_image'],
+          model: db.Heart,
+          where: {
+            u_idx: u_idx,
+            ud_idx: db.Sequelize.col('Useproduct.ud_idx'),
+          },
+          required: true,
         },
       ],
+      order: [['ud_date', 'DESC']],
+      limit: pageSize, // 페이지당 항목 수 제한
+      offset: offset, // 페이지 시작점
     });
-    console.log('heartList', heartList);
-    res.send({ success: true, data: heartList });
+    console.log(usedgoods);
+
+    res.send({ usedgoods: usedgoods, totalCount: totalCount });
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
