@@ -6,6 +6,7 @@ import axios from 'axios';
 //리덕스 관련
 import { useDispatch, useSelector } from 'react-redux';
 import { setModifyPost } from '../../store/marketmodifyReducer';
+import { setchatDetail } from '../../store/chatReducer';
 //
 import '../../styles/style.scss';
 import { IoEyeSharp } from 'react-icons/io5'; // 조회수 아이콘
@@ -47,7 +48,16 @@ const MarketDetailPage = () => {
 
       // .get(`http://localhost:8000/product/detail/${ud_idx}`)
       .then((res) => {
-        dispatch(setModifyPost(res.data)); // 상태 업데이트
+        dispatch(setModifyPost(res.data));
+        const { ud_title: st_title, ...rest } = res.data;
+
+        const modifiedData = {
+          ...rest,
+          st_title,
+        };
+
+        dispatch(setchatDetail(modifiedData));
+        // 상태 업데이트
       })
       .catch((error) => console.error(error));
   }, [ud_idx, dispatch]);
@@ -165,7 +175,7 @@ const MarketDetailPage = () => {
   };
 
   const handleChattingClick = () => {
-    navigate('/chatting');
+    navigate('/chatting', { state: { key: 'study-page' } });
   };
 
   return (
