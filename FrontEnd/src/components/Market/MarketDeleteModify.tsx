@@ -9,7 +9,10 @@ const MarketDeleteModify = (props: marketudidx) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pageNumber: number = props.ud_idx;
-
+  const userData = useSelector((state: any) => state.user.user);
+  const modifyPost = useSelector(
+    (state: any) => state.market.market.modifyPost
+  );
   const fetchProductData = async () => {
     try {
       const response = await axios.get(
@@ -54,21 +57,25 @@ const MarketDeleteModify = (props: marketudidx) => {
     }
   };
 
-  // const joinStudy = async () => {
-  //   navigate('/study/join');
-  // };
-
   return (
     <>
-      {/* 작성자만 수정/삭제할 수 있도록 기능 추가 필요 */}
-      {/* <button className="detailbutton product-change">상태 변경</button> */}
-      <button className="detailbutton product-edit" onClick={modifyProduct}>
-        상품 수정
-      </button>
-      <button className="detailbutton product-delete" onClick={deleteProduct}>
-        상품 삭제
-      </button>
+      {modifyPost && userData.u_idx === modifyPost.u_idx && (
+        <>
+          {/* 리팩토링할 때 상태변경 구현할 것!*/}
+          {/* <button className="detailbutton product-change">상태 변경</button> */}
+          <button className="detailbutton product-edit" onClick={modifyProduct}>
+            상품 수정
+          </button>
+          <button
+            className="detailbutton product-delete"
+            onClick={deleteProduct}
+          >
+            상품 삭제
+          </button>
+        </>
+      )}
     </>
   );
 };
+
 export default MarketDeleteModify;

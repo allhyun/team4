@@ -1,3 +1,19 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; // 전체 페이지에서 스크롤 방지
+}
+
+div.st-main-container {
+  height: calc(100vh - 220px); // 메인 요소의 높이를 전체 뷰포트 높이로 설정
+  overflow-y: auto; // 콘텐츠가 뷰포트보다 높을 때만 스크롤 활성화
+}
+div.market-main-container {
+  height: calc(100vh - 120px); // 메인 요소의 높이를 전체 뷰포트 높이로 설정
+  overflow-y: auto; // 콘텐츠가 뷰포트보다 높을 때만 스크롤 활성화
+}
+
 // 페이지 전체 공통적용할 스타일 넣는 부분
 body {
   width: 100vw;
