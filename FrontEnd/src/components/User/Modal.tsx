@@ -9,7 +9,11 @@ interface Props {
 
 const Modal = ({ text, setIsModalOpen }: Props) => {
   useEffect(() => {
-    setTimeout(() => setIsModalOpen(false), 2000);
+    const timeoutId: any = () => setTimeout(() => setIsModalOpen(false), 3000);
+    timeoutId();
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return ReactDOM.createPortal(
