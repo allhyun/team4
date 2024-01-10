@@ -8,34 +8,23 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-const MarketHeart: React.FC<MarketHeartProps> = ({ user, product }) => {
-  const { ud_idx } = useParams();
+const MarketHeart: React.FC<MarketHeartProps> = () => {
   const [heartButtonClicked, setHeartButtonClicked] = useState(false);
   const userInfo = useSelector((state: RootState) => state.user.user);
-  const { u_idx, nickname } = userInfo;
-  console.log('서버에 보내는 값:', userInfo); // 여기에 콘솔 로그 추가
   const modifyPost = useSelector(
     (state: any) => state.market.market.modifyPost
   );
 
-  const [data, setData] = useState<Heart>({
-    ud_idx: 1,
-    u_idx: Number(u_idx) || null,
-    h_idx: 1,
-  });
-
   const handleHeartClick = async () => {
-    // 실제 API 경로로 대체
-    const postApiUrl = `${process.env.REACT_APP_HOST}/product/heart`;
-    const deleteApiUrl = `${process.env.REACT_APP_HOST}/product/heart?ud_idx=${product}&u_idx=${user}`;
-
     try {
       if (heartButtonClicked) {
         // 이미 찜한 상태이면 삭제 요청
-        await axios.delete(deleteApiUrl);
+        await axios.delete(
+          `${process.env.REACT_APP_HOST}/product/heart?u_idx=${userInfo.u_idx}&ud_idx=${modifyPost.ud_idx}`
+        );
       } else {
         // 찜하지 않은 상태이면 추가 요청
-        await axios.post(postApiUrl, {
+        await axios.post(`${process.env.REACT_APP_HOST}/product/heart`, {
           u_idx: userInfo.u_idx,
           ud_idx: modifyPost?.ud_idx,
         });
