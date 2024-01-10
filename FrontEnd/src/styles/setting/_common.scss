@@ -33,3 +33,10 @@ body {
     z-index: -1;
   }
 }
+
+// 리팩토링 때 햄버거 메뉴 구현하면 아래 스타일 제거해야함!
+.buger-menu {
+  svg {
+    color: transparent;
+  }
+}

@@ -45,11 +45,11 @@ export default function MarketHeader() {
             <li className="category">
               <div className="buger-menu">
                 <RxHamburgerMenu />
+                {/* <div className={burger_class} onClick={updateMenu}></div>
                 <div className={burger_class} onClick={updateMenu}></div>
                 <div className={burger_class} onClick={updateMenu}></div>
                 <div className={burger_class} onClick={updateMenu}></div>
-                <div className={burger_class} onClick={updateMenu}></div>
-                <div className={burger_class} onClick={updateMenu}></div>
+                <div className={burger_class} onClick={updateMenu}></div> */}
               </div>
             </li>
             <li className="search">
