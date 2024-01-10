@@ -5,7 +5,6 @@
   flex-wrap: wrap;
   position: relative;
   gap: 2%;
-
   //내부 요소 컨테이너 설정
   //   justify-content: center;
   width: 100%;
@@ -32,13 +31,48 @@
   margin: 20px;
 
   flex-direction: column;
-  color: $main-white;
-  background-color: $main-color;
 
   padding: 2em;
-  border: {
-    radius: 8px;
-    top: 0.5px solid $main-white;
-    left: 0.5px solid $main-white;
+
+  @include container;
+}
+.thumMK {
+  cursor: pointer;
+  width: 44%;
+  height: 300px;
+  margin: 20px;
+
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+
+  @include container;
+  .thum-CPlus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .thum-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include main-button;
+      font-size: x-large;
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-bottom: 10px;
+
+      .thum-plus {
+        font-size: x-large;
+      }
+    }
+  }
+  &:hover {
+    box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.212);
+    /* 박스 쉐도우 색상과 투명도 설정 */
   }
 }

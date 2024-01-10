@@ -51,7 +51,7 @@ const StudyDetailPage = () => {
             <div dangerouslySetInnerHTML={{ __html: study.st_intro }} />
           </>
         ) : (
-          <div>Loading...</div>
+          <></>
         )}
         <StudyDeleteModify st_idx={parseInt(`${st_idx}`, 10)} />
       </div>

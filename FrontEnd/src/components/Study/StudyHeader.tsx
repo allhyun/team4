@@ -52,10 +52,7 @@ const StudyHeader = () => {
               </div>
             </li>
             <li className="search">
-              <Search
-                placeholder="어떤 상품을 찾으시나요?"
-                onSearch={onSearch}
-              />
+              <Search placeholder="스터디 검색" onSearch={onSearch} />
             </li>
             <li className="sale"></li>
             <li className="chat">

@@ -1,7 +1,6 @@
 .study-edit-ouline {
   @include container;
-  padding: 1%;
-
+  padding: 6%;
   @include inner-contents;
 }
 input {
@@ -9,9 +8,10 @@ input {
 }
 .study-button {
   @include main-button;
+  @include button-size;
 }
 .study-modify-container {
-  padding: 1%;
+  padding: 6%;
   @include container;
   @include inner-contents;
 }

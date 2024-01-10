@@ -32,21 +32,23 @@ const StudyDeleteModify = (props: PropsType) => {
 
   return (
     <>
-      {studyData && userData.u_idx === studyData.u_idx && (
-        <>
-          <button onClick={modifyStudy} className="study-button">
-            수정
-          </button>
-          <button onClick={deleteStudy} className="study-button">
-            삭제
-          </button>
-        </>
-      )}
+      <div className="studyD-buttons">
+        {studyData && userData.u_idx === studyData.u_idx && (
+          <>
+            <button onClick={modifyStudy} className="study-button">
+              수정
+            </button>
+            <button onClick={deleteStudy} className="study-button">
+              삭제
+            </button>
+          </>
+        )}
 
-      {/* 로그인되어있지만 다를경우 */}
-      <button onClick={joinStudy} className="study-button">
-        채팅
-      </button>
+        {/* 로그인되어있지만 다를경우 */}
+        <button onClick={joinStudy} className="study-button">
+          채팅
+        </button>
+      </div>
     </>
   );
 };
