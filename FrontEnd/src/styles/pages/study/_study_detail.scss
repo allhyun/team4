@@ -3,13 +3,22 @@
   padding: 1%;
 
   @include inner-contents;
-
+  min-height: 80vh;
   img {
     max-width: 700px;
     max-height: 700px;
   }
 }
-
-.study-button {
-  @include main-button;
+.studyD-buttons {
+  display: flex;
+  justify-content: flex-end;
+  .study-button {
+    @include main-button;
+    @include button-size;
+  }
 }
+
+// position: absolute;
+// top: 50%; /* 수직 가운데 정렬 */
+// left: 50%; /* 수평 가운데 정렬 */
+// transform: translate(-50%, -50%); /* 가운데 정렬을 위한 위치 조정 */
