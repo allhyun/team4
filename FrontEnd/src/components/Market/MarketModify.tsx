@@ -49,7 +49,7 @@ const MarketModify: React.FC = () => {
   const modifyPost = useSelector(
     (state: any) => state.market.market.modifyPost
   );
-  console.log('modifyPost.ud_idx:', modifyPost.ud_idx);
+  // console.log('modifyPost.ud_idx:', modifyPost.ud_idx);
   // console.log('modifyPost값 확인 :', modifyPost);
 
   // const ud_idx = modifyPost ? modifyPost.ud_idx : null;

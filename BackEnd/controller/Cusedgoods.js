@@ -2,6 +2,7 @@ const db = require('../model');
 const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const { User } = require('../model');
 
 //  중고물품 리스트(페이지네이션)
 exports.getUsedgoods = async (req, res) => {
@@ -237,11 +238,15 @@ exports.searchusedGoods = async (req, res) => {
 // 중고 물품 찜 등록
 exports.addHeart = async (req, res) => {
   try {
+    // if (!req.session.isAuthenticated) {
+    //   return res.status(401).send('로그인이 필요한 기능입니다.');
+    // }
     const { u_idx, ud_idx } = req.body;
     const newHeart = await db.Heart.create({
       u_idx,
       ud_idx,
     });
+
     res.status(200).send(newHeart);
   } catch (error) {
     console.error('하트 추가 에러:', error);
@@ -251,6 +256,9 @@ exports.addHeart = async (req, res) => {
 // 중고 물품 찜 삭제
 exports.removeHeart = async (req, res) => {
   try {
+    // if (!req.session.isAuthenticated) {
+    //   return res.status(401).send('로그인이 필요한 기능입니다.');
+    // }
     const { u_idx, ud_idx } = req.query;
     await db.Heart.destroy({
       where: {
