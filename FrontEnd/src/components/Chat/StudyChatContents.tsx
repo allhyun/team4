@@ -68,7 +68,24 @@ const StudyChatContents = () => {
   const userData = useSelector((state: any) => state.user.user);
   //소켓 관련
 
+  // useEffect(() => {
+  //   setChatList([]);
+  //   socket.connect();
+  //   setSocketConnected(true);
+  //   makeRoom();
+  //   getMsg();
+  //   return () => {
+  //     // 컴포넌트 언마운트 시 소켓 연결 해제
+  //     setSocketConnected(false);
+  //     socket.disconnect();
+  //     // socket.emit('disconnect');
+  //     socket.on('exit', (data) => {
+  //       console.log(data.msg);
+  //     });
+  //   };
+  // }, []);
   useEffect(() => {
+    setChatList([]);
     socket.connect();
     setSocketConnected(true);
     makeRoom();
@@ -82,15 +99,13 @@ const StudyChatContents = () => {
         console.log(data.msg);
       });
     };
-  }, []);
+  }, [studyData.st_title]);
   const getMsg = async () => {
     console.log('채팅방 내용 가져오기');
     //api요청 배열로 만들어서 addChatList안에 넣기.. 아마도
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_HOST}/chatRoom/${
-          'study' + studyData.st_idx + '_' + studyData.st_title
-        }/chat`
+        `${process.env.REACT_APP_HOST}/chatRoom/${studyData.st_title}/chat`
       );
       console.log('채팅방 내용', res.data.data);
       const modifiedData: ChatMessage[] = res.data.data.map(
@@ -138,7 +153,7 @@ const StudyChatContents = () => {
   };
   async function makeRoom() {
     const res = await axios.post(`${process.env.REACT_APP_HOST}/chatRoom`, {
-      r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+      r_name: studyData.st_title,
       u_idx: userData.u_idx,
     });
     console.log('res.data.r_idx', res.data.r_idx);
@@ -146,7 +161,7 @@ const StudyChatContents = () => {
     console.log('내부', Ridx);
     socket.emit('joinRoom', {
       r_idx: res.data.r_idx,
-      r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+      r_name: studyData.st_title,
       nickname: userData.nickname,
       userid: userData.userid,
       u_idx: userData.u_idx,
@@ -181,9 +196,9 @@ const StudyChatContents = () => {
     }
   };
 
-  useEffect(() => {
-    sendMsg();
-  }, [Ridx]);
+  // useEffect(() => {
+  //   sendMsg();
+  // }, [Ridx]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChatInput(e.target.value);
@@ -193,7 +208,7 @@ const StudyChatContents = () => {
     axios
       .delete(`${process.env.REACT_APP_HOST}/deleteRoom`, {
         data: {
-          r_name: 'study' + studyData.st_idx + '_' + studyData.st_title,
+          r_name: studyData.st_title,
           u_idx: userData.u_idx,
         },
       })
@@ -205,7 +220,7 @@ const StudyChatContents = () => {
     <>
       <button onClick={destroyRoom}>채팅방 나가기</button>
       <div className="chat-con">
-        스터디 관련 채팅 내용
+        {studyData.st_title}
         {chatList.map((chat, i) => {
           // if (chat.type === 'notice') return <Notice key={i} chat={chat} />;
           return <Chat key={i} chat={chat} />;
