@@ -81,6 +81,8 @@ const MarketDetailPage = () => {
       })
       .catch((error) => console.error(error));
   }, [ud_idx, dispatch]); // 의존성 배열에 ud_idx와 dispatch를 포함
+
+  // useEffect 스파게티 코드 위 코드로 대체해서 최적화함!
   // useEffect(() => {
   //   axios
   //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
@@ -232,13 +234,19 @@ const MarketDetailPage = () => {
                   alt={`Image ${currentImageIndex}`}
                 />
               )}
-              <div className="indicators">{renderIndicators()}</div>
-              <button className="left" onClick={handlePrevImage}>
-                <IoIosArrowDropleftCircle />
-              </button>
-              <button className="right" onClick={handleNextImage}>
-                <IoIosArrowDroprightCircle />
-              </button>
+              {marketDetailState &&
+                marketDetailState.ud_images &&
+                marketDetailState.ud_images.length > 1 && (
+                  <>
+                    <div className="indicators">{renderIndicators()}</div>
+                    <button className="left" onClick={handlePrevImage}>
+                      <IoIosArrowDropleftCircle />
+                    </button>
+                    <button className="right" onClick={handleNextImage}>
+                      <IoIosArrowDroprightCircle />
+                    </button>
+                  </>
+                )}
             </div>
             <div className="market-info-box">
               <nav aria-label="detail-category">
