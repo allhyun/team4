@@ -24,6 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 
 #userImg 폴더
-userImg/*
-userImg/
+static/userImg/*
+
 config.json

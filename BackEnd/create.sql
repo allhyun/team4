@@ -110,20 +110,21 @@ CREATE TABLE useproduct (
 );
 
 CREATE TABLE heart (
-	h_idx INT NOT NULL PRIMARY KEY,
+	h_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	u_idx INT NOT NULL,
 	ud_idx INT NOT NULL,
 	FOREIGN KEY(u_idx) REFERENCES user(u_idx) ON DELETE CASCADE,
 	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
 );
 
-CREATE TABLE buystate  (
-    buy_idx int NOT NULL PRIMARY KEY,
+-- 리팩토링할 때 고민
+-- CREATE TABLE buystate  (
+--     buy_idx int NOT NULL PRIMARY KEY,
 
-  name varchar(20) NOT NULL
-);
+--   name varchar(20) NOT NULL
+-- );
 
-INSERT INTO buystate VALUES('1', '판매중' );
-INSERT INTO buystate VALUES('2', '예약중' );
-INSERT INTO buystate VALUES('3', '판매완료' );
-INSERT INTO buystate VALUES('4', '판매보류' );
+-- INSERT INTO buystate VALUES('1', '판매중' );
+-- INSERT INTO buystate VALUES('2', '예약중' );
+-- INSERT INTO buystate VALUES('3', '판매완료' );
+-- INSERT INTO buystate VALUES('4', '판매보류' );
