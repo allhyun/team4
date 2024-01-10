@@ -109,11 +109,21 @@ db.Useproduct.belongsTo(db.Category, {
 });
 
 //  user : heart
-db.User.hasMany(db.Heart, {
+db.Heart.hasMany(db.User, {
   foreignKey: 'u_idx',
 });
 
-db.Heart.belongsTo(db.User, {
+db.User.belongsTo(db.Heart, {
+  foreignKey: 'u_idx',
+  onDelete: 'cascade',
+});
+
+//  heart : useproduct
+db.Heart.hasMany(db.Useproduct, {
+  foreignKey: 'u_idx',
+});
+
+db.Useproduct.belongsTo(db.Heart, {
   foreignKey: 'u_idx',
   onDelete: 'cascade',
 });
