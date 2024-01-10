@@ -37,10 +37,12 @@ const UserMyPage = () => {
   const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
   const [isNicknameDuplicated, setIsNicknameDuplicated] =
     useState<Boolean>(false);
+
   const [userInfo, setUserInfo] = useState<any>({});
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
   const data: any = { u_idx };
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
   useOnClickOutside(ref, () => setIsModalOpen(false));
 
   // 마운트 되면 유저 정보 요청해서 가져오기
@@ -158,7 +160,6 @@ const UserMyPage = () => {
           .then((res) => {
             if (res.data.result) {
               getUserInfo();
-              setIsModalOpen(true);
               setMsg(res.data.msg);
             } else {
               setIsModalOpen(true);
@@ -299,7 +300,9 @@ const UserMyPage = () => {
           </form>
         </div>
       </section>
-      <div ref={ref}>{isModalOpen && <Modal text={msg} />}</div>
+      <div ref={ref}>
+        {isModalOpen && <Modal text={msg} setIsModalOpen={setIsModalOpen} />}
+      </div>
     </>
   );
 };

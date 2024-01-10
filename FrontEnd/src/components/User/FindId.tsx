@@ -25,7 +25,7 @@ interface FindId {
 
 const FindId = () => {
   const [userEmail, setUserEmail] = useState<string>('');
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [findUserid, setFindUserid] = useState<string>('');
 
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -49,15 +49,15 @@ const FindId = () => {
     );
     if (response.data.userid !== null) {
       await setFindUserid(`찾는 ID는 ${response.data.userid}입니다.`);
-      await setIsOpenModal(true);
+      await setIsModalOpen(true);
     } else {
       setFindUserid('일치하는 ID가 없습니다');
-      setIsOpenModal(true);
+      setIsModalOpen(true);
     }
     // console.log('response', response.data.userid);
   };
 
-  useOnClickOutside(ref, () => setIsOpenModal(false));
+  useOnClickOutside(ref, () => setIsModalOpen(false));
 
   return (
     <>
@@ -86,9 +86,9 @@ const FindId = () => {
         </div>
       </form>
 
-      {isOpenModal && (
+      {isModalOpen && (
         <div ref={ref}>
-          <Modal text={findUserid} />
+          <Modal text={findUserid} setIsModalOpen={setIsModalOpen} />
         </div>
       )}
     </>

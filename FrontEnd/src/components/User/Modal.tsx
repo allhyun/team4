@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { IoAlertCircleOutline } from 'react-icons/io5';
 
 interface Props {
   text: string;
+  setIsModalOpen: Function;
 }
 
-const Modal = ({ text }: Props) => {
+const Modal = ({ text, setIsModalOpen }: Props) => {
+  useEffect(() => {
+    setTimeout(() => setIsModalOpen(false), 2000);
+  }, []);
+
   return ReactDOM.createPortal(
     <>
       <div className="modal-wrap">
         <div className="modal">
-          <span>{text}</span>
+          <IoAlertCircleOutline />
+          {text}
         </div>
       </div>
     </>,

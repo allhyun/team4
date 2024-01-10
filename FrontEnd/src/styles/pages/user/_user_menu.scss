@@ -18,15 +18,13 @@
     }
   }
   .user-menu {
-    transform: translateY(90%);
+    @include container;
     @include flex-center;
     flex-direction: column;
+    transform: translateY(90%);
     padding: 0.5em 1em;
     gap: 2px;
-    background-color: var(--main-bgcolor);
-    border: 1px solid var(--main-white);
     border-radius: 5px 0 5px 5px;
     font-size: 0.9em;
-    color: var(--main-white);
   }
 }
