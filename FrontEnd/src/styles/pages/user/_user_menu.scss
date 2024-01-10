@@ -2,10 +2,29 @@
   a {
     color: var(--main-white);
   }
-  padding: 0 2.5rem;
   position: fixed;
-  top: 0;
   right: 0;
+  top: 0;
+  padding: 0 2.5rem;
+
+  .user-menu {
+    @include container;
+    @include flex-center;
+    flex-direction: column;
+    transform: translateY(90%);
+    padding: 0.5em 1em;
+    // gap: 0.2em;
+    border-radius: 5px 0 5px 5px;
+    font-size: 0.9em;
+  }
+  @media screen and (max-width: 769px) {
+    padding: 2em 3em;
+    // transform: translateX(50%);
+    .user-menu {
+      flex-direction: row;
+      gap: 1em;
+    }
+  }
   animation: slideAni 0.2s ease-out;
   @keyframes slideAni {
     from {
@@ -16,15 +35,5 @@
       opacity: 1;
       transform: translateY(0);
     }
-  }
-  .user-menu {
-    @include container;
-    @include flex-center;
-    flex-direction: column;
-    transform: translateY(90%);
-    padding: 0.5em 1em;
-    gap: 2px;
-    border-radius: 5px 0 5px 5px;
-    font-size: 0.9em;
   }
 }
