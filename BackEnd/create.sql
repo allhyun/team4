@@ -117,7 +117,9 @@ CREATE TABLE heart (
 	FOREIGN KEY(ud_idx) REFERENCES useproduct(ud_idx) ON DELETE CASCADE
 );
 
--- 리팩토링할 때 고민
+
+
+-- 리팩토링할 때 고민할 것 이거는 복사하지마세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 -- CREATE TABLE buystate  (
 --     buy_idx int NOT NULL PRIMARY KEY,
 
