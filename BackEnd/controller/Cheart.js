@@ -27,7 +27,8 @@ exports.addHeart = async (req, res) => {
 // 찜목록 조회
 exports.heartList = async (req, res) => {
   try {
-    const { u_idx } = req.query;
+    console.log('req.query', req.query);
+    const u_idx = req.query;
     const heartList = await db.Heart.findAll({
       where: { u_idx },
       include: [
