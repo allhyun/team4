@@ -36,7 +36,7 @@ const StudyMainPage = () => {
   return (
     <>
       <StudyHeader />
-      <div>
+      <div className="test11">
         <div className="st-main-container">
           {page === 1 && <StudyCreateBox />}
           <StudyThumbnailBox page={page} />

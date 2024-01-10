@@ -1,3 +1,26 @@
+// 헤더 밑으로 스크롤 되게 처리
+// : 메인 스크롤 없애고, 각 페이지별 디브에만 스크롤
+.main {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; // 전체 페이지에서 스크롤 방지
+}
+// 스터디모집 메인 스크롤생성
+div.st-main-container {
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+// 중고거래 메인 스크롤생성
+div.market-main-box {
+  height: calc(100vh - 227px);
+  overflow-y: auto;
+}
+// 중고거래 판매하기 스크롤생성
+div.market_container {
+  height: calc(100vh - 220px); // 메인 요소의 높이를 전체 뷰포트 높이로 설정
+  overflow-y: auto; // 콘텐츠가 뷰포트보다 높을 때만 스크롤 활성화
+}
+
 // 페이지 전체 공통적용할 스타일 넣는 부분
 body {
   width: 100vw;
@@ -31,5 +54,12 @@ body {
     background-position: center;
     background-image: url(https://grainy-gradients.vercel.app/noise.svg);
     z-index: -1;
+  }
+}
+
+// 리팩토링 때 햄버거 메뉴 구현하면 아래 스타일 제거해야함!
+.buger-menu {
+  svg {
+    color: transparent;
   }
 }
