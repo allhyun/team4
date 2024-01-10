@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 //
 import '../../styles/style.scss';
 import StudyHeader from '../../components/Study/StudyHeader';
+import { MdOutlineAccessTimeFilled } from 'react-icons/md';
 
 const StudyDetailPage = () => {
   const { st_idx } = useParams();
@@ -16,6 +17,11 @@ const StudyDetailPage = () => {
   interface Study {
     st_title: string;
     st_intro: string;
+    st_be: number;
+    st_pub: number;
+    st_fe: number;
+    st_limit: number;
+    st_date: string;
     // ... 다른 속성들도 쓸때 추가
   }
   const dispatch = useDispatch();
@@ -40,6 +46,26 @@ const StudyDetailPage = () => {
     // useEffect 내에서만 요청
     fetchStudyDetail();
   }, [dispatch, st_idx]); // st_idx가 변경될 때마다 useEffect 재실행
+  const timeSince = (dateString: string) => {
+    const now = new Date();
+    const postDate = new Date(dateString);
+    const timeDiff = now.getTime() - postDate.getTime();
+
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days}일 전`;
+    } else if (hours > 0) {
+      return `${hours}시간 전`;
+    } else if (minutes > 0) {
+      return `${minutes}분 전`;
+    } else {
+      return `${seconds}초 전`;
+    }
+  };
 
   return (
     <>
@@ -47,8 +73,24 @@ const StudyDetailPage = () => {
       <div className="study-detail-container">
         {study ? (
           <>
-            <h3>{study.st_title}</h3>
-            <div dangerouslySetInnerHTML={{ __html: study.st_intro }} />
+            <div className="detail-title-box">
+              <div>
+                <div className="detail-titleP">{study.st_title}</div>
+                <div className="detail-time">
+                  <MdOutlineAccessTimeFilled /> {timeSince(study.st_date)}
+                </div>
+              </div>
+
+              <div className="detail-month">{study.st_limit} 개월</div>
+            </div>
+            <div>퍼블리셔: {study.st_pub}</div>
+            <div>프론트엔드: {study.st_fe}</div>
+            <div>백엔드: {study.st_be}</div>
+            <hr />
+            <div
+              dangerouslySetInnerHTML={{ __html: study.st_intro }}
+              className="html-con"
+            />
           </>
         ) : (
           <></>

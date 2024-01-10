@@ -29,12 +29,37 @@
   width: 44%;
   height: 300px;
   margin: 20px;
-
+  display: flex;
   flex-direction: column;
-
-  padding: 2em;
+  justify-content: space-between;
+  padding: 1.7em;
 
   @include container;
+  hr {
+    opacity: 50%;
+  }
+
+  .thum-TMP {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .thum-titleP {
+      font-size: x-large;
+      font-weight: 700;
+    }
+    .thum-month {
+      border: 1px solid var(--main-white);
+      border-radius: 3px;
+      padding: 5px 8px 5px 8px;
+    }
+    .thum-clock {
+      font-size: small;
+      opacity: 70%;
+    }
+    .column {
+      flex-direction: column;
+    }
+  }
 }
 .thumMK {
   cursor: pointer;

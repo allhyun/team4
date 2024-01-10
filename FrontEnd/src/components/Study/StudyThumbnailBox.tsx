@@ -7,6 +7,7 @@ import axios from 'axios';
 import { type } from 'os';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { MdOutlineAccessTimeFilled } from 'react-icons/md';
 
 //서버에서 넘어오는 데이터 타입
 interface StudyTable {
@@ -33,6 +34,26 @@ const StudyThumbnailBox = (props: propsType) => {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [studyList, setStudyList] = useState<StudyTable[]>([]);
+  const timeSince = (dateString: string) => {
+    const now = new Date();
+    const postDate = new Date(dateString);
+    const timeDiff = now.getTime() - postDate.getTime();
+
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days}일 전`;
+    } else if (hours > 0) {
+      return `${hours}시간 전`;
+    } else if (minutes > 0) {
+      return `${minutes}분 전`;
+    } else {
+      return `${seconds}초 전`;
+    }
+  };
 
   async function fetchData() {
     try {
@@ -65,14 +86,26 @@ const StudyThumbnailBox = (props: propsType) => {
           className="thum"
           onClick={() => goDetailPage(`${study.st_idx}`)}
         >
-          <h3>{study.st_title}</h3>
-          <p>{study.st_limit}개월</p>
+          <div className="thum-TMP">
+            <div className="column">
+              <div className="thum-titleP">{study.st_title}</div>
+              <div className="thum-clock">
+                <MdOutlineAccessTimeFilled /> {timeSince(study.st_date)}
+              </div>
+            </div>
 
-          <p>
-            p:{study.st_pub}
-            F:{study.st_fe}
-            B:{study.st_be}
-          </p>
+            <p className="thum-month">{study.st_limit}개월</p>
+          </div>
+          <div>
+            {' '}
+            <hr />
+          </div>
+
+          <div>
+            <div>퍼블리셔:{study.st_pub}</div>
+            <div>프론트엔드:{study.st_fe}</div>
+            <div>백엔드:{study.st_be}</div>
+          </div>
         </div>
       ))}
     </>
