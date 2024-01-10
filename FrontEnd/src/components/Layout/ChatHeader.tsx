@@ -15,12 +15,17 @@ const ChatHeader = () => {
   const chatData = useSelector((state: any) => state.chat.chat.chatDetail);
   const data = { u_idx: u_idx };
 
-  const getRoomsList = () => {
-    const response = axios
-      .post(`${process.env.REACT_APP_HOST}/getRooms`, data)
-      .then((res) => {
-        setChatRoomsList(res.data.rooms);
-      });
+  const getRoomsList = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_HOST}/getRooms`,
+        data
+      );
+      setChatRoomsList(response.data.rooms);
+    } catch (error) {
+      // 오류 처리 안하면 가저올 데이터가 없을시 리액트 상에서 axios요청 404떠요!
+      console.error('Error fetching room list:', error);
+    }
   };
 
   useEffect(() => {
