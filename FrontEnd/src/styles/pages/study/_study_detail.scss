@@ -18,7 +18,26 @@
   }
 }
 
-// position: absolute;
-// top: 50%; /* 수직 가운데 정렬 */
-// left: 50%; /* 수평 가운데 정렬 */
-// transform: translate(-50%, -50%); /* 가운데 정렬을 위한 위치 조정 */
+.detail-title-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 20px;
+  margin-bottom: 20px;
+  .detail-month {
+    border: 1px solid var(--main-white);
+    border-radius: 3px;
+    padding: 5px 8px 5px 8px;
+  }
+  .detail-titleP {
+    font-size: x-large;
+    font-weight: 700;
+  }
+  .detail-time {
+    font-size: small;
+    opacity: 70%;
+  }
+}
+.html-con {
+  min-height: 60vh;
+}
