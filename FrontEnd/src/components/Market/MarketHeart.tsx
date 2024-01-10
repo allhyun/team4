@@ -1,10 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { PiHeartFill } from 'react-icons/pi'; // 찜 아이콘
-import { Heart, MarketHeartProps } from '../Types/MarketType';
-import { Console } from 'console';
-import { setUserInfo } from '../../store/user.slice';
-import { useParams } from 'react-router-dom';
+import { MarketHeartProps } from '../Types/MarketType';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
