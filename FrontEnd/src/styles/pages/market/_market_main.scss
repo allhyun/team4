@@ -36,9 +36,12 @@ div#market-main-container {
         }
       }
       .title {
-        margin: 15px 0 0 0;
+        margin: 10px 0 0 0;
         font-size: 17px;
         color: rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .price {
         margin: 5px 0 7px 0;

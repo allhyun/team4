@@ -18,8 +18,20 @@ div.market-main-box {
 
 // 중고거래 판매하기 스크롤생성
 div.market_container {
-  height: calc(100vh - 220px); // 메인 요소의 높이를 전체 뷰포트 높이로 설정
-  overflow-y: auto; // 콘텐츠가 뷰포트보다 높을 때만 스크롤 활성화
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+// 스터디 작성하기 스크롤 생성
+div.study-edit-ouline {
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+// 스터디 디테일 페이지
+div.study-detail-container {
+  height: calc(100vh - 220px);
+  overflow-y: auto;
 }
 
 // 페이지 전체 공통적용할 스타일 넣는 부분

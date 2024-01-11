@@ -227,7 +227,6 @@ const UserMyPage = () => {
                   }
                   // value={userNickname === '' ? userInfo.nickname : userNickname}
                   {...register('userNickname', {
-                    required: '닉네임을 입력해주세요.',
                     pattern: {
                       value: /^[가-힣a-zA-Z0-9-]+$/i,
                       message: '특수문자를 허용하지 않습니다.',
@@ -254,7 +253,6 @@ const UserMyPage = () => {
                   placeholder="e-mail"
                   value={userEmail === 'undefined' ? userInfo.email : userEmail}
                   {...register('userEmail', {
-                    required: '이메일을 입력해주세요.',
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
                       message: '잘못된 형식입니다.',
