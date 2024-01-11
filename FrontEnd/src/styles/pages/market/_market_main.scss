@@ -3,12 +3,7 @@ div#market-main-container {
   width: 75%;
   // flex-wrap: wrap;
   div#market-main-box {
-    // justify-content: center;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr); // 2열 그리드
-    grid-gap: 20px; // 그리드 아이템 사이 간격
-    margin-bottom: 20px; // 하단 여백
-    padding-left: 10%;
+    justify-content: center;
 
     margin: 100px 0 5px 0;
     width: 100%;
