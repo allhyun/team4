@@ -320,8 +320,6 @@ exports.heartList = async (req, res) => {
         'ud_region',
         'viewcount',
         'ud_date',
-        // 'nickname',
-        // 'ud_images',
         'c_idx',
       ],
       where: {
@@ -334,7 +332,7 @@ exports.heartList = async (req, res) => {
           model: db.Heart,
           where: {
             u_idx: u_idx,
-            ud_idx: db.Sequelize.col('Useproduct.ud_idx'),
+            // ud_idx: db.Sequelize.col('Useproduct.ud_idx'),
           },
           required: true,
         },
