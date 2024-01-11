@@ -32,6 +32,14 @@ db.Chatuser = require('./Chatuser')(sequelize, Sequelize);
 db.Useproduct = require('./Useproduct')(sequelize, Sequelize);
 db.Category = require('./Category')(sequelize, Sequelize);
 
+db.User.hasMany(db.Useproduct, {
+  foreignKey: 'u_idx',
+});
+db.Useproduct.belongsTo(db.User, {
+  foreignKey: 'u_idx',
+  onDelete: 'cascade',
+});
+
 // db.Heart.belongsTo(db.Useproduct, {
 //   foreignKey: 'ud_idx'
 // });

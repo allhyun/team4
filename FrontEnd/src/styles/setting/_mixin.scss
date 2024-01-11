@@ -31,10 +31,22 @@
   border-radius: 5px;
 }
 
-// 메뉴 호버(임시 - 추후에 배경 최종으로 입혀지면 어울리는걸로 변경될 예정)
+// 메뉴 호버
 @mixin hover {
   transition: all 0.3s;
-  color: black;
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff81;
+  transform: translateY(-3px);
+}
+
+@mixin thum-hover {
+  transition: all 0.3s;
+  box-shadow: 0 0 20px 1px rgba(255, 255, 255, 0.212);
+}
+
+@mixin active {
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff81;
 }
 
 // 에러 메시지(ex.필수값 입력하세요)
