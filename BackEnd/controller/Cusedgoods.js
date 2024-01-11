@@ -112,6 +112,7 @@ exports.detailusedGoods = async (req, res) => {
         {
           model: db.User,
           attributes: ['nickname'], // 닉네임만 포함
+          as: 'user',
         },
       ],
     });
@@ -126,7 +127,7 @@ exports.detailusedGoods = async (req, res) => {
     });
 
     const userNickname = product.user ? product.user.nickname : null;
-    console.log(userNickname)
+    console.log('닉네임값', userNickname);
 
     res.send({ ...product.toJSON(), userNickname });
   } catch (error) {
