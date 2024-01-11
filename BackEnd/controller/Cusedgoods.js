@@ -125,7 +125,10 @@ exports.detailusedGoods = async (req, res) => {
       where: { ud_idx: usedGoodsId },
     });
 
-    res.send(product);
+    const userNickname = product.user ? product.user.nickname : null;
+    console.log(userNickname)
+
+    res.send({ ...product.toJSON(), userNickname });
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
