@@ -69,6 +69,16 @@ const MarketDetailPage = () => {
           productData.ud_images = []; // 또는 기본값 설정
         }
 
+        // User 객체가 있으면 닉네임을 상태에 추가
+        if (productData.User) {
+          setMarketDetailState({
+            ...productData,
+            nickname: productData.User.nickname,
+          });
+        } else {
+          setMarketDetailState(productData);
+        }
+
         // Redux 상태 업데이트
         dispatch(setModifyPost(productData));
 

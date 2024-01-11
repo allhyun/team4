@@ -107,7 +107,14 @@ exports.detailusedGoods = async (req, res) => {
   const usedGoodsId = req.params.ud_idx;
   console.log(usedGoodsId);
   try {
-    const product = await db.Useproduct.findByPk(usedGoodsId);
+    const product = await db.Useproduct.findByPk(usedGoodsId, {
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'], // 닉네임만 포함
+        },
+      ],
+    });
 
     if (!product) {
       res.status(404).send('게시물을 찾을 수 없습니다.');
