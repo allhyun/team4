@@ -11,7 +11,7 @@
 }
 
 .sidebar_menu .menu li.active a {
-  color: black;
+  @include active;
 }
 
 .sidebar_menu {
@@ -37,9 +37,4 @@
       }
     }
   }
-}
-
-// 메뉴 클릭시 메뉴 글자 스타일
-.sidebar_menu .menu li.active a {
-  color: black;
 }

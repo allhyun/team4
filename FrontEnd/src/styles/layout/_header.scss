@@ -50,5 +50,5 @@
 
 // 메뉴 클릭시 메뉴 글자 스타일
 .header_menu .menu li.active a {
-  color: black;
+  @include active;
 }

@@ -7,19 +7,19 @@ import { useDispatch } from 'react-redux';
 import { setModifyPost } from '../../store/marketmodifyReducer';
 import { DataType, propsType } from '../Types/MarketType';
 
-interface marketTable {
-  ud_idx: number;
-  u_idx: number;
-  buy_idx: number;
-  ud_price: number;
-  ud_title: string;
-  ud_image: string;
-  ud_content: string;
-  ud_region: string;
-  viewcount: number;
-  ud_date: string;
-  c_idx: number;
-}
+// interface marketTable {
+//   ud_idx: number;
+//   u_idx: number;
+//   buy_idx: number;
+//   ud_price: number;
+//   ud_title: string;
+//   ud_image: string;
+//   ud_content: string;
+//   ud_region: string;
+//   viewcount: number;
+//   ud_date: string;
+//   c_idx: number;
+// }
 
 const MarketThumbnailPost = (props: propsType) => {
   const dispatch = useDispatch();
@@ -120,32 +120,34 @@ const MarketThumbnailPost = (props: propsType) => {
   }, [props.page]);
 
   return (
-    <div id="market-main-container" className="market-main-container">
-      <div id="market-main-box" className="market-main-box">
-        {postList &&
-          postList.map((data) => (
-            <div
-              key={data.u_idx}
-              className="thum"
-              onClick={() => goDetailPage(`${data.ud_idx}`)}
-            >
-              <div className="img-container">
-                {data.ud_image && data.ud_image.length > 0 && (
-                  <img
-                    // src={`http://localhost:8000/static/userImg/${data.ud_image[0]}`}
-                    src={`${process.env.REACT_APP_HOST}/static/userImg/${data.ud_image[0]}`}
-                    alt={`preview-${data.ud_idx}`}
-                  />
-                )}
+    <div className="center">
+      <div id="market-main-container" className="market-main-container">
+        <div id="market-main-box" className="market-main-box">
+          {postList &&
+            postList.map((data) => (
+              <div
+                key={data.u_idx}
+                className="thum"
+                onClick={() => goDetailPage(`${data.ud_idx}`)}
+              >
+                <div className="img-container">
+                  {data.ud_image && data.ud_image.length > 0 && (
+                    <img
+                      // src={`http://localhost:8000/static/userImg/${data.ud_image[0]}`}
+                      src={`${process.env.REACT_APP_HOST}/static/userImg/${data.ud_image[0]}`}
+                      alt={`preview-${data.ud_idx}`}
+                    />
+                  )}
+                </div>
+                <p className="title">{truncateTitle(data.ud_title, 14)}</p>
+                <p className="price">{formatPrice(data.ud_price)} 원</p>
+                <div className="region-date-container">
+                  <p>{data.ud_region}</p>
+                  <p>{timeSince(data.ud_date)}</p>
+                </div>
               </div>
-              <p className="title">{truncateTitle(data.ud_title, 14)}</p>
-              <p className="price">{formatPrice(data.ud_price)} 원</p>
-              <div className="region-date-container">
-                <p>{data.ud_region}</p>
-                <p>{timeSince(data.ud_date)}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </div>
   );

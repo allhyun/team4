@@ -24,6 +24,7 @@ import {
 } from '../../components/Types/MarketType';
 import MarketHeart from '../../components/Market/MarketHeart';
 import { RootState } from '../../store';
+import React from 'react';
 
 const MarketDetailPage = () => {
   const userInfo = useSelector((state: RootState) => state.user.user);
@@ -212,6 +213,17 @@ const MarketDetailPage = () => {
     }
   };
 
+  // 상품 설명창 관련
+  // -- 띄어쓰기 반환함수
+  const getBr = (content: string) => {
+    return content.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
+  };
+
   // 홈 클릭시 마켓 메인 이동
   const handleHomeClick = () => {
     navigate('/market');
@@ -331,7 +343,9 @@ const MarketDetailPage = () => {
           <div className="market-content-container">
             {' '}
             <div className="detail-info">상품 정보</div>
-            <div className="detail-content">{marketDetailState.ud_content}</div>
+            <div className="detail-content">
+              {getBr(marketDetailState.ud_content)}
+            </div>
           </div>
         </div>
       </div>
