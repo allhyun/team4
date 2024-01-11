@@ -7,7 +7,7 @@
   margin: 100px 0 50px 0;
   width: 65%;
   height: 100%;
-  padding: 40px 40px 40px 40px;
+  padding: 40px 40px 32px 40px;
   justify-content: center;
 }
 
@@ -130,11 +130,12 @@ nav[aria-label='detail-category'] {
   margin-top: 20px;
   .detail-info {
     font-size: 25px;
+    margin-bottom: 5px;
   }
 }
 .detail-content {
   position: relative;
-  white-space: break-word;
+  word-wrap: break-word;
 
   #text {
     white-space: break-word;

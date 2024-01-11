@@ -107,13 +107,14 @@ exports.detailusedGoods = async (req, res) => {
   const usedGoodsId = req.params.ud_idx;
   console.log(usedGoodsId);
   try {
-    const product = await db.Useproduct.findByPk(usedGoodsId,{include: [
-      {
-        model: db.User,
-        attributes: ['nickname'],
-      },
-    ],
-  });
+    const product = await db.Useproduct.findByPk(usedGoodsId, {
+      include: [
+        {
+          model: db.User,
+          attributes: ['nickname'], // 닉네임만 포함
+        },
+      ],
+    });
 
     if (!product) {
       res.status(404).send('게시물을 찾을 수 없습니다.');
@@ -311,6 +312,7 @@ exports.removeHeart = async (req, res) => {
 // 찜 목록 조회 2
 exports.heartList = async (req, res) => {
   try {
+    console.log('하트 리스트 조회');
     const u_idx = req.body.query;
     const page = req.query.page || 1;
     const pageSize = 8; // 페이지당 8개의 항목
