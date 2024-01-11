@@ -56,14 +56,6 @@ const MarketThumbnailPost = (props: propsType) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  // 상품명 글자수 제한
-  const truncateTitle = (title: string, maxLength: number): string => {
-    if (title.length > maxLength) {
-      return title.substring(0, maxLength) + '…';
-    }
-    return title;
-  };
-
   // 상세 페이지 이동
   function goDetailPage(ud_idx: string): void {
     const post = postList.find((post) => post.ud_idx === Number(ud_idx));
@@ -139,7 +131,7 @@ const MarketThumbnailPost = (props: propsType) => {
                     />
                   )}
                 </div>
-                <p className="title">{truncateTitle(data.ud_title, 14)}</p>
+                <p className="title">{data.ud_title}</p>
                 <p className="price">{formatPrice(data.ud_price)} 원</p>
                 <div className="region-date-container">
                   <p>{data.ud_region}</p>
