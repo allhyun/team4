@@ -81,7 +81,7 @@ const StudyDetailPage = () => {
                 </div>
               </div>
 
-              <div className="detail-month">{study.st_limit} 개월</div>
+              <div className="detail-month">{study.st_limit} 주</div>
             </div>
             <div>퍼블리셔: {study.st_pub}</div>
             <div>프론트엔드: {study.st_fe}</div>
