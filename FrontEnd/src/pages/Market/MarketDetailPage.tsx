@@ -61,6 +61,7 @@ const MarketDetailPage = () => {
       .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
       .then((res) => {
         const productData = res.data;
+        console.log(res.data.user.nickname);
 
         // ud_image 필드가 JSON 문자열인 경우 배열로 변환
         if (productData.ud_image && typeof productData.ud_image === 'string') {
@@ -70,10 +71,10 @@ const MarketDetailPage = () => {
         }
 
         // User 객체가 있으면 닉네임을 상태에 추가
-        if (productData.User) {
+        if (productData.user) {
           setMarketDetailState({
             ...productData,
-            nickname: productData.User.nickname,
+            nickname: productData.user.nickname,
           });
         } else {
           setMarketDetailState(productData);
@@ -329,7 +330,7 @@ const MarketDetailPage = () => {
                 {'\u00A0'}
                 {'\u00A0'}
                 {'\u00A0'}
-                {marketDetailState.nickname}
+                {marketDetailState.userNickname}
               </div>
 
               <div className="detail-button-user">
