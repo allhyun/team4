@@ -85,7 +85,7 @@ const StudySearchPage = () => {
                 </div>
               </div>
 
-              <p className="thum-month">{study.st_limit}개월</p>
+              <p className="thum-month">{study.st_limit}주</p>
             </div>
             <div>
               {' '}
