@@ -48,6 +48,14 @@ const FindPw = () => {
                 value: /^[a-zA-Z0-9-]+$/i,
                 message: '잘못된 형식입니다.',
               },
+              minLength: {
+                value: 8,
+                message: '8글자 이상 입력해주세요.',
+              },
+              maxLength: {
+                value: 12,
+                message: '12글자 이하로 입력해주세요.',
+              },
             })}
             name="userId"
             onChange={(e) => setUserId(e.target.value)}
@@ -66,10 +74,10 @@ const FindPw = () => {
             value={userEmail}
             {...register('userEmail', {
               required: '이메일을 입력해주세요.',
-              // pattern: {
-              //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-              //   message: '잘못된 형식입니다.',
-              // },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
+                message: '잘못된 형식입니다.',
+              },
             })}
             onChange={(e) => setUserEmail(e.target.value)}
             name="userEmail"

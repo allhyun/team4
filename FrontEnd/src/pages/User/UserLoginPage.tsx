@@ -127,6 +127,10 @@ const UserMainPage = () => {
                   value: /^[a-zA-Z0-9-]+$/i,
                   message: '잘못된 형식입니다.',
                 },
+                minLength: {
+                  value: 8,
+                  message: '8글자 이상 입력해주세요.',
+                },
               })}
               name="userId"
               onChange={onUserIdHandler}
@@ -141,10 +145,14 @@ const UserMainPage = () => {
               autoComplete="off"
               {...register('userPw', {
                 required: 'password를 입력해주세요.',
-                // pattern: {
-                //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                //   message: '잘못된 형식입니다.',
-                // },
+                pattern: {
+                  value: /^[A-Za-z0-9!@#$%^&*]+$/i,
+                  message: '잘못된 형식입니다.',
+                },
+                minLength: {
+                  value: 8,
+                  message: '8글자 이상 입력해주세요.',
+                },
               })}
               name="userPw"
               onChange={onUserPwHandler}

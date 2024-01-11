@@ -227,11 +227,19 @@ const UserMyPage = () => {
                   }
                   // value={userNickname === '' ? userInfo.nickname : userNickname}
                   {...register('userNickname', {
-                    // required: '닉네임을 입력해주세요.',
-                    // pattern: {
-                    //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                    //   message: '잘못된 형식입니다.',
-                    // },
+                    required: '닉네임을 입력해주세요.',
+                    pattern: {
+                      value: /^[가-힣a-zA-Z0-9-]+$/i,
+                      message: '특수문자를 허용하지 않습니다.',
+                    },
+                    minLength: {
+                      value: 3,
+                      message: '3글자 이상 입력해주세요.',
+                    },
+                    maxLength: {
+                      value: 12,
+                      message: '12글자 이하로 입력해주세요.',
+                    },
                   })}
                   onChange={onUserInfoHandler}
                   name="userNickname"
@@ -246,9 +254,9 @@ const UserMyPage = () => {
                   placeholder="e-mail"
                   value={userEmail === 'undefined' ? userInfo.email : userEmail}
                   {...register('userEmail', {
-                    // required: '이메일을 입력해주세요.',
+                    required: '이메일을 입력해주세요.',
                     pattern: {
-                      value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
                       message: '잘못된 형식입니다.',
                     },
                   })}
@@ -266,10 +274,18 @@ const UserMyPage = () => {
                 value={userPw}
                 {...register('userPw', {
                   required: 'password를 입력해주세요.',
-                  // pattern: {
-                  //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                  //   message: '잘못된 형식입니다.',
-                  // },
+                  pattern: {
+                    value: /^[A-Za-z0-9!@#$%^&*]+$/i,
+                    message: '잘못된 형식입니다.',
+                  },
+                  minLength: {
+                    value: 8,
+                    message: '8글자 이상 입력해주세요.',
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: '15글자 이하로 입력해주세요.',
+                  },
                 })}
                 autoComplete="off"
                 name="userPw"
@@ -284,10 +300,25 @@ const UserMyPage = () => {
                 value={samePwCheck}
                 {...register('samePwCheck', {
                   required: '같은 password를 입력해주세요.',
-                  // pattern: {
-                  //   value: /^[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                  //   message: '잘못된 형식입니다.',
-                  // },
+                  pattern: {
+                    value: /^[A-Za-z0-9!@#$%^&*]+$/i,
+                    message: '잘못된 형식입니다.',
+                  },
+                  minLength: {
+                    value: 8,
+                    message: '8글자 이상 입력해주세요.',
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: '15글자 이하로 입력해주세요.',
+                  },
+                  validate: (fieldValue: string) => {
+                    console.log('fieldValue', fieldValue !== userPw);
+                    console.log('userPw', userPw);
+                    return (
+                      samePwCheck === userPw || '같은 password를 입력해주세요.'
+                    );
+                  },
                 })}
                 autoComplete="off"
                 name="samePwCheck"
