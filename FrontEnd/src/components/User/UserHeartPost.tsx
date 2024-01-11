@@ -140,17 +140,14 @@ const UserHeartPost = (props: propsType) => {
                     />
                   )}
                 </div>
-
                 <p className="title">{truncateTitle(data.ud_title, 14)}</p>
                 <p className="price">{formatPrice(data.ud_price)} 원</p>
               </div>
-
               <Heart />
-
-              <div className="region-date-container">
+              {/* <div className="region-date-container region-date-wrap">
                 <p>{data.ud_region}</p>
                 <p>{timeSince(data.ud_date)}</p>
-              </div>
+              </div> */}
             </div>
           ))}
       </div>

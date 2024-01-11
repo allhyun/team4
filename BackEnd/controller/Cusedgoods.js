@@ -302,6 +302,7 @@ exports.removeHeart = async (req, res) => {
 // 찜 목록 조회 2
 exports.heartList = async (req, res) => {
   try {
+    console.log('하트 리스트 조회');
     const u_idx = req.body.query;
     const page = req.query.page || 1;
     const pageSize = 8; // 페이지당 8개의 항목
