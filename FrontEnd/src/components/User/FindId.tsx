@@ -9,7 +9,7 @@ import React, {
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Modal from '../common/Modal';
+import Modal from './Modal';
 import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 interface FindIdForm {
@@ -88,11 +88,7 @@ const FindId = () => {
 
       {isModalOpen && (
         <div ref={ref}>
-          <Modal
-            msg={findUserid}
-            setIsModalOpen={setIsModalOpen}
-            state={'alert'}
-          />
+          <Modal text={findUserid} setIsModalOpen={setIsModalOpen} />
         </div>
       )}
     </>
