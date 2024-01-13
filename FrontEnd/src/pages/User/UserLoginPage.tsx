@@ -8,7 +8,6 @@ import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
-
 import { setUserInfo } from '../../store/user.slice';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from '../../components/common/Modal';
@@ -99,8 +98,6 @@ const UserMainPage = () => {
       } else {
         setIsModalOpen(true);
       }
-
-      // console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);
     }
