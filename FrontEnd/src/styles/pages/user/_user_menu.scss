@@ -3,22 +3,26 @@
     position: relative;
     a {
       color: var(--main-white);
+      @include flex-center;
+      gap: 0.2em;
     }
     .user-menu {
       @include container;
       @include flex-center;
+      flex-direction: column;
+      position: absolute;
       z-index: 1000;
       margin-top: 0.5em;
       right: 0;
-      position: absolute;
-      flex-direction: column;
-      padding: 0.5em 1em;
+      padding: 0.7em 1.5em;
       border-radius: 5px 0 5px 5px;
-      font-size: 0.9em;
+      gap: 0.3em;
+      font-size: 1em;
       animation: slideAni 0.2s ease-out;
+
       @keyframes slideAni {
         from {
-          transform: translateY(-3%);
+          transform: translateY(-5%);
         }
         to {
           transform: translateY(0);
@@ -26,9 +30,17 @@
       }
     }
     @media screen and (max-width: 769px) {
-      .user-menu {
-        flex-direction: row;
-        gap: 1em;
+      // .user-menu {
+      //   flex-direction: row;
+      //   gap: 1em;
+      // }
+      @keyframes slideAni {
+        from {
+          transform: translateX(5%);
+        }
+        to {
+          transform: translateX(0);
+        }
       }
     }
     // }

@@ -7,11 +7,12 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { ReactReduxContextValue, useSelector } from 'react-redux';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { BsImage } from 'react-icons/bs';
 import Modal from '../../components/common/Modal';
 import useOnClickOutside from '../../Hooks/useOnClickOutside';
+import { UnknownAction } from 'redux';
 
 interface SignupForm {
   userProfileImg: string;
@@ -41,8 +42,8 @@ const UserMyPage = () => {
 
   const u_idx = useSelector((state: any) => state.user.user.u_idx);
   const data: any = { u_idx };
-  const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
+  const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   useOnClickOutside(ref, () => setIsModalOpen(false));
 
   // 마운트 되면 유저 정보 요청해서 가져오기
@@ -89,7 +90,6 @@ const UserMyPage = () => {
           reader.onloadend = () => {
             setImgFile(reader.result);
           };
-
           const img = event.currentTarget.files[0];
           setUserProfileImg(img);
         }
@@ -332,14 +332,15 @@ const UserMyPage = () => {
             </div>
             <div className="bottom-wrap">
               <div>비밀번호 변경</div>
+
               <div className="delete-user">회원탈퇴</div>
             </div>
           </form>
         </div>
+        <div ref={ref}>
+          {isModalOpen && <Modal msg={msg} setIsModalOpen={setIsModalOpen} />}
+        </div>
       </section>
-      <div ref={ref}>
-        {isModalOpen && <Modal msg={msg} setIsModalOpen={setIsModalOpen} />}
-      </div>
     </>
   );
 };

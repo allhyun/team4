@@ -21,6 +21,7 @@ const UserMainPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const ref: React.LegacyRef<HTMLDivElement | null | undefined> | any =
     useRef();
+  // 모달 밖 클릭 체크하는 커스텀 훅
   useOnClickOutside(ref, () => setIsModalOpen(false));
 
   // firebase OAuth
@@ -76,7 +77,6 @@ const UserMainPage = () => {
 
   const onSubmit: SubmitHandler<LoginForm> = async (data: LoginForm) => {
     try {
-      console.log('성공', data);
       const user = { userid: data.userId, password: data.userPw };
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}/user/signin`,
