@@ -24,19 +24,16 @@ const UserMenu = ({ setUserMenuClicked }: any) => {
     setUserMenuClicked(false);
   };
 
-  return ReactDOM.createPortal(
+  return (
     <>
-      <div className="menu-wrap">
-        <div className="user-menu">
-          <Link to="/heart">관심 목록</Link>
-          <Link to="/user">마이페이지</Link>
-          <Link to="/" onClick={logoutHandler}>
-            로그아웃
-          </Link>
-        </div>
+      <div className="user-menu">
+        <Link to="/heart">관심 목록</Link>
+        <Link to="/user">마이페이지</Link>
+        <Link to="/" onClick={logoutHandler}>
+          로그아웃
+        </Link>
       </div>
-    </>,
-    document.getElementById('portal') as HTMLElement
+    </>
   );
 };
 
