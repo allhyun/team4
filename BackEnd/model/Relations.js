@@ -89,7 +89,7 @@ db.Chattingroom.belongsTo(db.Chatuser, {
   onDelete: 'cascade',
 });
 
-// 상품 판매 부분 ...+=======================[====]
+// 상품 판매 부분 ...+===========================
 // useproduct : user
 db.User.hasMany(db.Useproduct, {
   foreignKey: 'u_idx',
@@ -125,5 +125,15 @@ db.Heart.hasMany(db.Useproduct, {
 
 db.Useproduct.belongsTo(db.Heart, {
   foreignKey: 'u_idx',
+  onDelete: 'cascade',
+});
+
+// buystate : useproduct
+db.Buystate.hasMany(db.Useproduct, {
+  foreignKey: 'buy_idx',
+});
+
+db.Useproduct.belongsTo(db.Buystate, {
+  foreignKey: 'buy_idx',
   onDelete: 'cascade',
 });

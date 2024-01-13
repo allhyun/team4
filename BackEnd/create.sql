@@ -120,13 +120,12 @@ CREATE TABLE heart (
 
 
 -- 리팩토링할 때 고민할 것 이거는 복사하지마세요@@@@@@@@@@@@@@@@@@@@@@@@@@@@
--- CREATE TABLE buystate  (
---     buy_idx int NOT NULL PRIMARY KEY,
+CREATE TABLE buystate  (
+    buy_idx int NOT NULL PRIMARY KEY,
+  state varchar(20) NOT NULL
+);
 
---   name varchar(20) NOT NULL
--- );
-
--- INSERT INTO buystate VALUES('1', '판매중' );
--- INSERT INTO buystate VALUES('2', '예약중' );
--- INSERT INTO buystate VALUES('3', '판매완료' );
--- INSERT INTO buystate VALUES('4', '판매보류' );
+INSERT INTO buystate VALUES('1', '판매중' );
+INSERT INTO buystate VALUES('2', '예약중' );
+INSERT INTO buystate VALUES('3', '판매완료' );
+INSERT INTO buystate VALUES('4', '판매보류' );

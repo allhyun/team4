@@ -1,4 +1,10 @@
 // 데이터 타입
+
+// 메인 로고
+export interface MainProps {
+  children: React.ReactNode;
+}
+
 export interface DataType {
   ud_idx: number; // 게시판 포린키
   u_idx: number | null; // 유저 포린키
