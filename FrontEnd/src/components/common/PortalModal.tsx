@@ -5,7 +5,7 @@ import { IoCheckmark } from 'react-icons/io5';
 
 interface Props {
   msg: string;
-  setIsModalOpen?: Function;
+  setIsModalOpen: Function;
   state?: string;
 }
 
@@ -18,7 +18,7 @@ const Modal = ({ msg, setIsModalOpen, state = 'alert' }: Props) => {
   //   };
   // }, []);
 
-  return (
+  return ReactDOM.createPortal(
     <>
       <div className="modal-wrap">
         <div className="modal">
@@ -27,7 +27,8 @@ const Modal = ({ msg, setIsModalOpen, state = 'alert' }: Props) => {
           {msg}
         </div>
       </div>
-    </>
+    </>,
+    document.getElementById('portal') as HTMLElement
   );
 };
 
