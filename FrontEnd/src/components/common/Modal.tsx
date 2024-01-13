@@ -6,9 +6,10 @@ import { IoCheckmark } from 'react-icons/io5';
 interface Props {
   msg: string;
   setIsModalOpen: Function;
+  state?: string;
 }
 
-const Modal = ({ msg, setIsModalOpen }: Props) => {
+const Modal = ({ msg, setIsModalOpen, state = 'alert' }: Props) => {
   useEffect(() => {
     const timeoutId: any = () => setTimeout(() => setIsModalOpen(false), 3000);
     timeoutId();
@@ -21,8 +22,8 @@ const Modal = ({ msg, setIsModalOpen }: Props) => {
     <>
       <div className="modal-wrap">
         <div className="modal">
-          <IoAlertCircleOutline />
-
+          {state === 'alert' && <IoAlertCircleOutline />}
+          {state === 'sucess' && <IoCheckmark />}
           {msg}
         </div>
       </div>
