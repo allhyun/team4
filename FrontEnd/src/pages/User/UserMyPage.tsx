@@ -10,7 +10,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { BsImage } from 'react-icons/bs';
-import Modal from '../../components/User/Modal';
+import Modal from '../../components/common/Modal';
 import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 interface SignupForm {
@@ -338,7 +338,7 @@ const UserMyPage = () => {
         </div>
       </section>
       <div ref={ref}>
-        {isModalOpen && <Modal text={msg} setIsModalOpen={setIsModalOpen} />}
+        {isModalOpen && <Modal msg={msg} setIsModalOpen={setIsModalOpen} />}
       </div>
     </>
   );
