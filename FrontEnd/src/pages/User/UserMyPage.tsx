@@ -7,10 +7,10 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { BsImage } from 'react-icons/bs';
-import Modal from '../../components/User/Modal';
+import Modal from '../../components/common/Modal';
 import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
 interface SignupForm {
@@ -35,7 +35,7 @@ const UserMyPage = () => {
   const [userInfo, setUserInfo] = useState<any>({});
   const [userNickname, setUserNickname] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
-  const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
+  // const [isUseridDuplicated, setIsUseridDuplicated] = useState<Boolean>(false);
   const [isNicknameDuplicated, setIsNicknameDuplicated] =
     useState<Boolean>(false);
 
@@ -338,7 +338,8 @@ const UserMyPage = () => {
         </div>
       </section>
       <div ref={ref}>
-        {isModalOpen && <Modal text={msg} setIsModalOpen={setIsModalOpen} />}
+        {/* 성공 추가해야함 */}
+        {isModalOpen && <Modal msg={msg} setIsModalOpen={setIsModalOpen} />}
       </div>
     </>
   );

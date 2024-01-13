@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { IoAlertCircleOutline } from 'react-icons/io5';
+import { GoCheck } from 'react-icons/go';
 
 interface Props {
-  text: string;
+  state?: string;
+  msg: string;
   setIsModalOpen: Function;
 }
 
-const Modal = ({ text, setIsModalOpen }: Props) => {
+const Modal = ({ state = 'alert', msg, setIsModalOpen }: Props) => {
   useEffect(() => {
     const timeoutId: any = () => setTimeout(() => setIsModalOpen(false), 3000);
     timeoutId();
@@ -20,8 +22,9 @@ const Modal = ({ text, setIsModalOpen }: Props) => {
     <>
       <div className="modal-wrap">
         <div className="modal">
-          <IoAlertCircleOutline />
-          {text}
+          {state === 'sucess' && <GoCheck />}
+          {state === 'alert' && <IoAlertCircleOutline />}
+          {msg}
         </div>
       </div>
     </>,
