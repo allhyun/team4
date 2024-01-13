@@ -1,15 +1,49 @@
 import '../../styles/style.scss';
-
-interface MainProps {
-  children: React.ReactNode;
-}
+import React, { useEffect, useRef } from 'react';
+import { MainProps } from '../../components/Types/MarketType';
 
 export default function Main({ children }: MainProps) {
+  const interBubbleRef = useRef<HTMLDivElement | null>(null);
+  let curX = 0;
+  let curY = 0;
+  let tgX = 0;
+  let tgY = 0;
+
+  function move() {
+    curX += (tgX - curX) / 20;
+    curY += (tgY - curY) / 20;
+    if (interBubbleRef.current) {
+      interBubbleRef.current.style.transform = `translate(${Math.round(
+        curX
+      )}px, ${Math.round(curY)}px)`;
+    }
+    requestAnimationFrame(() => {
+      move();
+    });
+  }
+
+  useEffect(() => {
+    window.addEventListener('mousemove', (event) => {
+      tgX = event.clientX;
+      tgY = event.clientY;
+    });
+    move(); // 컴포넌트가 마운트된 후에 move 함수를 호출합니다.
+  }, []);
+  const interBubble = document.querySelector<HTMLDivElement>('.interactive')!;
+
   return (
     <>
-      <main id="main" role="main">
-        {children}
-      </main>
+      <div className="gradients-container">
+        <main id="main" role="main" className="gradients-bg">
+          {children}
+          <div className="g1"></div>
+          <div className="g2"></div>
+          <div className="g3"></div>
+          <div className="g4"></div>
+          <div className="g5"></div>
+          <div className="interactive" ref={interBubbleRef}></div>
+        </main>
+      </div>
     </>
   );
 }

@@ -55,6 +55,7 @@ const MarketDetailPage = () => {
     7: '무료나눔',
     8: '기타',
   };
+
   // 수정 관련 :  Redux에 상태 업데이트
   useEffect(() => {
     axios
@@ -92,51 +93,6 @@ const MarketDetailPage = () => {
       })
       .catch((error) => console.error(error));
   }, [ud_idx, dispatch]); // 의존성 배열에 ud_idx와 dispatch를 포함
-
-  // useEffect 스파게티 코드 위 코드로 대체해서 최적화함!
-  // useEffect(() => {
-  //   axios
-  //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
-  //     // 배포용
-  //     .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
-
-  //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
-  //     .then((res) => {
-  //       dispatch(setModifyPost(res.data));
-  //       const { ud_title: st_title, ...rest } = res.data;
-
-  //       const modifiedData = {
-  //         ...rest,
-  //         st_title,
-  //       };
-
-  //       dispatch(setchatDetail(modifiedData));
-  //       // 상태 업데이트
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, [ud_idx, dispatch]);
-
-  // useEffect(() => {
-  //   axios
-  //     // .get(`http://localhost:8000/product/detail/${ud_idx}`)
-  //     // 배포용
-  //     .get(`${process.env.REACT_APP_HOST}/product/detail/${ud_idx}`)
-
-  //     .then((res) => {
-  //       // console.log('서버 응답 데이터:', res.data);
-  //       const productData = res.data;
-
-  //       // ud_image 필드가 JSON 문자열인 경우 배열로 변환
-  //       if (productData.ud_image && typeof productData.ud_image === 'string') {
-  //         productData.ud_images = JSON.parse(productData.ud_image);
-  //       } else {
-  //         productData.ud_images = []; // 또는 기본값 설정
-  //       }
-
-  //       setMarketDetailState(res.data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, [ud_idx]);
 
   // 가격 변환 함수
   const formatPrice = (price: number | null): string => {

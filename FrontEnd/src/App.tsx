@@ -18,6 +18,7 @@ import StudySearchPage from './pages/Study/StudySearchPage';
 import MarketModify from './components/Market/MarketModify';
 import ChatPage from './pages/Chat/ChatPage';
 import MarketSearchPage from './pages/Market/MarketSearchPage';
+import MainLogo from './components/Main/MainLogo';
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
       <Sidebar />
       <Main>
         <Routes>
+          {/* 메인 */}
+          <Route path="/" element={<MainLogo />} />
+          {/* <Route path="/" element={<UserLoginPage />}></Route> */}
           {/* 유저관련 페이지 */}
           <Route path="/login" element={<UserLoginPage />}></Route>
           <Route path="/signup" element={<UserSignupPage />}></Route>
