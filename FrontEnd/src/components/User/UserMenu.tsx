@@ -7,20 +7,13 @@ import { useDispatch } from 'react-redux';
 import { IoHeartSharp, IoPerson, IoLogOutOutline } from 'react-icons/io5';
 import useOnClickOutside from '../../Hooks/useOnClickOutside';
 
-const UserMenu = ({ setIsModalOpen }: any) => {
-  const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
-  useOnClickOutside(ref, () => setIsModalOpen(false));
+const UserMenu = ({ setIsModalOpen, useRef }: any) => {
+  useOnClickOutside(useRef, () => setIsModalOpen(false));
 
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(removeUserInfo());
-    // 다른 리덕스 상태들도 삭제하는 dispatch도 추가해야 함
-    // axios
-    //   .get('http://localhost:8000/user/logout', {
-    //     withCredentials: true,
-    //   })
-    //   .then((res) => console.log(res));
-    // setUserMenuClicked(false);
+
     axios
       .get(`${process.env.REACT_APP_HOST}/user/logout`, {
         withCredentials: true,
@@ -31,7 +24,7 @@ const UserMenu = ({ setIsModalOpen }: any) => {
 
   return (
     <>
-      <div className="user-menu" ref={ref}>
+      <div className="user-menu">
         <Link to="/heart">
           <IoHeartSharp />
           관심 목록
