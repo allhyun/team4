@@ -8,13 +8,14 @@ const HeaderUser = () => {
   // 로그인 로그아웃에 따른 상태 변화
   const loginUser: any = useSelector((state: any) => state.user.user);
 
+  useEffect(() => {}, []);
+
   const userMenuHandler = () => {
     setUserMenuClicked(!userMenuClicked);
-    console.log('click');
   };
 
   return (
-    <div>
+    <div className="user-menu-wrap">
       {loginUser.u_idx === null ? (
         <Link to="/login">로그인</Link>
       ) : (
@@ -22,7 +23,7 @@ const HeaderUser = () => {
           <div>{`${loginUser.nickname}`}</div>
           <img
             src={`${process.env.REACT_APP_HOST}/${loginUser.u_img}`}
-            alt=""
+            alt="유저 프로필 이미지"
           />
         </div>
       )}

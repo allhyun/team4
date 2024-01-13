@@ -37,6 +37,7 @@ export interface DetailDataType {
   c_idx: number | null; // 카테고리
 }
 export interface DetailDataType2 {
+  userNickname: string;
   ud_idx: number; // 게시판 포린키
   u_idx: number; // 유저 아이디
   buy_idx: number; // 판매 상태 : 0-판매중,1-예약중, 2-판매완료, 3-판매 보류

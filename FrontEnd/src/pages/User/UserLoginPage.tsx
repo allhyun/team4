@@ -10,7 +10,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import app from '../../firebase';
 import { setUserInfo } from '../../store/user.slice';
 import { useSelector, useDispatch } from 'react-redux';
-import Modal from '../../components/User/Modal';
+import Modal from '../../components/common/Modal';
 
 interface LoginForm {
   userId: string;
@@ -98,8 +98,6 @@ const UserMainPage = () => {
       } else {
         setIsModalOpen(true);
       }
-
-      console.log('response.data.result', response.data.result);
     } catch (error) {
       console.log('error', error);
     }
@@ -184,7 +182,7 @@ const UserMainPage = () => {
         {isModalOpen && (
           <div ref={ref}>
             <Modal
-              text={'아이디와 비밀번호를 확인해주세요.'}
+              msg={'아이디와 비밀번호를 확인해주세요.'}
               setIsModalOpen={setIsModalOpen}
             />
           </div>

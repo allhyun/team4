@@ -13,7 +13,8 @@
 @import 'layout/seacrh';
 @import 'layout/chat';
 // pages
-@import 'pages/main/main';
+@import 'pages/main';
+@import 'common/modal';
 @import 'pages/market/market_main';
 @import 'pages/market/market_header';
 @import 'pages/market/market_category';
@@ -26,7 +27,6 @@
 @import 'pages/user/user_main';
 @import 'pages/user/user_login';
 @import 'pages/user/user_menu';
-@import 'pages/user/user_modal';
 @import 'pages/user/user_signup';
 @import 'pages/user/user_myPage';
 @import 'pages/user/user_heartList';
