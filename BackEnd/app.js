@@ -43,13 +43,6 @@ app.use(
   })
 );
 
-// const io = require('socket.io')(server, {
-//   cors: {
-//     origin: 'http://localhost:3000',
-//   },
-// });
-
-// app.set('io', io);
 
 // 미들웨어를 사용하여 모든 뷰에 로그인 상태(세션)를 전달
 app.use((req, res, next) => {
