@@ -4,29 +4,27 @@ import { RxHamburgerMenu } from 'react-icons/rx'; // 햄버거 아이콘
 import { Icon } from '@iconify/react'; // 판매 아이콘
 import { PiChatTextBold } from 'react-icons/pi'; // 채팅 아이콘
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setMarketSearchDetail } from '../../store/marketSearchReducer';
 
 export default function MarketHeader() {
-  // 햄버거 메뉴 클래스 변경
-  const [burger_class, setBurgerClass] = useState('burger-bar unclicked');
-  const [menu_class, setMenuClass] = useState('menu-hidden');
-  const [isMenuClicked, setMenuClicked] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // 햄버거메뉴 참고 유튜브 : https://www.youtube.com/watch?v=gAGcjlJyKk0
+  // 드롭다운 open/close
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
 
-  // 헴버거 메뉴 변경
-  const updateMenu = () => {
-    if (!isMenuClicked) {
-      setBurgerClass('burger-bar clicked');
-      setMenuClass('menu visible');
-    } else {
-      setBurgerClass('burger-bar unclicked');
+  // 드롭다운 다른 공간을 클릭하면 닫히게!
+  const handleBlur = () => {
+    if (isDropdownOpen) {
+      toggleDropdown();
     }
   };
-  const dispatch = useDispatch();
+
   // onSearch 함수의 구현
   const onSearch = (searchTerm: string | number) => {
     console.log('market 검색어:', searchTerm); // 검색 처리 로직
@@ -43,13 +41,26 @@ export default function MarketHeader() {
         <nav className="market_menu">
           <ul className="menu">
             <li className="category">
-              <div className="buger-menu">
-                <RxHamburgerMenu />
-                {/* <div className={burger_class} onClick={updateMenu}></div>
-                <div className={burger_class} onClick={updateMenu}></div>
-                <div className={burger_class} onClick={updateMenu}></div>
-                <div className={burger_class} onClick={updateMenu}></div>
-                <div className={burger_class} onClick={updateMenu}></div> */}
+              <div className="dropdown" onBlur={handleBlur}>
+                <RxHamburgerMenu onClick={toggleDropdown} />
+                {isDropdownOpen && (
+                  <div
+                    className="dropdown-menu"
+                    tabIndex={0}
+                    onBlur={handleBlur}
+                  >
+                    <ul className="dropdown-ul">
+                      <li>도서</li>
+                      <li>전자기기</li>
+                      <li>문구</li>
+                      <li>티켓/쿠폰</li>
+                      <li>생활</li>
+                      <li>취미</li>
+                      <li>무료나눔</li>
+                      <li>기타</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </li>
             <li className="search">

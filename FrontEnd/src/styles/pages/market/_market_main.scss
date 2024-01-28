@@ -11,7 +11,9 @@ div#market-main-container {
     display: flex;
     flex-wrap: wrap;
     .thum {
+      position: relative;
       @include container;
+      z-index: 1000;
       justify-content: baseline;
       padding: 15px;
       width: 14rem;

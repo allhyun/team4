@@ -1,11 +1,12 @@
 // 박스 디자인(공통 디자인) -------------------------------------
 
 @mixin container {
+  -webkit-backdrop-filter: blur(30px) !important;
+  backdrop-filter: blur(30px) !important;
   background-color: var(--main-bgcolor);
   color: var(--main-color);
   border: 1px solid var(--main-white);
   border-radius: 10px;
-  backdrop-filter: blur(30px);
 }
 
 @mixin s-box {
@@ -36,7 +37,11 @@
   transition: all 0.3s;
   color: #ffffff;
   text-shadow: 0 0 10px #ffffff81;
-  transform: translateY(-3px);
+}
+@mixin hovernomove {
+  transition: all 0.3s;
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff81;
 }
 
 @mixin thum-hover {
