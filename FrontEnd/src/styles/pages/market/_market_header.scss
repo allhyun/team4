@@ -69,34 +69,24 @@ nav.market_menu {
 }
 
 // 드롭다운
-li.category {
-  &:hover {
-    @include hovernomove;
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-  }
-  .dropdown-menu {
-    @include container;
-    @include flex-center;
-    text-align: left;
-    z-index: 9999;
-    position: absolute;
-    right: 0;
-    margin-top: 0.5em;
-    border-radius: 5px 0 5px 5px;
-    font-size: 1em;
-    animation: slideAni 0.2s ease-out;
-    cursor: pointer;
+.dropdown-menu {
+  @include container;
+  z-index: 9999;
+  position: absolute;
+  // right: 20px;
+  margin-top: 0.7em;
+  border-radius: 5px 0 5px 5px;
+  font-size: 1em;
+  animation: slideAni 0.2s ease-out;
+  cursor: pointer;
 
-    ul {
-      list-style-type: none;
-      padding: 0.7em 1.5em;
-      li {
-        margin-top: 3px;
-        white-space: nowrap;
-      }
-    }
+  ul {
+    list-style-type: none;
+    padding: 0.7em 1.5em;
+  }
+  li {
+    margin-top: 3px;
+    white-space: nowrap;
   }
 }
 

@@ -27,3 +27,5 @@ yarn-error.log*
 static/userImg/*
 
 config.json
+
+.env

@@ -18,9 +18,9 @@ export default function MarketHeader() {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  // 드롭다운 다른 공간을 클릭하면 닫히게!
-  const handleBlur = () => {
-    if (isDropdownOpen) {
+  // RxHamburgerMenu 아이콘을 클릭할 때 바로 드롭다운 내용을 보이게 하려면 아래와 같이 수정
+  const handleMouseEnter = () => {
+    if (!isDropdownOpen) {
       toggleDropdown();
     }
   };
@@ -41,23 +41,22 @@ export default function MarketHeader() {
         <nav className="market_menu">
           <ul className="menu">
             <li className="category">
-              <div className="dropdown" onBlur={handleBlur}>
-                <RxHamburgerMenu onClick={toggleDropdown} />
+              <div className="dropdown">
+                <RxHamburgerMenu
+                  onClick={toggleDropdown}
+                  onMouseEnter={handleMouseEnter}
+                />
                 {isDropdownOpen && (
-                  <div
-                    className="dropdown-menu"
-                    tabIndex={0}
-                    onBlur={handleBlur}
-                  >
+                  <div className="dropdown-menu">
                     <ul className="dropdown-ul">
-                      <li>도서</li>
-                      <li>전자기기</li>
-                      <li>문구</li>
-                      <li>티켓/쿠폰</li>
-                      <li>생활</li>
-                      <li>취미</li>
-                      <li>무료나눔</li>
-                      <li>기타</li>
+                      <li className="cate1">도서</li>
+                      <li className="cate2">전자기기</li>
+                      <li className="cate3">문구</li>
+                      <li className="cate4">티켓/쿠폰</li>
+                      <li className="cate5">생활</li>
+                      <li className="cate6">취미</li>
+                      <li className="cate7">무료나눔</li>
+                      <li className="cate8">기타</li>
                     </ul>
                   </div>
                 )}
