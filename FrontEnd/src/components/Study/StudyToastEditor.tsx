@@ -126,12 +126,17 @@ const StudyToastEditor = () => {
     try {
       const response = await axios.post(
         // 'http://localhost:8000/study/regist'
-        `${process.env.REACT_APP_HOST}/study/regist`,
-        data
+        `${process.env.REACT_APP_HOST}/study/regist?_=${Math.random()}`,
+        data,
+        {
+          headers: {
+            'Cache-Control': 'no-store',
+          },
+        }
       );
-      console.log('Server response:', response.data);
-      //성공시 스터디메인페이지로 리다이렉트
-      navigate('/study', { state: { key: 'study-page' } });
+      if (response.data) {
+        navigate('/study', { state: { key: 'study-page' } });
+      }
     } catch (error) {
       console.error('Error submitting data:', error);
     }

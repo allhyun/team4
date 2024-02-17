@@ -16,21 +16,18 @@ const StudyMainPage = () => {
     setPage(page);
   }
   //axios요청으로 전체페이지개수,
+  async function fetchData() {
+    try {
+      // 배포용
+      const res = await axios.get(`${process.env.REACT_APP_HOST}/study`);
+      //전체 페이지 갯수
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // const res = await axios.get('http://localhost:8000/study');
-        // 배포용
-        const res = await axios.get(`${process.env.REACT_APP_HOST}/study`);
-        //전체 페이지 갯수
-
-        setApage(Math.ceil((res.data.totalCount + 1) / 6));
-      } catch (error) {
-        console.log(error);
-      }
+      setApage(Math.ceil((res.data.totalCount + 1) / 6));
+    } catch (error) {
+      console.log(error);
     }
-
+  }
+  useEffect(() => {
     fetchData();
   }, []);
   return (

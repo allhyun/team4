@@ -70,8 +70,9 @@ const StudyThumbnailBox = (props: propsType) => {
 
   useEffect(() => {
     fetchData();
-  }, [props, location.pathname]); //props가 변할때,
+  }, [props, dataLoaded]); //props가 변할때,
   useEffect(() => {
+    console.log('컴포넌트 랜더링');
     fetchData();
   }, []);
 
