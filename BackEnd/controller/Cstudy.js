@@ -45,8 +45,9 @@ exports.getStudiesPage = async (req, res) => {
       limit: pageSize,
       offset: offset,
     });
-
+    res.set('Cache-Control', 'no-store');
     res.send({ resultstudy, totalCount });
+    console.log('데이터 보내기', resultstudy);
   } catch (error) {
     console.error(error);
     res.status(500).send('메인화면 에러 발생');
