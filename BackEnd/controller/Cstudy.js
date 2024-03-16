@@ -1,5 +1,7 @@
 const db = require('../model');
 const { Op } = require('sequelize');
+// const fs = require('fs');
+// const path = require('path');
 
 // 스터디 리스트
 // 첫 페이지는 5개 이후는 6개씩
@@ -54,11 +56,11 @@ exports.getStudiesPage = async (req, res) => {
   }
 };
 
-// 스터디 등록
 exports.createStudy = async (req, res) => {
   try {
+    //const sessionUIdx = req.session.user.u_idx;
     const {
-      u_idx,
+      //u_idx,
       st_title,
       st_intro,
       st_now_mem,
@@ -68,9 +70,9 @@ exports.createStudy = async (req, res) => {
       st_pub,
       st_full,
     } = req.body;
-
+    const sessionUIdx = req.session.user.u_idx;
     const newStudy = await db.Study.create({
-      u_idx,
+      u_idx: sessionUIdx,
       st_title,
       st_intro,
       st_now_mem,
